@@ -56,13 +56,14 @@ int _Menu_cheappestCost(Menu* menu) {
 }
 
 void _Menu_addBeverage(struct Menu* menu, Beverage* beverage) {
+    menu->beverageArray = realloc(menu->beverageArray, sizeof(Beverage*) * (menu->count + 1));
+
     menu->beverageArray[menu->count] = beverage;
     menu->count++;
 }
 
 void _Menu_removeBeverage(struct Menu* menu, Beverage* beverage) {
     free(menu->beverageArray[menu->count - 1]);
-    menu->count--;
 }
 
 

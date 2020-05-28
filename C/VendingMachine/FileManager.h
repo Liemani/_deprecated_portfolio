@@ -268,11 +268,6 @@ Beverage* _FileManager_readBeverage_another1(struct FileManager* fileManager) {
 FileManager* _FileManager_alloc() {
 	FileManager* fileManager = (FileManager*)malloc(sizeof(FileManager));
 
-	// initialize methods
-	fileManager->readAllBeverages = _FileManager_readAllBeverages;
-	fileManager->writeBeverage = _FileManager_writeBeverage;
-	fileManager->deleteBeverage = _FileManager_deleteBeverage;
-
 	return fileManager;
 }
 
@@ -282,6 +277,11 @@ FileManager* newFileManager() {
 
 	// initialize properties
 	fileManager->name = DATA_NAME;
+
+	// initialize methods
+	fileManager->readAllBeverages = _FileManager_readAllBeverages;
+	fileManager->writeBeverage = _FileManager_writeBeverage;
+	fileManager->deleteBeverage = _FileManager_deleteBeverage;
 
 	return fileManager;
 }
