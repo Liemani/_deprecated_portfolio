@@ -31,9 +31,6 @@
 typedef struct VendingMachineViewController {
     VendingMachine* machine;
     VendingMachineState state;
-
-    void (*mainLoop)(struct VendingMachineViewController* viewController);
-
 } VendingMachineViewController;
 
 
@@ -262,9 +259,6 @@ VendingMachineViewController* newVendingMachineViewController() {
 
     viewController->machine = newVendingMachine(beverageArray, beverageArrayCount);
     viewController->state = _VendingMachineState_appearing;
-
-    // initialize methods
-    viewController->mainLoop = _VendingMachineViewController_mainLoop;
 
     return viewController;
 }

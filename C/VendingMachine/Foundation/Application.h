@@ -32,7 +32,7 @@ typedef struct Application {
 // function
 void _Application_start(struct Application* app) {
     while (1) {
-        app->viewController->mainLoop(app->viewController);
+        _VendingMachineViewController_mainLoop(app->viewController);
     }
 }
 

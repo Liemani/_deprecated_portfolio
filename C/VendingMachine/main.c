@@ -21,7 +21,7 @@
 // main function
 int main(int argc, char **argv) {
     Application *app = newApplication();
-    app->start(app);
+    _Application_start(app);
 
 	return 0;
 }
