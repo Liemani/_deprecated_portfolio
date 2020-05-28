@@ -14,9 +14,9 @@
 // preprocessor
 #include <stdio.h>
 #include <stdlib.h>
-#include "beverage.h"
+#include "Beverage.h"
 #include "menu.h"
-#include "bool.h"
+#include "../Foundation/Bool.h"
 #include "selection.h"
 
 #pragma warning(disable:4996)

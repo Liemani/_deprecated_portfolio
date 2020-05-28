@@ -14,8 +14,8 @@
 // preprocessor
 #include <stdio.h>
 #include <stdlib.h>
-#include "menu.h"
-#include "vendingMachine.h"
+#include "../Model/Menu.h"
+#include "../Model/VendingMachine.h"
 
 #pragma warning(disable:4996)
 

@@ -14,4 +14,4 @@
 // preprocessor
 #define BEVERAGE_NAME_COUNT_LIMIT 40
 #define BEVERAGE_ARRAY_COUNT_LIMIT 10
-#define DATA_NAME "beverage.dat"
+#define BEVERAGE_SET_DATA_NAME "Resource/beverageList.dat"

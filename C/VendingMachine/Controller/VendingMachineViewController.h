@@ -15,11 +15,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "vendingMachineState.h"
-#include "vendingMachine.h"
-#include "vendingMachineView.h"
+#include "../Model/VendingMachineState.h"
+#include "../Model/VendingMachine.h"
+#include "../View/VendingMachineView.h"
 #include "fileManager.h"
-#include "constant.h"
+#include "../Resource/constant.h"
 
 #pragma warning(disable:4996)
 

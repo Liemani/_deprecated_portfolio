@@ -14,7 +14,7 @@
 // preprocessor
 #include <stdio.h>
 #include <stdlib.h>
-#include "beverage.h"
+#include "Beverage.h"
 
 #pragma warning(disable:4996)
 

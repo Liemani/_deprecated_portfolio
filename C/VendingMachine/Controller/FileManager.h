@@ -14,9 +14,9 @@
 // preprocessor
 #include <stdio.h>
 #include <stdlib.h>
-#include "beverage.h"
-#include "constant.h"
-#include "bool.h"
+#include "../Model/Beverage.h"
+#include "../Resource/constant.h"
+#include "../Foundation/Bool.h"
 
 #define NO_TARGET 0
 #define NO_TARGET_WITH_EOF 1
@@ -276,7 +276,7 @@ FileManager* newFileManager() {
 	FileManager* fileManager = _FileManager_alloc();
 
 	// initialize properties
-	fileManager->name = DATA_NAME;
+	fileManager->name = BEVERAGE_SET_DATA_NAME;
 
 	// initialize methods
 	fileManager->readAllBeverages = _FileManager_readAllBeverages;
