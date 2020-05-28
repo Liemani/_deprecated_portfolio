@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "beverage"
+// char* title = "beverage"
 // made by Lieman at 2020.05.27
 //
 // description:
@@ -66,7 +66,7 @@ Beverage* newBeverage(char* name, int cost) {
 	// initialize properties
 	beverage->name = (char*)malloc(sizeof(char) * BEVERAGE_NAME_COUNT_LIMIT);
 	strcpy(beverage->name, name);
-	beverage->name = (char*)realloc(beverage->name, sizeof(char) * (strlen(beverage->name) + 1));
+	beverage->name = (char*)realloc(beverage->name, sizeof(char) * (strlen(beverage->name) + 1)); // memory leak warning
 
 	beverage->cost = cost;
 
