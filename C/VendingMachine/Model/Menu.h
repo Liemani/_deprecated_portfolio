@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "printMenu"
+// char* title = "printMenu"
 // made by Lieman at 2020.05.27
 //
 // description:
@@ -56,7 +56,7 @@ int _Menu_cheappestCost(Menu* menu) {
 }
 
 void _Menu_addBeverage(struct Menu* menu, Beverage* beverage) {
-    menu->beverageArray = realloc(menu->beverageArray, sizeof(Beverage*) * (menu->count + 1));
+    menu->beverageArray = (Beverage**)realloc(menu->beverageArray, sizeof(Beverage*) * (menu->count + 1)); // memory leak warning
 
     menu->beverageArray[menu->count] = beverage;
     menu->count++;

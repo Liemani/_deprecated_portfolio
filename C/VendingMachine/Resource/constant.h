@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "constant"
+// char* title = "constant"
 // made by Lieman at 2020.05.27
 //
 // description:

@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "VendingMachineViewController"
+// char* title = "VendingMachineViewController"
 // made by Lieman at 2020.05.28
 //
 // description:

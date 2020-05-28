@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "bool"
+// char* title = "bool"
 // made by Lieman at 2020.05.27
 //
 // description:

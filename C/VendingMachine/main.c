@@ -1,5 +1,5 @@
 //********************************************
-// const title = "main"
+// char* title = "main"
 // made by Lieman at 2020.05.28
 //
 // description:

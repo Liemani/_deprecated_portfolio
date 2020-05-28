@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "vendingMachine"
+// char* title = "vendingMachine"
 // made by Lieman at 2020.05.27
 //
 // description:

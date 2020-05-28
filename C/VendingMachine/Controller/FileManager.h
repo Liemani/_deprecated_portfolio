@@ -1,6 +1,6 @@
 #pragma once
 //********************************************
-// const title = "fileManager"
+// char* title = "fileManager"
 // made by Lieman at 2020.05.28
 //
 // description:
@@ -170,7 +170,7 @@ Beverage** _FileManager_readAllBeverages(struct FileManager* fileManager, int* c
 		beverageArrayCount++;
 	}
 
-	realloc(beverageArray, sizeof(Beverage*) * beverageArrayCount);
+	beverageArray = (Beverage**)realloc(beverageArray, sizeof(Beverage*) * beverageArrayCount); // memory leak possible
 
 	fclose(file);
 
