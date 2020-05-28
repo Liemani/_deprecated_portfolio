@@ -149,7 +149,7 @@ void _VendingMachineViewController_dataManageMode(struct VendingMachineViewContr
         }
         break;
     case 'r':
-        fileManager->deleteBeverage(fileManager, beverage);
+        //fileManager->deleteBeverage(fileManager, beverage);
         printf("Remove a beverage goes here...\n");
         putchar('\n');
         break;
@@ -256,7 +256,7 @@ VendingMachineViewController* vendingMachineViewController_alloc() {
 }
 
 // initializer
-VendingMachineViewController* vendingMachineViewController() {
+VendingMachineViewController* newVendingMachineViewController() {
     VendingMachineViewController* viewController = vendingMachineViewController_alloc();
 
     // initialize properties
