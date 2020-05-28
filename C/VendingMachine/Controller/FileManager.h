@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "fileManager"
-// made by Lieman at 2020.05.28
+// made by Lieman at 2020.05.29
 //
 // description:
 //	fileManager example
@@ -35,10 +35,6 @@
 // global variable
 typedef struct FileManager {
 	const char* name;
-
-	Beverage** (*readAllBeverages)(struct FileManager* fileManager, int* count);
-	void (*writeBeverage)(struct FileManager* fileManager, Beverage* beverage);
-	void (*deleteBeverage)(struct FileManager* fileManager);
 } FileManager;
 
 
@@ -277,11 +273,6 @@ FileManager* newFileManager() {
 
 	// initialize properties
 	fileManager->name = BEVERAGE_SET_DATA_NAME;
-
-	// initialize methods
-	fileManager->readAllBeverages = _FileManager_readAllBeverages;
-	fileManager->writeBeverage = _FileManager_writeBeverage;
-	fileManager->deleteBeverage = _FileManager_deleteBeverage;
 
 	return fileManager;
 }

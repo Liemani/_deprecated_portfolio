@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "Application"
-// made by Lieman at 2020.05.28
+// made by Lieman at 2020.05.29
 //
 // description:
 //	Application structure
@@ -23,8 +23,6 @@
 // global variable
 typedef struct Application {
     VendingMachineViewController* viewController;
-
-    void (*start)(struct Application* application);
 } Application;
 
 
@@ -55,9 +53,6 @@ Application* newApplication() {
 
     // initialize properties
     app->viewController = newVendingMachineViewController();
-
-    // initialize methods
-    app->start = _Application_start;
 
     return app;
 }

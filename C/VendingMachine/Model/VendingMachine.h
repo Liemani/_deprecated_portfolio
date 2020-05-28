@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "vendingMachine"
-// made by Lieman at 2020.05.27
+// made by Lieman at 2020.05.29
 //
 // description:
 //	vendingMachine example
@@ -30,16 +30,6 @@ typedef struct VendingMachine {
     Menu* menu;
     Selection selection;
     int money;
-
-    // method
-    void (*takeOrder)(struct VendingMachine* machine);
-    Beverage* (*selectedBeverage)(struct VendingMachine* machine);
-    int (*isMoneyLow)(struct VendingMachine* machine);
-    int (*isMoneyEnough)(struct VendingMachine* machine);
-    void (*scanSelection)(struct VendingMachine* machine);
-    int (*isSelectionNumber)(struct VendingMachine* machine);
-    int (*isSelectionY)(struct VendingMachine* machine);
-    int (*isSelectionN)(struct VendingMachine* machine);
 } VendingMachine;
 
 
@@ -60,12 +50,12 @@ Beverage* _VendingMachine_selectedBeverage(struct VendingMachine* machine) {
     return machine->menu->beverageArray[machine->selection];
 }
 
-int _VendingMachine_isMoneylow(struct VendingMachine* machine) {
-    return machine->money < machine->menu->cheappestCost(machine->menu);
+int _VendingMachine_isMoneyLow(struct VendingMachine* machine) {
+    return machine->money < _Menu_cheappestCost(machine->menu);
 }
 
 int _VendingMachine_isMoneyEnough(struct VendingMachine* machine) {
-    return machine->money >= machine->selectedBeverage(machine)->cost;
+    return machine->money >= _VendingMachine_selectedBeverage(machine)->cost;
 }
 
 void _VendingMachine_scanSelection(struct VendingMachine* machine) {
@@ -106,16 +96,6 @@ int _VendingMachine_isSelectionN(struct VendingMachine* machine) {
 // allocation
 VendingMachine* vendingMachine_alloc(Beverage** beverageArray, int arrayCount) {
     VendingMachine* machine = (VendingMachine*)malloc(sizeof(VendingMachine));
-
-    // initialize methods
-    machine->takeOrder = _VendingMachine_takeOrder;
-    machine->selectedBeverage = _VendingMachine_selectedBeverage;
-    machine->isMoneyLow = _VendingMachine_isMoneylow;
-    machine->isMoneyEnough = _VendingMachine_isMoneyEnough;
-    machine->scanSelection = _VendingMachine_scanSelection;
-    machine->isSelectionNumber = _VendingMachine_isSelectionNumber;
-    machine->isSelectionY = _VendingMachine_isSelectionY;
-    machine->isSelectionN = _VendingMachine_isSelectionN;
 
     return machine;
 }

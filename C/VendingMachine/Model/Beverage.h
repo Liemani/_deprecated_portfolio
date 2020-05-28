@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "beverage"
-// made by Lieman at 2020.05.27
+// made by Lieman at 2020.05.29
 //
 // description:
 //	beverage example
@@ -27,8 +27,6 @@
 typedef struct Beverage {
 	char* name;
 	int cost;
-
-	void (*dealloc)(struct Beverage* beverage);
 } Beverage;
 
 
@@ -52,9 +50,6 @@ Beverage* _Beverage_alloc() {
 
 	// allocate properties
 	beverage->name = (char*)malloc(sizeof(char) * BEVERAGE_NAME_COUNT_LIMIT);
-
-	// initialize methods
-	beverage->dealloc = _Beverage_dealloc;
 
 	return beverage;
 }

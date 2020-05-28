@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "printMenu"
-// made by Lieman at 2020.05.27
+// made by Lieman at 2020.05.29
 //
 // description:
 //	printMenu example
@@ -26,11 +26,6 @@
 typedef struct Menu {
     Beverage** beverageArray;
     int count;
-
-    // method
-    int (*cheappestCost)(struct Menu* menu);
-    void (*addBeverage)(struct Menu* menu, Beverage* beverage);
-    void (*_Menu_removeBeverage)(struct Menu* menu, Beverage* beverage);
 } Menu;
 
 
@@ -73,10 +68,6 @@ void _Menu_removeBeverage(struct Menu* menu, Beverage* beverage) {
 // allocation
 Menu* menu_alloc(Beverage** beverageArray, int beverageCount) {
     Menu* menu = (Menu*)malloc(sizeof(Menu));
-
-    // initialize methods
-    menu->cheappestCost = _Menu_cheappestCost;
-    menu->addBeverage = _Menu_addBeverage;
 
     return menu;
 }

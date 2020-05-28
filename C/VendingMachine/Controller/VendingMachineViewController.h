@@ -29,7 +29,6 @@
 
 // global variable
 typedef struct VendingMachineViewController {
-    VendingMachineView* view;
     VendingMachine* machine;
     VendingMachineState state;
 
@@ -44,10 +43,9 @@ typedef struct VendingMachineViewController {
 // function
 void _VendingMachineViewController_waitingMoney(struct VendingMachineViewController* viewController) {
     VendingMachine* machine = viewController->machine;
-    VendingMachineView* view = viewController->view;
 
     while (1) {
-        view->printAskMoney();
+        _VendingMachineView_printAskMoney();
         scanf("%d", &machine->money);
         while (getchar() != '\n');
         putchar('\n');
@@ -58,11 +56,11 @@ void _VendingMachineViewController_waitingMoney(struct VendingMachineViewControl
         }
 
         if (machine->money <= 0) {
-            view->printInvalidInput();
+            _VendingMachineView_printInvalidInput();
             continue;
         }
 
-        if (machine->isMoneyLow(machine)) {
+        if (_VendingMachine_isMoneyLow(machine)) {
             viewController->state = _VendingMachineState_terminating;
             break;
         }
@@ -95,7 +93,6 @@ void _VendingMachineViewController_dataManageMode(struct VendingMachineViewContr
     char name[BEVERAGE_NAME_COUNT_LIMIT];
     int cost = 0;
 
-    VendingMachineView* view = viewController->view;
     VendingMachine* machine = viewController->machine;
 
     switch (character) {
@@ -103,7 +100,7 @@ void _VendingMachineViewController_dataManageMode(struct VendingMachineViewContr
         viewController->state = _VendingMachineState_waitingMoney;
         return;
     case 'd':
-        beverageArray = fileManager->readAllBeverages(fileManager, &beverageArrayCount);
+        beverageArray = _FileManager_readAllBeverages(fileManager, &beverageArrayCount);
 
         if (beverageArrayCount == 0) {
             printf("No beverage!\n");
@@ -129,23 +126,23 @@ void _VendingMachineViewController_dataManageMode(struct VendingMachineViewContr
             printf("%s(%d) is right? (y/n) ", name, cost);
 
             while (1) {
-                machine->scanSelection(machine);
+                _VendingMachine_scanSelection(machine);
 
-                if (machine->isSelectionY(machine)) {
+                if (_VendingMachine_isSelectionY(machine)) {
                     beverage = newBeverage(name, cost);
-                    fileManager->writeBeverage(fileManager, beverage);
-                    machine->menu->addBeverage(machine->menu, beverage);
+                    _FileManager_writeBeverage(fileManager, beverage);
+                    _Menu_addBeverage(machine->menu, beverage);
                     break;
                 }
 
-                if (!machine->isSelectionN(machine)) {
-                    view->printInvalidInput();
+                if (!_VendingMachine_isSelectionN(machine)) {
+                    _VendingMachineView_printInvalidInput();
                 }
 
                 break;
             }
 
-            if (machine->isSelectionY(machine) || machine->isSelectionN(machine)) break;
+            if (_VendingMachine_isSelectionY(machine) || _VendingMachine_isSelectionN(machine)) break;
         }
         break;
     case 'r':
@@ -158,34 +155,33 @@ void _VendingMachineViewController_dataManageMode(struct VendingMachineViewContr
         putchar('\n');
         break;
     default:
-        viewController->view->printInvalidInput();
+        _VendingMachineView_printInvalidInput();
         break;
     }
 }
 
 void _VendingMachineViewController_waitingSelection(struct VendingMachineViewController* viewController) {
     VendingMachine* machine = viewController->machine;
-    VendingMachineView* view = viewController->view;
 
     while (1) {
-        view->printMenu(machine);
-        machine->scanSelection(machine);
+        _VendingMachineView_printMenu(machine);
+        _VendingMachine_scanSelection(machine);
 
-        if (!machine->isSelectionNumber(machine)) {
-            view->printInvalidInput();
+        if (!_VendingMachine_isSelectionNumber(machine)) {
+            _VendingMachineView_printInvalidInput();
             continue;
         }
 
-        if (!machine->isMoneyEnough(machine)) {
-            view->printNotEnoughMoney(machine);
+        if (!_VendingMachine_isMoneyEnough(machine)) {
+            _VendingMachineView_printNotEnoughMoney(machine);
             viewController->state = _VendingMachineState_waitingContinue;
             break;
         }
 
-        machine->takeOrder(machine);
-        view->printOrder(machine);
+        _VendingMachine_takeOrder(machine);
+        _VendingMachineView_printOrder(machine);
 
-        if (machine->isMoneyLow(machine)) {
+        if (_VendingMachine_isMoneyLow(machine)) {
             viewController->state = _VendingMachineState_terminating;
             break;
         }
@@ -197,23 +193,22 @@ void _VendingMachineViewController_waitingSelection(struct VendingMachineViewCon
 
 void _VendingMachineViewController_waitingContinue(struct VendingMachineViewController* viewController) {
     VendingMachine* machine = viewController->machine;
-    VendingMachineView* view = viewController->view;
 
     while (1) {
-        view->printContinue();
-        machine->scanSelection(machine);
+        _VendingMachineView_printContinue();
+        _VendingMachine_scanSelection(machine);
 
-        if (machine->isSelectionY(machine)) {
+        if (_VendingMachine_isSelectionY(machine)) {
             viewController->state = _VendingMachineState_waitingSelection;
             break;
         }
 
-        if (machine->isSelectionN(machine)) {
+        if (_VendingMachine_isSelectionN(machine)) {
             viewController->state = _VendingMachineState_terminating;
             break;
         }
 
-        view->printInvalidInput();
+        _VendingMachineView_printInvalidInput();
     }
 }
 
@@ -235,11 +230,11 @@ void _VendingMachineViewController_mainLoop(struct VendingMachineViewController*
         _VendingMachineViewController_waitingContinue(viewController);
         break;
     case _VendingMachineState_terminating:
-        viewController->view->printBye(viewController->machine);
+        _VendingMachineView_printBye(viewController->machine);
         viewController->state = _VendingMachineState_waitingMoney;
         break;
     default:
-        viewController->view->printInvalidInput();
+        _VendingMachineView_printInvalidInput();
         break;
     }
 }
@@ -263,9 +258,8 @@ VendingMachineViewController* newVendingMachineViewController() {
     FileManager* fileManager = newFileManager();
 
     int beverageArrayCount = 0;
-    Beverage** beverageArray = fileManager->readAllBeverages(fileManager, &beverageArrayCount);
+    Beverage** beverageArray = _FileManager_readAllBeverages(fileManager, &beverageArrayCount);
 
-    viewController->view = vendingMachineView();
     viewController->machine = newVendingMachine(beverageArray, beverageArrayCount);
     viewController->state = _VendingMachineState_appearing;
 

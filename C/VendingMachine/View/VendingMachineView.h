@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "vendingMachineView"
-// made by Lieman at 2020.05.28
+// made by Lieman at 2020.05.29
 //
 // description:
 //	vendingMachineView example
@@ -18,21 +18,6 @@
 #include "../Model/VendingMachine.h"
 
 #pragma warning(disable:4996)
-
-
-
-
-
-// global variable
-typedef struct VendingMachineView {
-    void (*printAskMoney)();
-    void (*printMenu)(struct VendingMachine* machine);
-    void (*printOrder)(struct VendingMachine* machine);
-    void (*printContinue)();
-    void (*printNotEnoughMoney)(struct VendingMachine* machine);
-    void (*printBye)(struct VendingMachine* machine);
-    void (*printInvalidInput)();
-} VendingMachineView;
 
 
 
@@ -70,7 +55,7 @@ void _VendingMachineView_printContinue() {
 }
 
 void _VendingMachineView_printNotEnoughMoney(struct VendingMachine* machine) {
-    Beverage* selectedBeverage = machine->selectedBeverage(machine);
+    Beverage* selectedBeverage = _VendingMachine_selectedBeverage(machine);
     printf("You don't have enough money for %s(%d)\n", selectedBeverage->name, selectedBeverage->cost);
     putchar('\n');
 }
@@ -81,34 +66,7 @@ void _VendingMachineView_printBye(struct VendingMachine* machine) {
     putchar('\n');
 }
 
-void _VendingMachineView_invalidInput() {
+void _VendingMachineView_printInvalidInput() {
     printf("Invalid input!\n");
     putchar('\n');
-}
-
-
-
-
-// allocation
-VendingMachineView* vendingMachineView_alloc() {
-    VendingMachineView* view = (VendingMachineView*)malloc(sizeof(VendingMachineView));
-
-    // initialize methods
-    view->printAskMoney = _VendingMachineView_printAskMoney;
-    view->printMenu = _VendingMachineView_printMenu;
-    view->printOrder = _VendingMachineView_printOrder;
-    view->printContinue = _VendingMachineView_printContinue;
-    view->printNotEnoughMoney = _VendingMachineView_printNotEnoughMoney;
-    view->printBye = _VendingMachineView_printBye;
-    view->printInvalidInput = _VendingMachineView_invalidInput;
-
-    return view;
-}
-
-
-// initializer
-VendingMachineView* vendingMachineView() {
-    VendingMachineView* view = vendingMachineView_alloc();
-
-    return view;
 }
