@@ -20,7 +20,7 @@
 
 // main function
 int main(int argc, char **argv) {
-    Application *app = application();
+    Application *app = newApplication();
     app->start(app);
 
 	return 0;

@@ -1,10 +1,10 @@
 #pragma once
 //********************************************
-// const title = "application"
+// const title = "Application"
 // made by Lieman at 2020.05.28
 //
 // description:
-//	application example
+//	Application structure
 //********************************************
 
 
@@ -50,11 +50,11 @@ Application* application_alloc() {
 }
 
 // initializer
-Application* application() {
+Application* newApplication() {
     Application* app = application_alloc();
 
     // initialize properties
-    app->viewController = vendingMachineViewController();
+    app->viewController = newVendingMachineViewController();
 
     // initialize methods
     app->start = _Application_start;
