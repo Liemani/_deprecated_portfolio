@@ -47,13 +47,28 @@ void test03() {
 	printf("%d\n", INT_MAX + 1);
 }
 
+void operatorOrder() {
+	printf("%d\n", 1 && 0 || 1); // 1
+	printf("%d\n", 1 || 1 && 0); // 0
+}
+
+void test04() {
+	printf("%ld", sizeof(float));
+
+	float* myPointer = (float*)malloc(sizeof(float) * 1);
+
+	*myPointer = 3.14F;
+
+	printf("%.2f", *myPointer);
+}
+
 
 
 
 
 // main function
 int main(int argc, char** argv) {
-	test03();
+	test04();
 
 	return 0;
 }
