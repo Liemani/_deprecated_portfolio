@@ -16,6 +16,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "selectionSort.h"
+#include "swap.h"
+
 
 
 
@@ -208,7 +211,7 @@ void test07() {
 /// <para>assume data type as signed integer value</para>
 /// <para>only for big-endian system</para>
 /// </summary>
-void bubbleSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs)) {
+void bubbleSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
 	unsigned char* charArray = (unsigned char*)array;
 
 	for (int i = sizeOfElement * (count - 1); i > 0; i -= sizeOfElement) {
@@ -247,7 +250,7 @@ void test09() {
 /// <para>assume data type as signed integer value</para>
 /// <para>only for big-endian system</para>
 /// </summary>
-void bubbleSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs)) {
+void quickSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs)) {
 	unsigned char* charArray = (unsigned char*)array;
 
 	for (int i = sizeOfElement * (count - 1); i > 0; i -= sizeOfElement) {
@@ -260,6 +263,36 @@ void bubbleSort(void* array, int count, int sizeOfElement, int (*compare)(void* 
 			}
 		}
 	}
+}
+
+void quicksortTest(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
+	unsigned char* charArray = (unsigned char*)array;
+
+	int leftIndex = 0;
+	int rightIndex = count - 1;
+
+	int middleValue = (charArray[leftIndex] + charArray[rightIndex]) / 2;
+
+	while (1) {
+		while (!compare(&charArray[leftIndex], &middleValue, 4)) {
+			++leftIndex;
+		}
+
+		while (compare(&charArray[rightIndex], &middleValue, 4)) {
+			++leftIndex;
+		}
+
+		if (leftIndex < rightIndex) {
+			break;
+		} else {
+			int temp = charArray[leftIndex];
+			charArray[leftIndex] = charArray[rightIndex];
+			charArray[rightIndex] = temp;
+		}
+	}
+
+	quicksortTest();
+	quicksortTest();
 }
 
 
