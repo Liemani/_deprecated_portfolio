@@ -128,25 +128,6 @@ int isBiggerThan(void* lhs, void* rhs, int sizeOfData) {
 	return 0;
 }
 
-/// <summary>
-/// <para>assume data type as signed integer value</para>
-/// <para>only for big-endian system</para>
-/// </summary>
-void selectionSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs)) {
-	unsigned char* charArray = (unsigned char*)array;
-
-	for (int i = 0; i < sizeOfElement * (count - 1); i += sizeOfElement) {
-		for (int j = i + sizeOfElement; j < sizeOfElement * count; j += sizeOfElement) {
-			printf("%d is bigger than %d is %s\n", charArray[i], charArray[j], compare(&charArray[i], &charArray[j], sizeOfElement) ? "True" : "False");
-			if (compare(&charArray[i], &charArray[j], sizeOfElement)) {
-				int temp = charArray[i];
-				charArray[i] = charArray[j];
-				charArray[j] = temp;
-			}
-		}
-	}
-}
-
 void test05() {
 	int count = 10;
 	int* intArray = generateIntArray(count);
@@ -205,25 +186,6 @@ void test07() {
 	int result = isBiggerThan(&lhs, &rhs, 1);
 
 	printf("%d is bigger than %d: %s", lhs, rhs, result ? "True" : "False");
-}
-
-/// <summary>
-/// <para>assume data type as signed integer value</para>
-/// <para>only for big-endian system</para>
-/// </summary>
-void bubbleSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
-	unsigned char* charArray = (unsigned char*)array;
-
-	for (int i = sizeOfElement * (count - 1); i > 0; i -= sizeOfElement) {
-		for (int j = 0; j < i; j += sizeOfElement) {
-			printf("%d is bigger than %d is %s\n", charArray[j], charArray[j + sizeOfElement], compare(&charArray[j], &charArray[j + sizeOfElement], sizeOfElement) ? "True" : "False");
-			if (compare(&charArray[j], &charArray[j + sizeOfElement], sizeOfElement)) {
-				int temp = charArray[j];
-				charArray[j] = charArray[j + sizeOfElement];
-				charArray[j + sizeOfElement] = temp;
-			}
-		}
-	}
 }
 
 void test08() {
