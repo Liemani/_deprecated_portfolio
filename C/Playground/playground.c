@@ -17,7 +17,9 @@
 #include <time.h>
 
 #include "selectionSort.h"
+#include "bubbleSort.h"
 #include "swap.h"
+#include "quicksortInt.h"
 
 
 
@@ -69,13 +71,13 @@ void test04() {
 	printf("%.2f", *myPointer);
 }
 
-int *generateIntArray(int count) {
+int *generateIntArray(int limit, int count) {
 	int* intArray = (int*)malloc(sizeof(int) * count);
 
 	srand(time(NULL));
 
 	for (int i = 0; i < count; ++i) {
-		intArray[i] = rand() % 101;
+		intArray[i] = rand() % (limit + 1);
 	}
 
 	return intArray;
@@ -94,9 +96,13 @@ void selectionSort_int(int* intArray, int count) {
 }
 
 void printIntArray(int* intArray, int count) {
+	putchar('{');
 	for (int i = 0; i < count; ++i) {
-		printf("%3d\n", intArray[i]);
+		printf("%d, ", intArray[i]);
 	}
+	printf("\b\b}");
+
+	putchar('\n');
 }
 
 /// <summary>
@@ -128,9 +134,15 @@ int isBiggerThan(void* lhs, void* rhs, int sizeOfData) {
 	return 0;
 }
 
+int isSmallerThanOrEqualTo(void* lhs, void* rhs, int sizeOfData) {
+	return !isBiggerThan(lhs, rhs, sizeOfData);
+}
+
 void test05() {
-	int count = 10;
-	int* intArray = generateIntArray(count);
+	const int count = 10;
+	const int limit = 100;
+
+	int* intArray = generateIntArray(limit, count);
 
 	printIntArray(intArray, count);
 
@@ -195,8 +207,10 @@ void test08() {
 }
 
 void test09() {
-	int count = 10;
-	int* intArray = generateIntArray(count);
+	const int count = 10;
+	const int limit = 100;
+
+	int* intArray = generateIntArray(limit, count);
 
 	printIntArray(intArray, count);
 
@@ -211,50 +225,101 @@ void test09() {
 /// <summary>
 /// <para>assume data type as signed integer value</para>
 /// <para>only for big-endian system</para>
+/// <para>range of count is depend on INT_MAX</para>
+/// <para>because the middleValue is of type int</para>
+/// <para>must leftIndex check equality</para>
 /// </summary>
-void quickSort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs)) {
-	unsigned char* charArray = (unsigned char*)array;
-
-	for (int i = sizeOfElement * (count - 1); i > 0; i -= sizeOfElement) {
-		for (int j = 0; j < i; j += sizeOfElement) {
-			printf("%d is bigger than %d is %s\n", charArray[j], charArray[j + sizeOfElement], compare(&charArray[j], &charArray[j + sizeOfElement], sizeOfElement) ? "True" : "False");
-			if (compare(&charArray[j], &charArray[j + sizeOfElement], sizeOfElement)) {
-				int temp = charArray[j];
-				charArray[j] = charArray[j + sizeOfElement];
-				charArray[j + sizeOfElement] = temp;
-			}
-		}
-	}
-}
-
-void quicksortTest(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
+void quicksort(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
 	unsigned char* charArray = (unsigned char*)array;
 
 	int leftIndex = 0;
-	int rightIndex = count - 1;
+	int rightIndex = sizeOfElement * (count - 1);
 
 	int middleValue = (charArray[leftIndex] + charArray[rightIndex]) / 2;
 
-	while (1) {
-		while (!compare(&charArray[leftIndex], &middleValue, 4)) {
-			++leftIndex;
+	/*while (1) {
+		while () {
+			!compare(middleValue, charArray[leftIndex])
+		}
+	}*/
+
+	/*int middleValue = (charArray[0] + charArray[sizeOfElement * (count - 1)]) / 2;
+
+	for (int i = 0; i < sizeOfElement * count; i += sizeOfElement) {
+		if (compare(middleValue, charArray[i], sizeOfElement)) {
+			continue;
 		}
 
-		while (compare(&charArray[rightIndex], &middleValue, 4)) {
-			++leftIndex;
-		}
+		for (int j = 0; j > i; j -= sizeOfElement) {
+			if (!compare(middleValue, charArray[j], sizeOfElement)) {
 
-		if (leftIndex < rightIndex) {
-			break;
-		} else {
-			int temp = charArray[leftIndex];
-			charArray[leftIndex] = charArray[rightIndex];
-			charArray[rightIndex] = temp;
+			}
 		}
-	}
+	}*/
 
-	quicksortTest();
-	quicksortTest();
+
+
+	
+
+//	while (1) {
+//		// 등호비교는 right가
+//		// 반 나누는거는 -1, 0
+//		while (compare(&middleValue, &charArray[leftIndex], sizeOfElement) &&
+//			leftIndex < rightIndex) {
+//			leftIndex += sizeOfElement;
+//		}
+//
+//		while (!compare(&middleValue, &charArray[rightIndex], sizeOfElement) &&
+//			leftIndex < rightIndex) {
+//			rightIndex -= sizeOfElement;
+//		}
+//
+//		if (leftIndex < rightIndex) {
+//			swap(&charArray[leftIndex], &charArray[rightIndex], sizeOfElement);
+//		} else {
+//			break;
+//		}
+//	}
+//
+//	printIntArray(array, count);
+//	printf("rightIndex: %d\n", rightIndex);
+//	printf("count: %d\n", count);
+//	printf("%d\n", rightIndex / sizeOfElement > 1);
+//	putchar('\n');
+//
+//	if (rightIndex / sizeOfElement > 0) {
+//		quicksort(charArray, rightIndex / sizeOfElement + 1, sizeOfElement, compare);
+//	}
+//
+//	printIntArray(array, count);
+//	printf("leftIndex: %d\n", leftIndex);
+//	printf("count: %d\n", count);
+//	printf("%d\n", count - rightIndex / sizeOfElement > 1);
+//	putchar('\n');
+//
+//	if (count - rightIndex / sizeOfElement > 2) {
+//		quicksort(charArray + leftIndex, count - 1 - rightIndex / sizeOfElement, sizeOfElement, compare);
+//	}
+}
+
+void test10() {
+	int* intArray;
+	const int limit = 1000;
+	const int count = 100;
+
+	intArray = generateIntArray(limit, count);
+	//int tempArray[] = { 54, 38, 81, 20, 30, 38, 68, 10, 76, 38 };
+	//intArray = tempArray;
+
+	printIntArray(intArray, count);
+
+	putchar('\n');
+	printf("sorting...\n");
+	//quicksort(intArray, count, 4, isBiggerThan);
+	quicksortInt(intArray, count);
+	putchar('\n');
+
+	printIntArray(intArray, count);
 }
 
 
@@ -263,7 +328,7 @@ void quicksortTest(void* array, int count, int sizeOfElement, int (*compare)(voi
 
 // main function
 int main(int argc, char** argv) {
-	test09();
+	test10();
 
 	return 0;
 }
