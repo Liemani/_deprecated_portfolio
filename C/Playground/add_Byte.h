@@ -18,8 +18,9 @@
 
 
 
-unsigned char add_Byte(unsigned char* lhs, unsigned char* rhs, unsigned char* result) {
+int add_Byte(unsigned char* lhs, unsigned char* rhs, unsigned char* result) {
 	unsigned short carry = (unsigned short)*lhs + (unsigned short)*rhs;
+	*result = (unsigned char)carry;
 
-	return (unsigned char)(carry >> 8);
+	return (int)(carry >> 8);
 }
