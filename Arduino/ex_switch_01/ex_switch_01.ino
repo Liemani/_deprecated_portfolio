@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_switch_01"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	switch example
+//********************************************
+
+
+
+
+
 #define SWITCH0 13
 int count = 0;
 

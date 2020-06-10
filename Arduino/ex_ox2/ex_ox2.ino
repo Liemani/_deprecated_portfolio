@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_ox2"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	Serial example
+//********************************************
+
+
+
+
+
 #include <string.h>
 #define BUFFER_MAX 10
 

@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_switch_07"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	switch example
+//********************************************
+
+
+
+
+
 // constant
 #define switchLedCount 4
 

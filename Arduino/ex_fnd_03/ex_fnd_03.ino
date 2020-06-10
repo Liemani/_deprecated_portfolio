@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_fnd_03"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	6 digit fnd example
+//********************************************
+
+
+
+
+
 // global constatant
 #define DURATION 2
 #define TIME_INTERVAL 500

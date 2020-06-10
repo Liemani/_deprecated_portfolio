@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_fnd_01"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	6 digit fnd example
+//********************************************
+
+
+
+
+
 #define DELAY_TIME (1000 / 60 / 6)
 
 int fndDataPinArray[8] = {13, 12, 11, 10, 9, 8, 7, 6};

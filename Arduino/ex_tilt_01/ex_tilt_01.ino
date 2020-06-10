@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_tilt_01"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	tilt example
+//********************************************
+
+
+
+
+
 #define led 13
 #define pinGnd 4
 #define pinVcc 3

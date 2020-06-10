@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_switch_05"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	switch example
+//********************************************
+
+
+
+
+
 // led control checking switch edge
 
 int ledArray[] = {13, 12, 11, 10};

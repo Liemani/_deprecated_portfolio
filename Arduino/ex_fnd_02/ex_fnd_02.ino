@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_fnd_02"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	6 digit fnd example
+//********************************************
+
+
+
+
+
 #define DELAY_TIME 2
 #define DIGIT0 0
 #define DURATION 2

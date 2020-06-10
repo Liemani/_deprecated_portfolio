@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_switch_03"
+// made by Lieman at 2020.06.10
+//
+// description:
+//	switch example
+//********************************************
+
+
+
+
+
 int ledArray[] = {13, 12, 11, 10};
 int switchArray[] = {9, 8, 7, 6};
 
