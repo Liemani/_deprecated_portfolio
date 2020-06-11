@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_keyMatrix_02"
+// made by Lieman at 2020.06.11
+//
+// description:
+//  key matrix example
+//********************************************
+
+
+
+
+
 int rowPinArray[] = {13, 12, 11, 10};
 int columnPinArray[] = {9, 8, 7, 6};
 
