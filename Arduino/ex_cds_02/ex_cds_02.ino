@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_cds_02"
+// made by Lieman at 2020.06.11
+//
+// description:
+//  cds example
+//********************************************
+
+
+
+
+
 #define LED_PIN 13
 
 int pinGnd = A2;
