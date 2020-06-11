@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_cds_01"
+// made by Lieman at 2020.06.11
+//
+// description:
+//  cds example
+//********************************************
+
+
+
+
+
 int pinGnd = A2;
 int pinVcc = A1;
 int pinCds = A0;
