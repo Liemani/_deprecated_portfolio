@@ -1,5 +1,5 @@
 //********************************************
-// char* title = "ex_charLCD01"
+// char* title = "ex_charLCD_01"
 // made by Lieman at 2020.06.11
 //
 // description:
@@ -31,6 +31,7 @@ void loop() {
         if (ch != '\n') {
             lcd.print(ch);
             
+            // move cursor to available next place
             if(!(++cursorColumn %= 16)) {
                 ++cursorRow %= 2;
                 lcd.setCursor(cursorColumn, cursorRow);
