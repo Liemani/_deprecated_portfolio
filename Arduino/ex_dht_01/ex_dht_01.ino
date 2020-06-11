@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_dht_01"
+// made by Lieman at 2020.06.11
+//
+// description:
+//  dht example
+//********************************************
+
+
+
+
+
 #include "DHT.h"
 
 #define VCC 4
