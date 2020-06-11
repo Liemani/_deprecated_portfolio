@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_charLCD01"
+// made by Lieman at 2020.06.11
+//
+// description:
+//  character lcd example
+//********************************************
+
+
+
+
+
 #include <LiquidCrystal.h>
 
 LiquidCrystal lcd(13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3);
