@@ -1,3 +1,15 @@
+//********************************************
+// char* title = "ex_touch_01"
+// made by Lieman at 2020.06.11
+//
+// description:
+//  touch sensor example
+//********************************************
+
+
+
+
+
 #define LED_PIN 13
 
 int pinGnd = A1;
