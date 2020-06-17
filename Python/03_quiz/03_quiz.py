@@ -1,3 +1,14 @@
+# title = "03_quiz"
+# made by Lieman at 2020.06.17
+#
+# description:
+#   simple print example
+
+
+
+
+
+# main
 while True:
     base = input("Input base(2/8/10/16): ")
     if base.isdecimal:
