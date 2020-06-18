@@ -22,14 +22,15 @@ import tkinter
 class Piezo:
     def __init__(self, pin):
         self.pin = pin
+        GPIO.setup(pin, GPIO.OUT)
         self.pwm = GPIO.PWM(pin, 1)
         self.pwm.start(50)
     
     def changeFrequency(self, frequency):
-        self.pwm.ChangeFrequency(frequency)
+        self.pwm.ChangeFrequency(int(frequency))
     
     def changeDutyCycle(self, dutyCycle):
-        self.pwm.ChangeDutyCycle(dutyCycle)
+        self.pwm.ChangeDutyCycle(int(dutyCycle))
 
 
 
@@ -40,21 +41,21 @@ GPIO.setmode(GPIO.BOARD)
 
 piezo = Piezo(29)
 
-window = tkinter.TK()
+window = tkinter.Tk()
 
 frequencySlider = tkinter.Scale(window,
                        label = "frequency",
                        orient = "h",
-                       from_ = 0, to_ = 100,
+                       from_ = 1, to_ = 100,
                        command = piezo.changeFrequency)
-frequencySlider.pack(fill = X)
+frequencySlider.pack()
 
 dutyCycleSlider = tkinter.Scale(window,
                        label = "duty cycle",
                        orient = "h",
                        from_ = 0, to_ = 100,
                        command = piezo.changeDutyCycle)
-dutyCycleSlider.pack(fill = X)
+dutyCycleSlider.pack()
 
 window.mainloop()
 
