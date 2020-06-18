@@ -13,6 +13,8 @@
 // global constatant
 #define DURATION 2
 #define TIME_INTERVAL 1000
+#define SELECTION_LIMIT 6
+#define FND_PIN_LIMIT 8
 
 const int fndDataPinArray[8] = {13, 12, 11, 10, 9, 8, 7, 6};
 const int fndSelPinArray[6] = {5, 4, 3, 2, 1, 0};
@@ -48,7 +50,7 @@ void lockUpdate(unsigned long duration) {
 }
 
 void updateFrame() {
-    for (int k = 0; k < 6; ++k) {
+    for (int k = 0; k < SELECTION_LIMIT; ++k) {
         fndBuffer[k] = 0x00;
     }
 
@@ -60,23 +62,19 @@ void updateFrame() {
 }
 
 void renderFrame() {
-    for (int i = 0; i < 6; ++i) {
-        digitalWrite(fndSelPinArray[i], HIGH);
+    for (int i = 0; i < FND_PIN_LIMIT; ++i) {
+        digitalWrite(fndDataPinArray[i], (fndHexDigitArray[fndBuffer[selection] - '0'] >> i) & 0x01);
     }
 
     digitalWrite(fndSelPinArray[selection], LOW);
 
-    for (int i = 0; i < 8; ++i) {
-        digitalWrite(fndDataPinArray[i], (fndHexDigitArray[fndBuffer[selection] - '0'] >> i) & 0x01);
-    }
-
     delay(DURATION);
 
-    for (int i = 0; i < 8; ++i) {
-        digitalWrite(fndDataPinArray[i], LOW);
+    for (int i = 0; i < SELECTION_LIMIT; ++i) {
+        digitalWrite(fndSelPinArray[i], HIGH);
     }
 
-    ++selection %= 6;
+    ++selection %= SELECTION_LIMIT;
 }
 
 
