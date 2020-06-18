@@ -1,8 +1,9 @@
-# title = "19_LED"
-# made by Lieman at 2020.06.17
+# title = "19_interrupt"
+# made by Lieman at 2020.06.18
 #
 # description:
-#   display count number of switch with LED
+#   display count number of switch to LED
+#   use interrupt when increase count
 
 
 
@@ -22,9 +23,12 @@ class LED:
         self.pin = pin
         GPIO.setup(pin, GPIO.OUT, initial = GPIO.LOW)
     
-    def turnPWMOn(self):
+    def startPWM(self):
         self.pwm = GPIO.PWM(self.pin, 100)
         self.pwm.start(0)
+    
+    def stopPWM(self):
+        self.pwm.stop()
 
     def on(self):
         GPIO.output(self.pin, GPIO.HIGH)
@@ -45,33 +49,46 @@ class LED:
 
 
 
+# function
+def displayCount():
+    global count
+    for i in range(0, 4):
+        ledArray[i].turn(count >> i & 0x1)
+
+def changedCount(pin):
+    global count
+    
+    if pin == addSwitch:
+        count += 1
+    elif pin == subtractSwitch:
+        count -= 1
+    
+    count %= 16
+    displayCount()
+
+
+
+
+
 # main
 GPIO.setmode(GPIO.BOARD)
 
-SW = 13
+addSwitch = 13
+subtractSwitch = 15
 
 count = 0
 
-def increaseCount(something):
-    global count
-    count += 1
-    count %= 16
-
-GPIO.setup(SW, GPIO.IN)
+GPIO.setup(addSwitch, GPIO.IN)
+GPIO.setup(subtractSwitch, GPIO.IN)
 
 ledArray = [LED(37), LED(35), LED(33), LED(31), ]
 
-GPIO.add_event_detect(SW, GPIO.RISING, callback = increaseCount)
+GPIO.add_event_detect(addSwitch, GPIO.RISING, callback = changedCount)
+GPIO.add_event_detect(subtractSwitch, GPIO.RISING, callback = changedCount)
 
 try:
     while True:
-        for i in range(0, 4):
-            tmp = 0
-            if ((count >> i) & 0x1) == 1:
-                tmp = GPIO.HIGH
-            else:
-                tmp = GPIO.LOW
-            ledArray[i].turn(tmp)
+        time.sleep(10000)
 
 except KeyboardInterrupt:
     print("KeyboardInterrupt occured")
