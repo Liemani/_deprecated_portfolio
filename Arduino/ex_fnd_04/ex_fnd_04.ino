@@ -69,10 +69,8 @@ void renderFrame() {
     digitalWrite(fndSelPinArray[selection], LOW);
 
     delay(DURATION);
-
-    for (int i = 0; i < SELECTION_LIMIT; ++i) {
-        digitalWrite(fndSelPinArray[i], HIGH);
-    }
+    
+    digitalWrite(fndSelPinArray[selection], HIGH);
 
     ++selection %= SELECTION_LIMIT;
 }
