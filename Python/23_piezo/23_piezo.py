@@ -1,5 +1,5 @@
 # title = "23_piezo"
-# made by Lieman at 2020.06.18
+# made by Lieman at 2020.06.19
 #
 # description:
 #   piezo example
@@ -46,7 +46,7 @@ window = tkinter.Tk()
 frequencySlider = tkinter.Scale(window,
                        label = "frequency",
                        orient = "h",
-                       from_ = 1, to_ = 100,
+                       from_ = 1, to_ = 300,
                        command = piezo.changeFrequency)
 frequencySlider.pack()
 
