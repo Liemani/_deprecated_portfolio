@@ -1,5 +1,5 @@
 # title = "22_LCD_8bit"
-# made by Lieman at 2020.06.19
+# made by Lieman at 2020.06.18
 #
 # description:
 #   LCD example
@@ -36,43 +36,43 @@ class LCD:
         self.initializeDevice()
     
     def initializeDevice(self):
-        # 1
-        time.sleep(0.04)
+#         # 1. wait for more than 40 ms after Vcc rises to 2.7 V
+#         time.sleep(0.04)
         
-        # 2
-        self.exportData(0x30)
-        time.sleep(0.004)
+        # 2. 00/0011****
+        # 3. wait for more than 4.1 ms
+#         self.exportData(0x30, 0.0004)
+#         self.exportData(0x38, 0.05)
         
-        # 4
-        self.exportData(0x30)
-        time.sleep(0.0002)
-        
-        # 6
-        self.exportData(0x30)
-        time.sleep(0.002)
-        
-        # 7
-        self.exportData(0x38)
-        time.sleep(0.002)
-        self.exportData(0x08)
-        time.sleep(0.002)
-        self.exportData(0x01)
-        time.sleep(0.002)
-        self.exportData(0x04)
-        time.sleep(0.002)
+        # 4. 00/0011****
+        # 5. wait for more than 100 us
+#         self.exportData(0x30, 0.0004)
+# #         
+# #         # 6. 00/0011****
+#         self.exportData(0x30, 0.0004)
+# #         
+# #         # 7. 00/0011NF**
+# #         # 8. 00/00001111
+# #         # 9. 00/00000001 clear display
+# #         # 10. 00/000001IS
+#         self.exportData(0x30, 0.0004)
+        self.exportData(0x0D, 0.0004)
+        self.exportData(0x01, 0.0004)
+        self.exportData(0x06, 0.0004)
     
     def exportData(self, data, duration = 0):
-        for i in range(0, 8):
-            GPIO.output(self.characterPinArray[i], data >> i & 0x1)
+        for i in range(8):
+            GPIO.output(self.characterPinArray[i], (data >> i) & 0x1)
         
-#         GPIO.output(self.ePin, GPIO.HIGH)
-#         time.sleep(duration)
-#         GPIO.output(self.ePin, GPIO.LOW)
+        GPIO.output(self.ePin, GPIO.HIGH)
+        time.sleep(0.000002)
+        GPIO.output(self.ePin, GPIO.LOW)
+        time.sleep(duration)
     
-    def exportCharacter(self, data, duration = 0):
-        for i in range(0, 8):
-            GPIO.output(self.characterPinArray[i], data >> i & 0x1)
-        
+#     def exportCharacter(self, data, duration = 0):
+#         for i in range(8):
+#             GPIO.output(self.characterPinArray[i], data >> i & 0x1)
+#         
 #         GPIO.output(self.rsPin, GPIO.HIGH)
 #         time.sleep(duration)
 #         GPIO.output(self.rsPin, GPIO.LOW)
@@ -84,32 +84,37 @@ class LCD:
 # main
 GPIO.setmode(GPIO.BOARD)
 
-characterPinArray = [21, 22, 23, 24, 31, 33, 35, 37, ]
-characterPinArray.reverse()
+characterPinArray = [21, 23, 22, 24, 31, 33, 35, 37, ]
 controlPinArray = [11, 13, 16, ]
 
 lcd = LCD(characterPinArray, controlPinArray)
 
-# 2
-lcd.exportCharacter(0x30)
-time.sleep(0.002)
+# # 2
+# lcd.exportData(0x38, 0.02)
+# 
+# # 3
+# lcd.exportData(0x0E, 0.02)
+# # time.sleep(0.02)
+# 
+# # 4
+# lcd.exportData(0x06, 0.02)
+# 
+# lcd.exportData(0x01, 0.002)
 
-# 3
-lcd.exportCharacter(0x0E)
-time.sleep(0.002)
-
-# 4
-lcd.exportCharacter(0x06)
-time.sleep(0.002)
+# lcd.exportData(0x02, 0.001)
 
 # 5
 GPIO.output(lcd.rsPin, GPIO.HIGH)
-lcd.exportCharacter(0x48)
-time.sleep(0.002)
+lcd.exportData(0x48, 0.0004)
+lcd.exportData(0x48, 0.0004)
 
 # 6
-lcd.exportCharacter(0x49)
-time.sleep(0.002)
+lcd.exportData(0x49, 0.0004)
+lcd.exportData(0x49, 0.0004)
+lcd.exportData(0x49, 0.0004)
+lcd.exportData(0x49, 0.0004)
+
+lcd.exportData(0x48, 0.0004)
 
 
 
