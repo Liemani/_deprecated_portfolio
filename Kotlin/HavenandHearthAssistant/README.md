@@ -1,12 +1,13 @@
 Haven and Hearth Assistant
 ==========================
-My first android application.
+This is my first android application.
 
 I planed my fist app as simple as possible, and as fast as possible.
 
 Because i didn't have many time.
 
 So i Studied Java and UI during 2 weeks.
+(I already knew about object programming and UI at that time)
 
 And after that, i found Kotlin.
 
