@@ -1,5 +1,14 @@
 Portfolio
 =========
+I like game.
+
+So when i was young i wanted to make own my game.
+
+I entered university as math.
+
+When 2nd year of university, I enlisted army.
+
+In the army, I started programming first time ever with C.
 
 contact
 -------
