@@ -2,12 +2,12 @@ Haven and Hearth Assistant
 ==========================
 This is my first android application.
 
-I planed my fist app as simple as possible, and as fast as possible.
+I planed my first app as simple as possible, and as fast as possible.
 
-Because i didn't have many time.
+Because i didn't have many time at that time.
 
 So i Studied Java and UI during 2 weeks.
-(I already knew about object programming and UI at that time)
+(I already knew about object-oriented programming and UI at that time)
 
 And after that, i found Kotlin.
 
@@ -17,9 +17,9 @@ So i decided to use Kotlin.
 
 But the environment of Kotlin wasn't good as Java.
 
-But making an app for android using Kotlin wasn't possible.
+But making an app for android using Kotlin wasn't impossible.
 
-So making this small app took another 2 weeks.
+So making this app took another 2 weeks.
 
 The total time taken was 4 weeks.
 
