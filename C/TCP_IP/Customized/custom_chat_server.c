@@ -79,10 +79,13 @@ void* handle_clnt(void* arg) {
 	char* token;
 
 	while ((str_len = read(clnt_sock, msg, sizeof(msg))) != 0) {
+
 		if (str_len == 0) {
 			continue;
-		} else {
+		} else if (msg[str_len - 1] == '\n') {
 			msg[str_len - 1] = '\0';
+		} else {
+			msg[str_len] = '\0';
 		}
 
 		token = strtok(msg, " ");
