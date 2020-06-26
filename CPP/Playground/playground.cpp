@@ -71,8 +71,8 @@ void highLow() {
 
 	srand(time(NULL));
 
-	int number = rand() % 100 + 1;
-	int guess = 0;
+	number = rand() % 100 + 1;
+	guess = 0;
 
 	do {
 		cout << "Guess our number (1 to 100): ";
@@ -94,8 +94,47 @@ void highLow() {
 	} while (true);
 }
 
+void printGCD(int lhs, int rhs) {
+	int gcd;
+
+	int bigOne;
+	int smallOne;
+
+	int temporary;
+
+	if (lhs > rhs) {
+		bigOne = lhs;
+		smallOne = rhs;
+	} else {
+		bigOne = rhs;
+		smallOne = lhs;
+	}
+
+	if (smallOne == 0) {
+		cout << bigOne;
+		return;
+	}
+
+	while (smallOne != 0) {
+		temporary = bigOne % smallOne;
+
+		bigOne = smallOne;
+		smallOne = temporary;
+	}
+
+	cout << "GCD of " << lhs << " and " << rhs << " is " << smallOne;
+}
+
+void test() {
+	const char* token = "abcdefg";
+	printf("token: 0x");
+	for (int i = 0; i < strlen(token); ++i) {
+		printf("%x", token[i]);
+	}
+}
+
 int main() {
-	highLow();
+	printGCD(117, 81);
 
 	return 0;
 }
