@@ -10,6 +10,16 @@ When 2nd year of university, I enlisted army.
 
 In the army, I started programming first time ever with C.
 
+After C, i studied Objective-C, VBA, Swift.
+
+Recently i started looking for a job.
+
+But i fall from a resume every time.
+
+I thought it's because i don't have result about what i did.
+
+So i decided to make android application for sample.
+
 contact
 -------
 - Naver: parkjh2768@naver.com
