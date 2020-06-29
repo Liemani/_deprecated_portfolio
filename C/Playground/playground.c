@@ -322,13 +322,19 @@ void test10() {
 	printIntArray(intArray, count);
 }
 
+void test11() {
+	for (int i = 0; i < 128; ++i) {
+		printf("%02x: %c \n", i, i);
+	}
+}
+
 
 
 
 
 // main function
 int main(int argc, char** argv) {
-	test10();
+	test11();
 
 	return 0;
 }
