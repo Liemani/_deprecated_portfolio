@@ -27,3 +27,13 @@ void printIntArray(int* intArray, int count) {
 
 	putchar('\n');
 }
+
+void printByteArray(unsigned char* byteArray, int count) {
+	putchar('{');
+	for (int i = 0; i < count; ++i) {
+		printf("%d, ", byteArray[i]);
+	}
+	printf("\b\b}");
+
+	putchar('\n');
+}
