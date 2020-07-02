@@ -1,8 +1,8 @@
 #include "queue.h"
 
-int queue[100];
-int front;
-int rear;
+static int queue[100];
+static int front;
+static int rear;
 
 void push(int data)
 {
