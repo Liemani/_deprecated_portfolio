@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "View"
-// made by Lieman at 2020.06.29
+// made by Lieman at 2020.07.02
 //
 // description:
 //	View
@@ -18,7 +18,7 @@
 
 
 
-void printIntArray(int* intArray, int count) {
+void printArray_int(int* intArray, int count) {
 	putchar('{');
 	for (int i = 0; i < count; ++i) {
 		printf("%d, ", intArray[i]);
@@ -26,14 +26,16 @@ void printIntArray(int* intArray, int count) {
 	printf("\b\b}");
 
 	putchar('\n');
+	putchar('\n');
 }
 
-void printByteArray(unsigned char* byteArray, int count) {
+void printArray_byte(unsigned char* byteArray, int count) {
 	putchar('{');
 	for (int i = 0; i < count; ++i) {
 		printf("%d, ", byteArray[i]);
 	}
 	printf("\b\b}");
 
+	putchar('\n');
 	putchar('\n');
 }

@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "Generator"
-// made by Lieman at 2020.06.29
+// made by Lieman at 2020.07.02
 //
 // description:
 //	Generator
@@ -20,7 +20,7 @@
 
 
 // function
-int* randomIntArray(int count, int limit) {
+int* randomArray_int(int count, int limit) {
 	int* intArray = (int*)malloc(sizeof(int) * count);
 
 	for (int i = 0; i < count; ++i) {
@@ -30,7 +30,7 @@ int* randomIntArray(int count, int limit) {
 	return intArray;
 }
 
-unsigned char* randomByteArray(int count, int limit) {
+unsigned char* randomArray_byte(int count, int limit) {
 	unsigned char* byteArray = (int*)malloc(sizeof(int) * count);
 
 	for (int i = 0; i < count; ++i) {
@@ -40,6 +40,6 @@ unsigned char* randomByteArray(int count, int limit) {
 	return byteArray;
 }
 
-unsigned char randomByte() {
+unsigned char random_byte() {
 	return (unsigned char) rand();
 }

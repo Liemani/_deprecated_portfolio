@@ -1,9 +1,10 @@
+#pragma once
 //********************************************
 // char* title = "CustomQsort"
-// made by Lieman at 2020.06.30
+// made by Lieman at 2020.07.02
 //
 // description:
-//	quicksort example
+//	Custom Quicksort
 //********************************************
 
 
@@ -16,29 +17,113 @@
 #include <string.h>
 
 #include "View.h"
-
+#include "Comparator.h"
 #include "Average.h"
+#include "Swap.h"
 
 
 
 
+
+// TEST:
+//  sizeOfElement * startIndex
+//  vs
+//  startIndex += 4
+void quicksortGeneric_02(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
+	unsigned char* byteArray = (unsigned char*)array;
+
+	int startIndex = 0;
+	int endIndex = count - 1;
+
+	int pivotIndex = 0;
+
+	void* temp = malloc(sizeOfElement);
+
+	if (
+		(!isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement) &&
+		!compare(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement))
+		) {
+		swap_generic(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement);
+
+		if (startIndex != endIndex) {
+			++startIndex;
+		}
+
+		if (startIndex != endIndex) {
+			--endIndex;
+		}
+	}
+
+	while (1) {
+		while (
+			(isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex],sizeOfElement) ||
+			compare(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement)) &&
+			startIndex  != endIndex
+			) {
+			++startIndex;
+		}
+
+		while (
+			(!isEqualTo_byte(&byteArray[pivotIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement) &&
+			compare(&byteArray[pivotIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement)) &&
+			startIndex  != endIndex
+			) {
+			--endIndex;
+		}
+
+		if (startIndex != endIndex) {
+			swap_generic(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement);
+		} else {
+			break;
+		}
+	}
+
+	free(temp);
+
+	int leftArrayCount;
+	int rightArrayCount;
+
+	if (startIndex == 0) {
+		leftArrayCount = 1;
+	} else if (startIndex == count - 1) {
+		leftArrayCount = count - 1;
+	} else if (
+		(isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement) ||
+		compare(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement))
+		) {
+		leftArrayCount = startIndex + 1;
+	} else {
+		leftArrayCount = startIndex;
+	}
+
+	rightArrayCount = count - leftArrayCount;
+
+	if (leftArrayCount > 1) {
+		quicksortGeneric_02(byteArray, leftArrayCount, sizeOfElement, compare);
+	}
+
+	if (rightArrayCount > 1) {
+		quicksortGeneric_02(byteArray + sizeOfElement * leftArrayCount, rightArrayCount, sizeOfElement, compare);
+	}
+}
 
 void quicksortGeneric(void *array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
 	int startIndex = 0;
 	int endIndex = count - 1;
 	unsigned char* byteArray = (unsigned char*)array;
 
-	int CompareIncludeEqual;
 	int pivotIndex = startIndex;
 
 	void* temp = malloc(sizeOfElement);
 
-	printByteArray(byteArray, count);
 	if (!compare(&byteArray[startIndex], &byteArray[endIndex], sizeOfElement)) {
 		memcpy(temp, &byteArray[startIndex], sizeOfElement);
 		memcpy(&byteArray[startIndex], &byteArray[endIndex], sizeOfElement);
 		memcpy(&byteArray[endIndex], temp, sizeOfElement);
 	}
+
+	++startIndex;
+	--endIndex;
 
 	while (1) {
 		while (
@@ -63,7 +148,6 @@ void quicksortGeneric(void *array, int count, int sizeOfElement, int (*compare)(
 		
 			break;
 		}
-		printByteArray(byteArray, count);
 	}
 	free(temp);
 
@@ -87,7 +171,6 @@ void quicksortInt(int* array, int count) {
 	averageData(&array[startIndex], &array[endIndex], &middleValue, sizeof(int));
 
 	while (1) {
-		printIntArray(array, count);
 		while (
 			array[startIndex] <= middleValue &&
 			startIndex != endIndex
