@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "CustomQsort"
-// made by Lieman at 2020.07.02
+// made by Lieman at 2020.07.03
 //
 // description:
 //	Custom Quicksort
@@ -25,48 +25,50 @@
 
 
 
-void quicksortGeneric_03(void* array, int count, int sizeOfElement, int (*compare)(void* plhs, void* prhs, int sizeOfElement)) {
+void quicksortGeneric_03(void* array, int count, int sizeOfElement, int (*compare)(void* plhs, void* prhs)) {
 	unsigned char* byteArray = (unsigned char*)array;
-
+	
 	int startIndex = 0;
 	int endIndex = sizeOfElement * (count - 1);
 
 	int pivotIndex = 0;
 
 	if (
-		(!isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement) &&
-			!compare(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement))
+		(memcmp(byteArray + startIndex, byteArray + endIndex, sizeOfElement) &&
+			!compare(byteArray + startIndex, byteArray + endIndex))
 		) {
-		swap_generic(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement);
+		swap_generic(byteArray + startIndex, byteArray + endIndex, sizeOfElement);
 
 		if (startIndex != endIndex) {
-			++startIndex;
+			startIndex += sizeOfElement;
 		}
 
 		if (startIndex != endIndex) {
-			--endIndex;
+			endIndex -= sizeOfElement;
 		}
 	}
 
 	while (1) {
 		while (
-			(isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement) ||
-				compare(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement)) &&
+			(
+				!memcmp(byteArray + startIndex, byteArray + pivotIndex, sizeOfElement) ||
+				compare(byteArray + startIndex, byteArray + pivotIndex)
+			) &&
 			startIndex != endIndex
 			) {
-			++startIndex;
+			startIndex += sizeOfElement;
 		}
 
 		while (
-			(!isEqualTo_byte(&byteArray[pivotIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement) &&
-				compare(&byteArray[pivotIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement)) &&
+			(memcmp(byteArray + pivotIndex, byteArray + endIndex, sizeOfElement) &&
+			compare(byteArray + pivotIndex, byteArray + endIndex)) &&
 			startIndex != endIndex
 			) {
-			--endIndex;
+			endIndex -= sizeOfElement;
 		}
 
 		if (startIndex != endIndex) {
-			swap_generic(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement);
+			swap_generic(byteArray + startIndex, byteArray + endIndex, sizeOfElement);
 		} else {
 			break;
 		}
@@ -77,15 +79,15 @@ void quicksortGeneric_03(void* array, int count, int sizeOfElement, int (*compar
 
 	if (startIndex == 0) {
 		leftArrayCount = 1;
-	} else if (startIndex == count - 1) {
+	} else if (startIndex == sizeOfElement * (count - 1)) {
 		leftArrayCount = count - 1;
 	} else if (
-		(isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement) ||
-			compare(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement))
+		(!memcmp(byteArray + startIndex, byteArray + pivotIndex, sizeOfElement) ||
+			compare(byteArray + startIndex, byteArray + pivotIndex))
 		) {
-		leftArrayCount = startIndex + 1;
+		leftArrayCount = startIndex / sizeOfElement + 1;
 	} else {
-		leftArrayCount = startIndex;
+		leftArrayCount = startIndex / sizeOfElement;
 	}
 
 	rightArrayCount = count - leftArrayCount;
