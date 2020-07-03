@@ -328,13 +328,17 @@ void test11() {
 	}
 }
 
+void test12() {
+	printf("%d \n", NULL);
+}
+
 
 
 
 
 // main function
 int main(int argc, char** argv) {
-	test11();
+	test12();
 
 	return 0;
 }
