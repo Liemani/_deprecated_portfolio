@@ -25,11 +25,91 @@
 
 
 
+void quicksortGeneric_03(void* array, int count, int sizeOfElement, int (*compare)(void* plhs, void* prhs, int sizeOfElement)) {
+	unsigned char* byteArray = (unsigned char*)array;
+
+	int startIndex = 0;
+	int endIndex = sizeOfElement * (count - 1);
+
+	int pivotIndex = 0;
+
+	if (
+		(!isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement) &&
+			!compare(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement))
+		) {
+		swap_generic(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement);
+
+		if (startIndex != endIndex) {
+			++startIndex;
+		}
+
+		if (startIndex != endIndex) {
+			--endIndex;
+		}
+	}
+
+	while (1) {
+		while (
+			(isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement) ||
+				compare(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement)) &&
+			startIndex != endIndex
+			) {
+			++startIndex;
+		}
+
+		while (
+			(!isEqualTo_byte(&byteArray[pivotIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement) &&
+				compare(&byteArray[pivotIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement)) &&
+			startIndex != endIndex
+			) {
+			--endIndex;
+		}
+
+		if (startIndex != endIndex) {
+			swap_generic(&byteArray[sizeOfElement * startIndex], &byteArray[sizeOfElement * endIndex], sizeOfElement);
+		} else {
+			break;
+		}
+	}
+
+	int leftArrayCount;
+	int rightArrayCount;
+
+	if (startIndex == 0) {
+		leftArrayCount = 1;
+	} else if (startIndex == count - 1) {
+		leftArrayCount = count - 1;
+	} else if (
+		(isEqualTo_byte(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement) ||
+			compare(&byteArray[sizeOfElement * startIndex], &byteArray[pivotIndex], sizeOfElement))
+		) {
+		leftArrayCount = startIndex + 1;
+	} else {
+		leftArrayCount = startIndex;
+	}
+
+	rightArrayCount = count - leftArrayCount;
+
+	if (leftArrayCount > 1) {
+		quicksortGeneric_03(byteArray, leftArrayCount, sizeOfElement, compare);
+	}
+
+	if (rightArrayCount > 1) {
+		quicksortGeneric_03(byteArray + sizeOfElement * leftArrayCount, rightArrayCount, sizeOfElement, compare);
+	}
+}
+
+
+
 // TEST:
 //  sizeOfElement * startIndex
 //  vs
 //  startIndex += 4
-void quicksortGeneric_02(void* array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
+//
+//  delete compare's 3rd argument
+//
+//  make isEqualTo_byte() to memcmp()
+void quicksortGeneric_02(void* array, int count, int sizeOfElement, int (*compare)(void* plhs, void* prhs, int sizeOfElement)) {
 	unsigned char* byteArray = (unsigned char*)array;
 
 	int startIndex = 0;
@@ -107,7 +187,9 @@ void quicksortGeneric_02(void* array, int count, int sizeOfElement, int (*compar
 	}
 }
 
-void quicksortGeneric(void *array, int count, int sizeOfElement, int (*compare)(void* lhs, void* rhs, int sizeOfElement)) {
+
+
+void quicksortGeneric(void *array, int count, int sizeOfElement, int (*compare)(void* plhs, void* prhs, int sizeOfElement)) {
 	int startIndex = 0;
 	int endIndex = count - 1;
 	unsigned char* byteArray = (unsigned char*)array;
@@ -161,6 +243,8 @@ void quicksortGeneric(void *array, int count, int sizeOfElement, int (*compare)(
 		quicksortGeneric(byteArray + leftArrayCount, rightArraycount, sizeOfElement, compare);
 	}
 }
+
+
 
 void quicksortInt(int* array, int count) {
 	int startIndex = 0;
