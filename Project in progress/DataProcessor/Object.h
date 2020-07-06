@@ -1,10 +1,10 @@
 #pragma once
 //********************************************
-// char* title = "Object"
-// made by Lieman at 2020.07.06
+// char* title = "Object.h"
+// made by Lieman at 2020.07.07
 //
 // description:
-//	Object
+//	Object interface
 //********************************************
 
 
@@ -12,7 +12,6 @@
 
 
 // preprocessor
-#include <stdlib.h>		// malloc()
 
 
 
@@ -20,6 +19,7 @@
 
 // structure
 typedef struct Object {
+	void *nothing;
 } Object;
 
 
@@ -27,31 +27,12 @@ typedef struct Object {
 
 
 // method
-void method() {
-
-}
 
 
 
 
 
-// Object factory
-Object* _Object_alloc() {
-	Object* object = (Object*)malloc(sizeof(Object));
-
-	// allocate here...
-
-	return object;
-}
-
-Object* newObject() {
-	Object* object = _Object_alloc();
-
-	// initialize here...
-
-	return object;
-}
-
-Object* freeObject(Object* object) {
-	free(object);
-}
+// Object factory method
+Object* Object_alloc();
+Object* newObject();
+Object* freeObject(Object* object);

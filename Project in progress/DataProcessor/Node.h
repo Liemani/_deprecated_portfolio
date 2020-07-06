@@ -1,10 +1,10 @@
 #pragma once
 //********************************************
-// char* title = "Node"
-// made by Lieman at 2020.07.06
+// char* title = "Node.h"
+// made by Lieman at 2020.07.07
 //
 // description:
-//	Node
+//	Node interface
 //********************************************
 
 
@@ -12,7 +12,7 @@
 
 
 // preprocessor
-#include <stdlib.h>		// malloc()
+#include <wchar.h>	// size_t
 
 
 
@@ -20,7 +20,7 @@
 
 // structure
 typedef struct SingleLinkedNode {
-
+	void* nothing;
 } SingleLinkedNode;
 
 typedef struct DoubleLinkedNode {
@@ -34,57 +34,21 @@ typedef struct DoubleLinkedNode {
 
 
 // method
-void method() {
-
-}
 
 
 
 
 
-// SingleLinkedNode factory
-SingleLinkedNode* _SingleLinkedNode_alloc() {
-	SingleLinkedNode* singleLinkedNode = (SingleLinkedNode*)malloc(sizeof(SingleLinkedNode));
+// SingleLinkedNode factory method
+SingleLinkedNode* SingleLinkedNode_alloc();
 
-	// allocate here...
+SingleLinkedNode* newSingleLinkedNode();
 
-	return singleLinkedNode;
-}
-
-SingleLinkedNode* newSingleLinkedNode() {
-	SingleLinkedNode* singleLinkedNode = _SingleLinkedNode_alloc();
-
-	// initialize here...
-
-	return singleLinkedNode;
-}
-
-// DoubleLinkedNode factory
-DoubleLinkedNode* _DoubleLinkedNode_alloc(size_t dataSize) {
-	DoubleLinkedNode* doubleLinkedNode = (DoubleLinkedNode*)malloc(sizeof(DoubleLinkedNode));
-	doubleLinkedNode->data = malloc(dataSize);
-
-	return doubleLinkedNode;
-}
-
+// DoubleLinkedNode factory method
+DoubleLinkedNode* DoubleLinkedNode_alloc(size_t dataSize);
 DoubleLinkedNode* newDoubleLinkedNode(
-	void *data,
+	void* data,
 	struct DoubleLinkedNode* previous,
 	struct DoubleLinkedNode* next,
-	size_t dataSize) {
-	DoubleLinkedNode* doubleLinkedNode = _DoubleLinkedNode_alloc(dataSize);
-
-	doubleLinkedNode->data = data;
-	doubleLinkedNode->previous = previous;
-	doubleLinkedNode->next = next;
-
-	previous ? previous->next = doubleLinkedNode : NULL;
-	next ? next->previous = doubleLinkedNode : NULL;
-
-	return doubleLinkedNode;
-}
-
-DoubleLinkedNode* freeDoubleLinkedNode(DoubleLinkedNode* doubleLinkedNode) {
-	free(doubleLinkedNode->data);
-	free(doubleLinkedNode);
-}
+	size_t dataSize);
+DoubleLinkedNode* freeDoubleLinkedNode(DoubleLinkedNode* doubleLinkedNode);
