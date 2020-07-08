@@ -12,6 +12,7 @@
 
 // preprocessor
 #include <stdlib.h>		// malloc()
+#include <string.h>		// memcpy()
 #include "Node.h"
 
 
@@ -19,8 +20,14 @@
 
 
 // method
-void method() {
-
+void DoubleLinkedNode_connect(DoubleLinkedNode* lhs, DoubleLinkedNode* rhs) {
+	if (lhs) {
+		lhs->next = rhs;
+	}
+	
+	if (rhs) {
+		rhs->previous = lhs;
+	}
 }
 
 
@@ -28,7 +35,7 @@ void method() {
 
 
 // SingleLinkedNode factory method
-SingleLinkedNode* SingleLinkedNode_alloc() {
+SingleLinkedNode* allocSingleLinkedNode() {
 	SingleLinkedNode* singleLinkedNode = (SingleLinkedNode*)malloc(sizeof(SingleLinkedNode));
 
 	// allocate here...
@@ -37,7 +44,7 @@ SingleLinkedNode* SingleLinkedNode_alloc() {
 }
 
 SingleLinkedNode* newSingleLinkedNode() {
-	SingleLinkedNode* singleLinkedNode = SingleLinkedNode_alloc();
+	SingleLinkedNode* singleLinkedNode = allocSingleLinkedNode();
 
 	// initialize here...
 
@@ -45,7 +52,7 @@ SingleLinkedNode* newSingleLinkedNode() {
 }
 
 // DoubleLinkedNode factory method
-DoubleLinkedNode* DoubleLinkedNode_alloc(size_t dataSize) {
+DoubleLinkedNode* allocDoubleLinkedNode(size_t dataSize) {
 	DoubleLinkedNode* doubleLinkedNode = (DoubleLinkedNode*)malloc(sizeof(DoubleLinkedNode));
 	doubleLinkedNode->data = malloc(dataSize);
 
@@ -57,14 +64,13 @@ DoubleLinkedNode* newDoubleLinkedNode(
 	struct DoubleLinkedNode* previous,
 	struct DoubleLinkedNode* next,
 	size_t dataSize) {
-	DoubleLinkedNode* doubleLinkedNode = DoubleLinkedNode_alloc(dataSize);
 
-	doubleLinkedNode->data = data;
-	doubleLinkedNode->previous = previous;
-	doubleLinkedNode->next = next;
+	DoubleLinkedNode* doubleLinkedNode = allocDoubleLinkedNode(dataSize);
 
-	previous ? previous->next = doubleLinkedNode : NULL;
-	next ? next->previous = doubleLinkedNode : NULL;
+	memcpy(doubleLinkedNode->data, data, dataSize);
+
+	DoubleLinkedNode_connect(previous, doubleLinkedNode);
+	DoubleLinkedNode_connect(doubleLinkedNode, next);
 
 	return doubleLinkedNode;
 }

@@ -66,14 +66,14 @@ void FileManager_printFileToBinary(char* name) {
 
 
 // FileManager factory method
-FileManager* FileManager_alloc() {
+FileManager* allocFileManager() {
 	FileManager* fileManager = (FileManager*)malloc(sizeof(FileManager));
 
 	return fileManager;
 }
 
 FileManager* newFileManager() {
-	FileManager* fileManager = FileManager_alloc();
+	FileManager* fileManager = allocFileManager();
 
 	return fileManager;
 }

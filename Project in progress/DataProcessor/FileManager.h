@@ -34,5 +34,5 @@ void FileManager_printFileToBinary(char* name);
 
 
 // FileManager factory method
-FileManager* FileManager_alloc();
+FileManager* allocFileManager();
 FileManager* newFileManager();

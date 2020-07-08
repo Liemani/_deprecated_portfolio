@@ -25,7 +25,7 @@
 
 
 // Object factory method
-Object* Object_alloc() {
+Object* allocObject() {
 	Object* object = (Object*)malloc(sizeof(Object));
 
 	// allocate here...
@@ -34,7 +34,7 @@ Object* Object_alloc() {
 }
 
 Object* newObject() {
-	Object* object = Object_alloc();
+	Object* object = allocObject();
 
 	// initialize here...
 

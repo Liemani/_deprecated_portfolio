@@ -33,6 +33,6 @@ typedef struct Object {
 
 
 // Object factory method
-Object* Object_alloc();
+Object* allocObject();
 Object* newObject();
 Object* freeObject(Object* object);

@@ -24,8 +24,8 @@ typedef struct SingleLinkedNode {
 } SingleLinkedNode;
 
 typedef struct DoubleLinkedNode {
-	struct DoubleLinkedNode* previous;
 	void* data;
+	struct DoubleLinkedNode* previous;
 	struct DoubleLinkedNode* next;
 } DoubleLinkedNode;
 
@@ -34,18 +34,19 @@ typedef struct DoubleLinkedNode {
 
 
 // method
+void DoubleLinkedNode_connect(DoubleLinkedNode* lhs, DoubleLinkedNode* rhs);
 
 
 
 
 
 // SingleLinkedNode factory method
-SingleLinkedNode* SingleLinkedNode_alloc();
+SingleLinkedNode* allocSingleLinkedNode();
 
 SingleLinkedNode* newSingleLinkedNode();
 
 // DoubleLinkedNode factory method
-DoubleLinkedNode* DoubleLinkedNode_alloc(size_t dataSize);
+DoubleLinkedNode* allocDoubleLinkedNode(size_t dataSize);
 DoubleLinkedNode* newDoubleLinkedNode(
 	void* data,
 	struct DoubleLinkedNode* previous,
