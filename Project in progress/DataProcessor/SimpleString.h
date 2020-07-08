@@ -12,8 +12,6 @@
 
 
 // preprocessor
-#include <wchar.h>
-#include "Node.h"
 
 
 
@@ -22,7 +20,7 @@
 // structure
 typedef struct SimpleString {
 	char* string;
-	size_t count;
+	int count;
 } SimpleString;
 
 
@@ -38,4 +36,10 @@ typedef struct SimpleString {
 
 // SimpleString factory method
 SimpleString* allocSimpleString();
+
+SimpleString* newSimpleString__shallowMemberwise(char* string, int count);
+SimpleString* newSimpleString__deepMemberwise(char* string, int count);
 SimpleString* newSimpleString();
+
+void freeSimpleString__shallow(SimpleString* simpleString);
+void freeSimpleString__deep(SimpleString* simpleString);
