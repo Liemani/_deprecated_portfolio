@@ -1,10 +1,10 @@
 #pragma once
 //********************************************
-// char* title = "StringManager.c"
+// char* title = "DoubleLinkedString.c"
 // made by Lieman at 2020.07.08
 //
 // description:
-//	StringManager implementation
+//	DoubleLinkedString implementation
 //********************************************
 
 
@@ -13,7 +13,7 @@
 
 // preprocessor
 #include <stdlib.h>		// malloc()
-#include "StringManager.h"
+#include "DoubleLinkedString.h"
 #include "Node.h"
 
 
@@ -39,16 +39,16 @@ static void DoubleLinkedString__removeAll(DoubleLinkedString* string) {
 	}
 
 	freeDoubleLinkedNode(currentNode);
-	
+
 	string->firstNode = string->lastNode = NULL;
 	string->count = 0;
 }
 
 // method
-char* DoubleLinkedString__subscript(DoubleLinkedString* string, int index) {
-	if (index < 0 || string->count <= index) return NULL;
+char DoubleLinkedString__subscript(DoubleLinkedString* string, int index) {
+	if (index < 0 || string->count <= index) return -1;
 
-	return (char*)DoubleLinkedString__nodeAt(string, index)->data;
+	return *(char*)DoubleLinkedString__nodeAt(string, index)->data;
 }
 
 void DoubleLinkedString__appendCharacter(DoubleLinkedString* string, char character) {
@@ -212,7 +212,7 @@ void DoubleLinkedString__lowercase(DoubleLinkedString* string) {
 	char character;
 
 	while (currentNode) {
-		character = *(char *)currentNode->data;
+		character = *(char*)currentNode->data;
 
 		if ('A' <= character &&
 			character <= 'Z'
@@ -248,19 +248,6 @@ void DoubleLinkedString__uppercase(DoubleLinkedString* string) {
 
 
 
-// StringManager factory method
-StringManager* allocStringManager() {
-	StringManager* stringManager = (StringManager*)malloc(sizeof(StringManager));
-
-	return stringManager;
-}
-
-StringManager* newStringManager() {
-	StringManager* stringManager = allocStringManager();
-
-	return stringManager;
-}
-
 // DoubleLinkedString factory method
 DoubleLinkedString* allocDoubleLinkedString() {
 	DoubleLinkedString* doubleLinkedString = (DoubleLinkedString*)malloc(sizeof(DoubleLinkedString));
@@ -268,7 +255,7 @@ DoubleLinkedString* allocDoubleLinkedString() {
 	return doubleLinkedString;
 }
 
-DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, int count) {
+DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, size_t count) {
 	DoubleLinkedString* doubleLinkedString = allocDoubleLinkedString();
 
 	doubleLinkedString->firstNode = firstNode;

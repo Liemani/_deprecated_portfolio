@@ -1,10 +1,10 @@
 #pragma once
 //********************************************
-// char* title = "StringManager.h"
+// char* title = "DoubleLinkedString.h"
 // made by Lieman at 2020.07.08
 //
 // description:
-//	StringManager interface
+//	DoubleLinkedString interface
 //********************************************
 
 
@@ -12,22 +12,17 @@
 
 
 // preprocessor
-#include "StringManager.h"
+#include <wchar.h>
 #include "Node.h"
 
 
 
 
 
-// structure
-typedef struct StringManager {
-	char* buffer;
-} StringManager;
-
 typedef struct DoubleLinkedString {
 	DoubleLinkedNode* firstNode;
 	DoubleLinkedNode* lastNode;
-	int count;
+	size_t count;
 } DoubleLinkedString;
 
 
@@ -39,7 +34,7 @@ static DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, 
 static void DoubleLinkedString__removeAll(DoubleLinkedString* string);
 
 // method
-char* DoubleLinkedString__subscript(DoubleLinkedString* string, int index);
+char DoubleLinkedString__subscript(DoubleLinkedString* string, int index);
 
 void DoubleLinkedString__appendCharacter(DoubleLinkedString* string, char character);
 void DoubleLinkedString__appendString(DoubleLinkedString* lhs, DoubleLinkedString* rhs);
@@ -60,12 +55,9 @@ void DoubleLinkedString__uppercase(DoubleLinkedString* string);
 
 
 
-// StringManager factory method
-StringManager* allocStringManager();
-StringManager* newStringManager();
-
 // DoubleLinkedString factory method
 DoubleLinkedString* allocDoubleLinkedString();
 DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, int count);
 DoubleLinkedString* newDoubleLinkedString();
+DoubleLinkedString* newDoubleLinkedString__string(char* string);
 DoubleLinkedString* freeDoubleLinkedString(DoubleLinkedString* doubleLinkedString);
