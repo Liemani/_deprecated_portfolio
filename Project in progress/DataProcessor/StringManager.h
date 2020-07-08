@@ -36,6 +36,7 @@ typedef struct DoubleLinkedString {
 
 // static method
 static DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, int index);
+static void DoubleLinkedString__removeAll(DoubleLinkedString* string);
 
 // method
 char* DoubleLinkedString__subscript(DoubleLinkedString* string, int index);
@@ -50,7 +51,7 @@ char DoubleLinkedString__removeCharacterAt(DoubleLinkedString* string, int index
 
 // count: The number of elements to remove from the collection. 
 //		count must be greater than or equal to zero and must not exceed the number of elements in the collection.
-DoubleLinkedString* DoubleLinkedString__removeFirstN(DoubleLinkedString* string, int count);
+void DoubleLinkedString__removeFirstFromTo(DoubleLinkedString* sourceString, DoubleLinkedString* destinationString, int count);
 
 void DoubleLinkedString__lowercase(DoubleLinkedString* string);
 void DoubleLinkedString__uppercase(DoubleLinkedString* string);

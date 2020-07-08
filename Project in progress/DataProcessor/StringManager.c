@@ -30,6 +30,20 @@ static DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, 
 	return currentNode;
 }
 
+static void DoubleLinkedString__removeAll(DoubleLinkedString* string) {
+	DoubleLinkedNode* currentNode = string->firstNode;
+
+	while (currentNode->next) {
+		currentNode = currentNode->next;
+		freeDoubleLinkedNode(currentNode->previous);
+	}
+
+	freeDoubleLinkedNode(currentNode);
+	
+	string->firstNode = string->lastNode = NULL;
+	string->count = 0;
+}
+
 // method
 char* DoubleLinkedString__subscript(DoubleLinkedString* string, int index) {
 	if (index < 0 || string->count <= index) return NULL;
@@ -149,17 +163,47 @@ char DoubleLinkedString__removeCharacterAt(DoubleLinkedString* string, int index
 	return character;
 }
 
-DoubleLinkedString* DoubleLinkedString__removeFirstN(DoubleLinkedString* string, int count) {
-	if (count <= 0 || string->count < count) return NULL;
+void DoubleLinkedString__removeFirstFromTo(DoubleLinkedString* sourceString, DoubleLinkedString* destinationString, int count) {
+	if (count <= 0) return;
 
-	DoubleLinkedNode* currentNode = DoubleLinkedString__nodeAt(string, count - 1);
+	if (destinationString == NULL) {
+		DoubleLinkedNode* currentNode = sourceString->firstNode;
 
-	DoubleLinkedString* firstNString = newDoubleLinkedString__designated(string->firstNode, currentNode, count);
+		for (int i = 0; i < count; ++i) {
+			if (currentNode->next) {
+				currentNode = currentNode->next;
+				freeDoubleLinkedNode(currentNode->previous);
+			} else {
+				freeDoubleLinkedNode(currentNode);
 
-	string->firstNode = currentNode->next;
-	string->count -= count;
+				sourceString->firstNode = NULL;
+				sourceString->lastNode = NULL;
+				return;;
+			}
+		}
 
-	return firstNString;
+		sourceString->firstNode = currentNode;
+		sourceString->count -= count;
+	}
+
+	if (destinationString && destinationString->count) {
+		DoubleLinkedString__removeAll(destinationString);
+	}
+
+	DoubleLinkedNode* currentNode = DoubleLinkedString__nodeAt(sourceString, count);
+
+	destinationString->firstNode = sourceString->firstNode;
+	destinationString->lastNode = currentNode;
+	destinationString->count = count;
+
+	sourceString->firstNode = currentNode->next;
+	if (sourceString->firstNode == NULL) sourceString->lastNode = NULL;
+	sourceString->count -= count;
+
+	if (sourceString->count) {
+		DoubleLinkedNode__connect(destinationString->lastNode, NULL);
+		DoubleLinkedNode__connect(NULL, sourceString->firstNode);
+	}
 }
 
 void DoubleLinkedString__lowercase(DoubleLinkedString* string) {
@@ -252,14 +296,7 @@ DoubleLinkedString* newDoubleLinkedString__string(char* string) {
 }
 
 DoubleLinkedString* freeDoubleLinkedString(DoubleLinkedString* doubleLinkedString) {
-	DoubleLinkedNode *currentNode = doubleLinkedString->firstNode;
-
-	while (currentNode->next) {
-		currentNode = currentNode->next;
-		freeDoubleLinkedNode(currentNode->previous);
-	}
-
-	freeDoubleLinkedNode(currentNode);
+	DoubleLinkedString__removeAll(doubleLinkedString);
 
 	free(doubleLinkedString);
 }
