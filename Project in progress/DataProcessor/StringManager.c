@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "StringManager.c"
-// made by Lieman at 2020.07.07
+// made by Lieman at 2020.07.08
 //
 // description:
 //	StringManager implementation
@@ -18,10 +18,8 @@
 
 
 
-
-
-// method
-char* DoubleLinkedString_subscript(DoubleLinkedString* string, int index) {
+// static method
+static DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, int index) {
 	if (index < 0 || string->count <= index) return NULL;
 
 	DoubleLinkedNode* currentNode = string->firstNode;
@@ -29,33 +27,36 @@ char* DoubleLinkedString_subscript(DoubleLinkedString* string, int index) {
 	for (int i = 0; i < index; ++i)
 		currentNode = currentNode->next;
 
-	return (char*)currentNode->data;
+	return currentNode;
 }
 
-void DoubleLinkedString_appendCharacter(DoubleLinkedString* string, char character) {
+// method
+char* DoubleLinkedString__subscript(DoubleLinkedString* string, int index) {
+	if (index < 0 || string->count <= index) return NULL;
+
+	return (char*)DoubleLinkedString__nodeAt(string, index)->data;
+}
+
+void DoubleLinkedString__appendCharacter(DoubleLinkedString* string, char character) {
 	if (string->lastNode) {
 		string->lastNode = newDoubleLinkedNode(
 			&character,
 			string->lastNode,
 			NULL,
 			sizeof(char));
-
-		string->lastNode->previous->next = string->lastNode;
 	} else {
-		string->firstNode = newDoubleLinkedNode(
+		string->firstNode = string->lastNode = newDoubleLinkedNode(
 			&character,
 			NULL,
 			NULL,
 			sizeof(char));
-
-		string->lastNode = string->firstNode;
 	}
 
 	++string->count;
 }
 
-void DoubleLinkedString_appendString(DoubleLinkedString* lhs, DoubleLinkedString* rhs) {
-	DoubleLinkedNode_connect(lhs->lastNode, rhs->firstNode);
+void DoubleLinkedString__appendString(DoubleLinkedString* lhs, DoubleLinkedString* rhs) {
+	DoubleLinkedNode__connect(lhs->lastNode, rhs->firstNode);
 
 	lhs->lastNode = rhs->lastNode;
 
@@ -66,9 +67,10 @@ void DoubleLinkedString_appendString(DoubleLinkedString* lhs, DoubleLinkedString
 	freeDoubleLinkedString(rhs);
 }
 
-void DoubleLinkedString_insertCharacterAt(DoubleLinkedString* string, char character, int index) {
+void DoubleLinkedString__insertCharacterAt(DoubleLinkedString* string, char character, int index) {
 	if (index < string->count || string->count < index) return;
 
+	// insert a character at index
 	if (index == string->count) {
 		string->lastNode = newDoubleLinkedNode(
 			&character,
@@ -76,10 +78,7 @@ void DoubleLinkedString_insertCharacterAt(DoubleLinkedString* string, char chara
 			NULL,
 			sizeof(char));
 	} else if (index) {
-		DoubleLinkedNode* currentNode = string->firstNode;
-
-		for (int i = 0; i < index; ++i)
-			currentNode = currentNode->next;
+		DoubleLinkedNode* currentNode = DoubleLinkedString__nodeAt(string, index);
 
 		newDoubleLinkedNode(
 			&character,
@@ -97,19 +96,16 @@ void DoubleLinkedString_insertCharacterAt(DoubleLinkedString* string, char chara
 	++string->count;
 }
 
-void DoubleLinkedString_insertStringAt(DoubleLinkedString* lhs, DoubleLinkedString* rhs, int index) {
+void DoubleLinkedString__insertStringAt(DoubleLinkedString* lhs, DoubleLinkedString* rhs, int index) {
 	if (index < lhs->count || lhs->count < index) return;
 
 	if (index == lhs->count) {
-		DoubleLinkedString_appendString(lhs, rhs);
+		DoubleLinkedString__appendString(lhs, rhs);
 	} else if (index) {
-		DoubleLinkedNode* currentNode = lhs->firstNode;
+		DoubleLinkedNode* currentNode = DoubleLinkedString__nodeAt(lhs, index);
 
-		for (int i = 0; i < index; ++i)
-			currentNode = currentNode->next;
-
-		DoubleLinkedNode_connect(currentNode->previous, rhs->firstNode);
-		DoubleLinkedNode_connect(rhs->lastNode, currentNode);
+		DoubleLinkedNode__connect(currentNode->previous, rhs->firstNode);
+		DoubleLinkedNode__connect(rhs->lastNode, currentNode);
 
 		rhs->firstNode = NULL;
 		rhs->lastNode = NULL;
@@ -117,7 +113,7 @@ void DoubleLinkedString_insertStringAt(DoubleLinkedString* lhs, DoubleLinkedStri
 		lhs->count += rhs->count;
 		freeDoubleLinkedString(rhs);
 	} else {
-		DoubleLinkedNode_connect(rhs->lastNode, lhs->firstNode);
+		DoubleLinkedNode__connect(rhs->lastNode, lhs->firstNode);
 
 		lhs->firstNode = rhs->firstNode;
 
@@ -129,45 +125,44 @@ void DoubleLinkedString_insertStringAt(DoubleLinkedString* lhs, DoubleLinkedStri
 	}
 }
 
-char DoubleLinkedString_removeCharacterAt(DoubleLinkedString* string, int index) {
+char DoubleLinkedString__removeCharacterAt(DoubleLinkedString* string, int index) {
 	if (index < 0 || string->count <= index) return -1;
 
-	DoubleLinkedNode* currentNode = string->firstNode;
+	DoubleLinkedNode* currentNode = DoubleLinkedString__nodeAt(string, index);
 
-	for (int i = 0; i < index; ++i)
-		currentNode = currentNode->next;
+	char character = *(char*)(string->lastNode->data);
 
 	if (index == string->count - 1) {
-		char character = *(char*)(string->lastNode->data);
-
-		DoubleLinkedNode* currentNode = string->lastNode;
 		string->lastNode = string->lastNode->previous;
-		freeDoubleLinkedNode(currentNode);
-
-		return character;
+		DoubleLinkedNode__connect(string->lastNode, NULL);
 	} else if (index) {
-
+		DoubleLinkedNode__connect(currentNode->previous, currentNode->next);
 	} else {
-
+		string->firstNode = string->firstNode->next;
+		DoubleLinkedNode__connect(NULL, string->firstNode);
 	}
 
+	freeDoubleLinkedNode(currentNode);
 
-	//if (currentNode->previous) {
-	//	currentNode->previous->next = currentNode->next;
-	//} else {
-	//	string->firstNode = currentNode->previous;
-	//}
+	--string->count;
 
-	//if (currentNode->next) {
-	//	currentNode->next->previous = currentNode->previous;
-	//} else {
-	//	string->lastNode = currentNode->next;
-	//}
-
-	//freeDoubleLinkedNode(currentNode);
+	return character;
 }
 
-void DoubleLinkedString_lowercase(DoubleLinkedString* string) {
+DoubleLinkedString* DoubleLinkedString__removeFirstN(DoubleLinkedString* string, int count) {
+	if (count <= 0 || string->count < count) return NULL;
+
+	DoubleLinkedNode* currentNode = DoubleLinkedString__nodeAt(string, count - 1);
+
+	DoubleLinkedString* firstNString = newDoubleLinkedString__designated(string->firstNode, currentNode, count);
+
+	string->firstNode = currentNode->next;
+	string->count -= count;
+
+	return firstNString;
+}
+
+void DoubleLinkedString__lowercase(DoubleLinkedString* string) {
 	DoubleLinkedNode* currentNode = string->firstNode;
 
 	char character;
@@ -186,7 +181,7 @@ void DoubleLinkedString_lowercase(DoubleLinkedString* string) {
 	}
 }
 
-void DoubleLinkedString_uppercase(DoubleLinkedString* string) {
+void DoubleLinkedString__uppercase(DoubleLinkedString* string) {
 	DoubleLinkedNode* currentNode = string->firstNode;
 
 	char character;
@@ -229,12 +224,29 @@ DoubleLinkedString* allocDoubleLinkedString() {
 	return doubleLinkedString;
 }
 
-DoubleLinkedString* newDoubleLinkedString() {
+DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, int count) {
 	DoubleLinkedString* doubleLinkedString = allocDoubleLinkedString();
 
-	doubleLinkedString->firstNode = NULL;
-	doubleLinkedString->lastNode = NULL;
-	doubleLinkedString->count = 0;
+	doubleLinkedString->firstNode = firstNode;
+	doubleLinkedString->lastNode = secondNode;
+	doubleLinkedString->count = count;
+
+	return doubleLinkedString;
+}
+
+DoubleLinkedString* newDoubleLinkedString() {
+	DoubleLinkedString* doubleLinkedString = newDoubleLinkedString__designated(NULL, NULL, 0);
+
+	return doubleLinkedString;
+}
+
+DoubleLinkedString* newDoubleLinkedString__string(char* string) {
+	DoubleLinkedString* doubleLinkedString = newDoubleLinkedString__designated(NULL, NULL, 0);
+
+	char character;
+
+	while (character = string[doubleLinkedString->count])
+		DoubleLinkedString__appendCharacter(doubleLinkedString, character);
 
 	return doubleLinkedString;
 }
