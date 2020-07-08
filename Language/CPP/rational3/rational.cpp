@@ -1,0 +1,111 @@
+#include <iostream>
+#include <cassert>
+#include "rational.h"
+
+std::ostream& operator<<(std::ostream& out, const Rational& rhs)
+{
+	out << rhs.num_ << "/" << rhs.den_;
+	return out;
+}
+
+Rational::Rational(int num, int den)
+{
+	assert(den != 0);
+	
+	num_ = num;
+	den_ = den;
+	
+	this->reduce();
+}
+
+bool Rational::operator==(const Rational& rhs)
+{
+	return num_ == num_ && den_ == den_;
+}
+
+Rational& Rational::reduce()
+{
+	if (num_ == 0) {
+		den_ = 1;
+		return *this;
+	}
+
+	int bigNumber;
+	int smallNumber;
+	
+	if (num_ > den_) {
+		bigNumber = num_;
+		smallNumber = den_;
+	} else {
+		bigNumber = den_;
+		smallNumber = num_;
+	}
+
+	int temp = bigNumber % smallNumber;
+	
+	while (temp) {
+		bigNumber = smallNumber;
+		smallNumber = temp;
+		temp = bigNumber % smallNumber;
+	}
+	
+	num_ /= smallNumber;
+	den_ /= smallNumber;
+	
+	return *this;
+}
+
+const Rational Rational::operator+(const Rational& rhs)
+{
+	int num = num_ * den_ + den_ * num_;
+	int den = den_ * den_;
+	
+	return Rational(num, den);
+}
+
+const Rational Rational::operator-(const Rational& rhs)
+{
+	int num = num_ * den_ - den_ * num_;
+	int den = den_ * den_;
+	
+	return Rational(num, den);
+}
+
+const Rational Rational::operator*(const Rational& rhs)
+{
+	int num = num_ * num_;
+	int den = den_ * den_;
+
+	return Rational(num, den);
+}
+
+const Rational Rational::operator/(const Rational& rhs)
+{
+	assert(num_);
+	
+	int num = num_ * den_;
+	int den = den_ * num_;
+
+	return Rational(num, den);
+}
+
+int Rational::getNum()
+{
+	return num_;
+}
+
+int Rational::getDen()
+{
+	return den_;
+}
+
+void Rational::setNum(int num)
+{
+	num_ = num;
+}
+
+void Rational::setDen(int den)
+{
+	den_ = den;
+}
+
