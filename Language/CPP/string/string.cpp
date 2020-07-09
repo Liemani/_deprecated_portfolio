@@ -2,10 +2,15 @@
 #include <cassert>
 #include "string.h"
 
+std::ostream& operator<<(std::ostream& out, const String& rhs)
+{
+	return out << rhs.str;
+}
+
 String::String(const char *str, bool)
 {
-	this.str = str;
-	this.len = strlen(str);
+	this->str = (char *)str;
+	this->len = strlen(str);
 }
 
 void String::set_str(const char *str)

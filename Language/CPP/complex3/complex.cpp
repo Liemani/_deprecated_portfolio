@@ -1,6 +1,8 @@
 #include <iostream>
 #include "complex.h"
 
+int Complex::numberOfComplex;
+
 std::ostream& operator<<(std::ostream& out, const Complex& rhs)
 {
 	out << "(" << rhs.re_ << ", " << rhs.im_ << "i)";
@@ -8,10 +10,26 @@ std::ostream& operator<<(std::ostream& out, const Complex& rhs)
 	return out;
 }
 
+int Complex::getNumberOfComplex()
+{
+	return Complex::numberOfComplex;
+}
+
 Complex::Complex(double re, double im)
 : re_(re), im_(im)						// constructor initialization list (reference or constant must)
 {
+	++::Complex::numberOfComplex;
+}
 
+Complex::Complex(const Complex& rhs)
+: re_(rhs.re_), im_(rhs.im_)
+{
+	++::Complex::numberOfComplex;
+}
+
+Complex::~Complex()
+{
+	--Complex::numberOfComplex;
 }
 
 bool Complex::operator==(const Complex& rhs) const

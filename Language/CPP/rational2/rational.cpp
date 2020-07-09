@@ -7,6 +7,8 @@ Rational::Rational(int num, int den)
 	
 	this->num = num;
 	this->den = den;
+	
+	this->reduce();
 }
 
 Rational::Rational(const Rational& rhs)
@@ -30,8 +32,11 @@ Rational& Rational::operator=(const Rational& rhs)
 
 bool Rational::operator==(const Rational& rhs)
 {
-	return this->num * rhs.den == this->den * rhs.num;
+	return this->num == rhs.num && this->den == rhs.den;
 }
+
+Rational r1(1, 3);
+r1.redcue();
 
 Rational& Rational::reduce()
 {
@@ -70,7 +75,7 @@ const Rational Rational::operator+(const Rational& rhs)
 	int num = this->num * rhs.den + this->den * rhs.num;
 	int den = this->den * rhs.den;
 	
-	return Rational(num, den).reduce();
+	return Rational(num, den);
 }
 
 const Rational Rational::operator-(const Rational& rhs)
@@ -78,7 +83,7 @@ const Rational Rational::operator-(const Rational& rhs)
 	int num = this->num * rhs.den - this->den * rhs.num;
 	int den = this->den * rhs.den;
 	
-	return Rational(num, den).reduce();
+	return Rational(num, den);
 }
 
 const Rational Rational::operator*(const Rational& rhs)
@@ -86,7 +91,7 @@ const Rational Rational::operator*(const Rational& rhs)
 	int num = this->num * rhs.num;
 	int den = this->den * rhs.den;
 
-	return Rational(num, den).reduce();
+	return Rational(num, den);
 }
 
 const Rational Rational::operator/(const Rational& rhs)
@@ -96,7 +101,7 @@ const Rational Rational::operator/(const Rational& rhs)
 	int num = this->num * rhs.den;
 	int den = this->den * rhs.num;
 
-	return Rational(num, den).reduce();
+	return Rational(num, den);
 }
 
 int Rational::getNum()

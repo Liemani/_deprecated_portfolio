@@ -1,7 +1,10 @@
 #ifndef STRING_H
 #define STRING_H
+#include <iostream>
 
 class String {
+friend std::ostream& operator<<(std::ostream& out, const String& rhs);
+
 private:
 	char *str;
 	int len;

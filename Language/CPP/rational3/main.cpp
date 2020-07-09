@@ -24,6 +24,8 @@ int main()
 	std::cout << "r2: " << r2 << std::endl;
 	std::cout << "r3: " << r3 << std::endl;
 	std::cout << "r4: " << r4 << std::endl;
+	
+	std::cout << "# Rational count: " << Rational::getNumberOfRational() << std::endl;
 
 	return 0;
 }

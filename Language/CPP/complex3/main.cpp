@@ -26,6 +26,24 @@ int main()
 	std::cout << "c3 : " << c3 << std::endl;
 	std::cout << "c4 : " << c4 << std::endl;
 	std::cout << "c5 : " << c5 << std::endl;
-		
+	
+	std::cout << c1;
+	
+	Complex *pc = new Complex;	// malloc() + constructor(default)
+	Complex *pArr[5];
+	pArr[0] = new Complex;
+	pArr[1] = new Complex(1.0);
+	pArr[2] = new Complex(3.0, 4.0);
+	pArr[3] = new Complex;
+	pArr[4] = new Complex;
+	
+	std::cout << "# Complex object : " << Complex::getNumberOfComplex() << std::endl;
+	delete pc;					// destructor() + free()
+	for (int i = 0; i < 5; ++i)
+		delete pArr[i];
+	std::cout << "# Complex object : " << Complex::getNumberOfComplex() << std::endl;
+	
+	
+	
 	return 0;
 }

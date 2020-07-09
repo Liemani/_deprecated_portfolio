@@ -2,10 +2,17 @@
 #include <cassert>
 #include "rational.h"
 
+int Rational::numberOfRational;
+
 std::ostream& operator<<(std::ostream& out, const Rational& rhs)
 {
 	out << rhs.num_ << "/" << rhs.den_;
 	return out;
+}
+
+int Rational::getNumberOfRational()
+{
+	return Rational::numberOfRational;
 }
 
 Rational::Rational(int num, int den)
@@ -16,6 +23,19 @@ Rational::Rational(int num, int den)
 	den_ = den;
 	
 	this->reduce();
+	
+	++Rational::numberOfRational;
+}
+
+Rational::Rational(const Rational& rhs)
+: num_(rhs.num_), den_(rhs.den_)
+{
+	++Rational::numberOfRational;
+}
+
+Rational::~Rational()
+{
+	--Rational::numberOfRational;
 }
 
 bool Rational::operator==(const Rational& rhs)
