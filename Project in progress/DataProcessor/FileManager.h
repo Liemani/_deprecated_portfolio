@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "FileManager.h"
-// made by Lieman at 2020.07.07
+// made by Lieman at 2020.07.09
 //
 // description:
 //	FileManager interface
@@ -12,6 +12,7 @@
 
 
 // preprocessor
+#include "DoubleLinkedString.h"
 
 
 
@@ -27,7 +28,8 @@ typedef struct FileManager {
 
 
 // method
-void FileManager_printFileToBinary(char* name);
+void FileManager__printFileToBinary(char* name);
+void FileManager__printWithSimpleString(char* name);
 
 
 
