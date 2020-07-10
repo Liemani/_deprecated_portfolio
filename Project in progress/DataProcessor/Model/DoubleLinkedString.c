@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "DoubleLinkedString.c"
-// made by Lieman at 2020.07.08
+// made by Lieman at 2020.07.09
 //
 // description:
 //	DoubleLinkedString implementation
@@ -19,7 +19,7 @@
 
 
 // static method
-static DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, int index) {
+DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, int index) {
 	if (index < 0 || string->count <= index) return NULL;
 
 	DoubleLinkedNode* currentNode = string->firstNode;
@@ -30,15 +30,15 @@ static DoubleLinkedNode* DoubleLinkedString__nodeAt(DoubleLinkedString* string, 
 	return currentNode;
 }
 
-static void DoubleLinkedString__removeAll(DoubleLinkedString* string) {
+void DoubleLinkedString__removeAll(DoubleLinkedString* string) {
 	DoubleLinkedNode* currentNode = string->firstNode;
 
 	while (currentNode->next) {
 		currentNode = currentNode->next;
-		freeDoubleLinkedNode(currentNode->previous);
+		deallocDoubleLinkedNode(currentNode->previous);
 	}
 
-	freeDoubleLinkedNode(currentNode);
+	deallocDoubleLinkedNode(currentNode);
 
 	string->firstNode = string->lastNode = NULL;
 	string->count = 0;
@@ -78,7 +78,7 @@ void DoubleLinkedString__appendString(DoubleLinkedString* lhs, DoubleLinkedStrin
 	rhs->lastNode = NULL;
 
 	lhs->count += rhs->count;
-	freeDoubleLinkedString(rhs);
+	deallocDoubleLinkedString(rhs);
 }
 
 void DoubleLinkedString__insertCharacterAt(DoubleLinkedString* string, char character, int index) {
@@ -125,7 +125,7 @@ void DoubleLinkedString__insertStringAt(DoubleLinkedString* lhs, DoubleLinkedStr
 		rhs->lastNode = NULL;
 
 		lhs->count += rhs->count;
-		freeDoubleLinkedString(rhs);
+		deallocDoubleLinkedString(rhs);
 	} else {
 		DoubleLinkedNode__connect(rhs->lastNode, lhs->firstNode);
 
@@ -135,7 +135,7 @@ void DoubleLinkedString__insertStringAt(DoubleLinkedString* lhs, DoubleLinkedStr
 		rhs->lastNode = NULL;
 
 		lhs->count += rhs->count;
-		freeDoubleLinkedString(rhs);
+		deallocDoubleLinkedString(rhs);
 	}
 }
 
@@ -156,7 +156,7 @@ char DoubleLinkedString__removeCharacterAt(DoubleLinkedString* string, int index
 		DoubleLinkedNode__connect(NULL, string->firstNode);
 	}
 
-	freeDoubleLinkedNode(currentNode);
+	deallocDoubleLinkedNode(currentNode);
 
 	--string->count;
 
@@ -172,9 +172,9 @@ void DoubleLinkedString__removeFirstFromTo(DoubleLinkedString* sourceString, Dou
 		for (int i = 0; i < count; ++i) {
 			if (currentNode->next) {
 				currentNode = currentNode->next;
-				freeDoubleLinkedNode(currentNode->previous);
+				deallocDoubleLinkedNode(currentNode->previous);
 			} else {
-				freeDoubleLinkedNode(currentNode);
+				deallocDoubleLinkedNode(currentNode);
 
 				sourceString->firstNode = NULL;
 				sourceString->lastNode = NULL;
@@ -255,7 +255,7 @@ DoubleLinkedString* allocDoubleLinkedString() {
 	return doubleLinkedString;
 }
 
-DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, size_t count) {
+DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, int count) {
 	DoubleLinkedString* doubleLinkedString = allocDoubleLinkedString();
 
 	doubleLinkedString->firstNode = firstNode;
@@ -282,7 +282,7 @@ DoubleLinkedString* newDoubleLinkedString__string(char* string) {
 	return doubleLinkedString;
 }
 
-DoubleLinkedString* freeDoubleLinkedString(DoubleLinkedString* doubleLinkedString) {
+DoubleLinkedString* deallocDoubleLinkedString(DoubleLinkedString* doubleLinkedString) {
 	DoubleLinkedString__removeAll(doubleLinkedString);
 
 	free(doubleLinkedString);

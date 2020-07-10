@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "Object.h"
-// made by Lieman at 2020.07.07
+// made by Lieman at 2020.07.10
 //
 // description:
 //	Object interface
@@ -34,5 +34,10 @@ typedef struct Object {
 
 // Object factory method
 Object* allocObject();
+
+Object* newObject__memberwise();
+Object* newObject__designated();
+
 Object* newObject();
-Object* freeObject(Object* object);
+
+void deallocObject(Object* object);

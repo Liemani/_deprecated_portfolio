@@ -12,7 +12,6 @@
 
 
 // preprocessor
-#include <wchar.h>
 #include "Node.h"
 
 
@@ -22,7 +21,7 @@
 typedef struct DoubleLinkedString {
 	DoubleLinkedNode* firstNode;
 	DoubleLinkedNode* lastNode;
-	size_t count;
+	int count;
 } DoubleLinkedString;
 
 
@@ -43,9 +42,6 @@ void DoubleLinkedString__insertCharacterAt(DoubleLinkedString* string, char char
 void DoubleLinkedString__insertStringAt(DoubleLinkedString* lhs, DoubleLinkedString* rhs, int index);
 
 char DoubleLinkedString__removeCharacterAt(DoubleLinkedString* string, int index);
-
-// count: The number of elements to remove from the collection. 
-//		count must be greater than or equal to zero and must not exceed the number of elements in the collection.
 void DoubleLinkedString__removeFirstFromTo(DoubleLinkedString* sourceString, DoubleLinkedString* destinationString, int count);
 
 void DoubleLinkedString__lowercase(DoubleLinkedString* string);
@@ -57,7 +53,9 @@ void DoubleLinkedString__uppercase(DoubleLinkedString* string);
 
 // DoubleLinkedString factory method
 DoubleLinkedString* allocDoubleLinkedString();
+
 DoubleLinkedString* newDoubleLinkedString__designated(DoubleLinkedNode* firstNode, DoubleLinkedNode* secondNode, int count);
 DoubleLinkedString* newDoubleLinkedString();
 DoubleLinkedString* newDoubleLinkedString__string(char* string);
-DoubleLinkedString* freeDoubleLinkedString(DoubleLinkedString* doubleLinkedString);
+
+DoubleLinkedString* deallocDoubleLinkedString(DoubleLinkedString* doubleLinkedString);

@@ -20,7 +20,7 @@
 
 
 // method
-void DoubleLinkedNode_connect(DoubleLinkedNode* lhs, DoubleLinkedNode* rhs) {
+void DoubleLinkedNode__connect(DoubleLinkedNode* lhs, DoubleLinkedNode* rhs) {
 	if (lhs) {
 		lhs->next = rhs;
 	}
@@ -52,7 +52,7 @@ SingleLinkedNode* newSingleLinkedNode() {
 }
 
 // DoubleLinkedNode factory method
-DoubleLinkedNode* allocDoubleLinkedNode(size_t dataSize) {
+DoubleLinkedNode* allocDoubleLinkedNode(int dataSize) {
 	DoubleLinkedNode* doubleLinkedNode = (DoubleLinkedNode*)malloc(sizeof(DoubleLinkedNode));
 	doubleLinkedNode->data = malloc(dataSize);
 
@@ -63,19 +63,19 @@ DoubleLinkedNode* newDoubleLinkedNode(
 	void* data,
 	struct DoubleLinkedNode* previous,
 	struct DoubleLinkedNode* next,
-	size_t dataSize) {
+	int dataSize) {
 
 	DoubleLinkedNode* doubleLinkedNode = allocDoubleLinkedNode(dataSize);
 
 	memcpy(doubleLinkedNode->data, data, dataSize);
 
-	DoubleLinkedNode_connect(previous, doubleLinkedNode);
-	DoubleLinkedNode_connect(doubleLinkedNode, next);
+	DoubleLinkedNode__connect(previous, doubleLinkedNode);
+	DoubleLinkedNode__connect(doubleLinkedNode, next);
 
 	return doubleLinkedNode;
 }
 
-DoubleLinkedNode* freeDoubleLinkedNode(DoubleLinkedNode* doubleLinkedNode) {
+DoubleLinkedNode* deallocDoubleLinkedNode(DoubleLinkedNode* doubleLinkedNode) {
 	free(doubleLinkedNode->data);
 	free(doubleLinkedNode);
 }

@@ -12,7 +12,6 @@
 
 
 // preprocessor
-#include <wchar.h>	// size_t
 
 
 
@@ -34,7 +33,7 @@ typedef struct DoubleLinkedNode {
 
 
 // method
-void DoubleLinkedNode_connect(DoubleLinkedNode* lhs, DoubleLinkedNode* rhs);
+void DoubleLinkedNode__connect(DoubleLinkedNode* lhs, DoubleLinkedNode* rhs);
 
 
 
@@ -46,10 +45,10 @@ SingleLinkedNode* allocSingleLinkedNode();
 SingleLinkedNode* newSingleLinkedNode();
 
 // DoubleLinkedNode factory method
-DoubleLinkedNode* allocDoubleLinkedNode(size_t dataSize);
+DoubleLinkedNode* allocDoubleLinkedNode(int dataSize);
 DoubleLinkedNode* newDoubleLinkedNode(
 	void* data,
 	struct DoubleLinkedNode* previous,
 	struct DoubleLinkedNode* next,
-	size_t dataSize);
-DoubleLinkedNode* freeDoubleLinkedNode(DoubleLinkedNode* doubleLinkedNode);
+	int dataSize);
+DoubleLinkedNode* deallocDoubleLinkedNode(DoubleLinkedNode* doubleLinkedNode);

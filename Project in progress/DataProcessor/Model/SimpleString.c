@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "SimpleString.c"
-// made by Lieman at 2020.07.09
+// made by Lieman at 2020.07.10
 //
 // description:
 //	SimpleString implementation
@@ -23,13 +23,13 @@
 
 
 // static variable
-static const int ALLOC_INTERVAL = 8 * sizeof(int);
+static const int ALLOC_INTERVAL = sizeof(int);
 
 
 
 
 
-// static method
+// method
 int SimpleString__reallocIfNeed(SimpleString* string, int countDelta) {
 	int afterChunk = (string->count + 1 + countDelta) / ALLOC_INTERVAL + 1;
 
@@ -40,7 +40,6 @@ int SimpleString__reallocIfNeed(SimpleString* string, int countDelta) {
 	}
 }
 
-// method
 void SimpleString__append__Character(SimpleString* string, char character) {
 	SimpleString__reallocIfNeed(string, 1);
 	string->string[string->count] = character;
@@ -65,7 +64,7 @@ void SimpleString__append__SimpleString(SimpleString* lhs, SimpleString* rhs) {
 	lhs->count += rhs->count;
 }
 
-void SimpleString__append__hex__fromUCharacter(SimpleString* string, unsigned char character) {
+void SimpleString__append__hex__fromCharacter(SimpleString* string, char character) {
 	char hexArray[3];
 
 	char hex = character >> 4;
@@ -77,6 +76,23 @@ void SimpleString__append__hex__fromUCharacter(SimpleString* string, unsigned ch
 	hexArray[2] = '\0';
 
 	SimpleString__append__String(string, hexArray);
+}
+
+void SimpleString__append__data__fromCharacter(SimpleString* string, char character) {
+	if (
+		character <= 0 ||
+		character == 7 ||
+		character == 8 ||
+		character == 9 ||
+		character == 10 ||
+		character == 13 ||
+		character == 27 ||
+		character == 32 ||
+		127 <= character) {
+		SimpleString__append__Character(string, '.');
+	} else {
+		SimpleString__append__Character(string, character);
+	}
 }
 
 char SimpleStringg__removeLast(SimpleString* string) {
@@ -135,17 +151,6 @@ SimpleString* allocSimpleString() {
 	return simpleString;
 }
 
-SimpleString* newSimpleString__memberwise(char* string, int count) {
-	SimpleString* simpleString = allocSimpleString();
-
-	simpleString->count = count;
-	simpleString->chunk = (count + 1) / ALLOC_INTERVAL + 1;
-
-	simpleString->string = string;
-
-	return simpleString;
-}
-
 SimpleString* newSimpleString__designated(char* string, int count) {
 	SimpleString* simpleString = allocSimpleString();
 
@@ -177,11 +182,11 @@ SimpleString* newSimpleString__SimpleString(SimpleString* simpleString) {
 	return newSimpleString__designated(simpleString->string, simpleString->count);
 }
 
-void freeSimpleString__memberwise(SimpleString* simpleString) {
+void deallocSimpleString__memberwise(SimpleString* simpleString) {
 	free(simpleString);
 }
 
-void freeSimpleString__designated(SimpleString* simpleString) {
+void deallocSimpleString__designated(SimpleString* simpleString) {
 	free(simpleString->string);
 	free(simpleString);
 }

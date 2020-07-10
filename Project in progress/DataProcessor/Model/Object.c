@@ -1,6 +1,6 @@
 //********************************************
 // char* title = "Object.c"
-// made by Lieman at 2020.07.07
+// made by Lieman at 2020.07.10
 //
 // description:
 //	Object implementation
@@ -28,7 +28,21 @@
 Object* allocObject() {
 	Object* object = (Object*)malloc(sizeof(Object));
 
-	// allocate here...
+	return object;
+}
+
+Object* newObject__memberwise() {
+	Object* object = allocObject();
+
+	// initialize memberwise here...
+
+	return object;
+}
+
+Object* newObject__designated() {
+	Object* object = allocObject();
+
+	// initialize designated here...
 
 	return object;
 }
@@ -36,14 +50,14 @@ Object* allocObject() {
 Object* newObject() {
 	Object* object = allocObject();
 
-	// initialize here...
+	// default initialize here...
 
 	return object;
 }
 
-Object* freeObject(Object* object) {
+void deallocObject(Object* object) {
 
-	// free here...
+	// dealloc here...
 
 	free(object);
 }
