@@ -17,6 +17,9 @@ int main()
 	c4 = c1 + c2;
 	c4 = c1 - c2;
 	
+	std::cout << "input c4: ";
+	std::cin >> c4;
+	
 	const Complex c5 = c4;
 	//c5.real(5.0);
 	

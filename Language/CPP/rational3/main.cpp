@@ -20,6 +20,9 @@ int main()
 	r4 = r1 * r2;
 	r4 = r1 / r2;
 	
+	std::cout << "input r4 : ";
+	std::cin >> r4;
+	
 	std::cout << "r1: " << r1 << std::endl;
 	std::cout << "r2: " << r2 << std::endl;
 	std::cout << "r3: " << r3 << std::endl;

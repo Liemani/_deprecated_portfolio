@@ -5,6 +5,7 @@
 // extern int numberOfComplex;		// test make commend
 
 class Complex {
+friend std::istream& operator>>(std::istream& in, Complex& rhs);
 friend std::ostream& operator<<(std::ostream& out, const Complex& rhs);
 
 private:

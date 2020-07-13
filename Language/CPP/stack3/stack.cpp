@@ -4,7 +4,7 @@
 const int Stack::STACKSIZE = 100;
 
 Stack::Stack(int size)
-: arr_(size), tos_(0)
+: arr_(size), tos_(0)	// 'has a' must init list
 {
 
 }

@@ -1,11 +1,46 @@
+#include <sstream>
 #include <iostream>
 #include "complex.h"
 
 int Complex::numberOfComplex;
 
+std::istream& operator>>(std::istream& in, Complex& rhs)
+{
+	double re = 0.0;
+	double im = 0.0;
+	char c = 0;
+	
+	in >> c;
+	if (c == '(') {
+		in >> re >> c;
+		if (c == ',') in >> im >> c;
+		if (c == 'i') in >> c;
+		if (c != ')') in.clear(std::ios::failbit);
+	} else {
+		in.putback(c);
+		in >> re;
+	}
+
+	if (in) rhs = Complex(re, im);
+	
+	return in;
+}
+/*
 std::ostream& operator<<(std::ostream& out, const Complex& rhs)
 {
 	out << "(" << rhs.re_ << ", " << rhs.im_ << "i)";
+	
+	return out;
+}
+*/
+std::ostream& operator<<(std::ostream& out, const Complex& rhs)
+{
+	std::ostringstream buf;
+	buf.flags(out.flags());
+	buf.precision(out.precision());
+	
+	buf << "("<< rhs.re_ << "," << rhs.im_ << "i)" << std::ends;
+	out << buf.str();
 	
 	return out;
 }

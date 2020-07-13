@@ -22,6 +22,9 @@ int main()
 		std::cout << ems[0]->getName() << " is a manager" << std::endl;
 	else
 		std::cout << ems[0]->getName() << " is not a manager" << std::endl;
+	
+	for (int i = 0; i < 5; ++i)
+		delete ems[i];
 
 	return 0;
 }
