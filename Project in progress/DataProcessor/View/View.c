@@ -19,9 +19,9 @@
 
 
 // method
-void View__print__SimpleString(SimpleString* simpleString) {
-	for (int i = 0; i < simpleString->count; ++i)
-		putchar(simpleString->string[i]);
+void View__print__LMTData(LMTData* lmtData) {
+	for (int i = 0; i < lmtData->count; ++i)
+		putchar(lmtData->data[i]);
 
 	putchar('\n');
 }

@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "View.h"
-// made by Lieman at 2020.07.10
+// made by Lieman at 2020.07.14
 //
 // description:
 //	View interface
@@ -12,7 +12,7 @@
 
 
 // preprocessor
-#include "../Model/SimpleString.h"
+#include "../Model/LMTData.h"
 
 
 
@@ -24,7 +24,7 @@
 
 
 // method
-void View__print__DataArray(SimpleString* simpleString);
+void View__print__LMTData(LMTData* lmtData);
 
 
 

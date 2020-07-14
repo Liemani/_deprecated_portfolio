@@ -19,11 +19,11 @@
 
 // method
 void ViewController__entry(ViewController* viewController) {
-	SimpleString* line = read8Character(viewController->fileManager);
+	LMTData* characterArray = File__read8Character(viewController->file);
 
-	while (line != EOF) {
-		line = read8Character(viewController->fileManager);
-		View__print__SimpleString(line);
+	while (characterArray != EOF) {
+		characterArray = read8Character(viewController->file);
+		View__print__LMTData(characterArray);
 	}
 }
 
@@ -48,7 +48,6 @@ ViewController* newViewController() {
 
 void deallocViewController(ViewController* viewController) {
 	deallocFileManager(viewController->fileManager);
-	deallocView(viewController->view);
 
 	free(viewController);
 }

@@ -12,6 +12,7 @@
 
 // preprocessor
 #include "File.h"
+#pragma warning(disable:4996)	// fopen()
 
 
 
@@ -20,7 +21,7 @@
 // method
 char* File__read__NCharacter(SimpleString* simpleString, File* file, int count) {
 	file->file;
-	fread()
+	//fread()
 }
 
 

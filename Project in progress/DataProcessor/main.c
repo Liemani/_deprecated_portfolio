@@ -18,6 +18,7 @@
 #include "Controller/FileManager.h"
 #include "Model/DoubleLinkedString.h"
 #include "Model/SimpleString.h"
+#include "Model/LMTData.h"
 
 
 
@@ -81,12 +82,21 @@ void dataProcessor__ViewController__entry() {
 	ViewController__entry(viewController);
 }
 
+void monoTest01() {
+	LMTData* lmtData = newLMTData();
+
+	LMTData__append__Character(lmtData, 'a');
+
+	printf("count: %d, [0]: %c \n", lmtData->count, lmtData->data[0]);
+}
+
 
 
 
 
 int main() {
-	FileManager__printWithSimpleString("test.dat");
+	//FileManager__printWithSimpleString("test.dat");
+	monoTest01();
 
 	return 0;
 }

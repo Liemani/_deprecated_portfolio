@@ -23,12 +23,12 @@ void test00() {
     printf("sizeof(date): %d \n", sizeof(date));
     printf("sizeof(*date): %d \n", sizeof(*date));
 }
-
 void test01() {
-
+    printf("%d \n", -1 / 5);
 }
 
 int main(void) {
+    printf("%d \n", strlen(NULL));
 }
 
 

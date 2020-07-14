@@ -16,6 +16,8 @@
 #include "FileManager.h"
 #include "../View/View.h"
 #include "../Model/SimpleString.h"
+#include "../Model/LMTData.h"
+#include "../Model/File.h"
 
 
 
@@ -23,7 +25,7 @@
 
 // structure
 typedef struct ViewController {
-	FileManager* fileManager;
+	File* file;
 } ViewController;
 
 
