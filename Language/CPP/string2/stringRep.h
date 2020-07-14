@@ -9,15 +9,14 @@ private:
 	int rc_;
 	
 	
-	StringRep();
-	StringRep(const char* s);
+	// StringRep();
 	StringRep(const char* s, bool);
-	~StringRep();
 	
 	StringRep(const StringRep& rhs);			// not use
 	StringRep& operator=(const StringRep& rhs);	// not use
 public:
-	
+	StringRep(const char* s);
+	~StringRep();
 };
 
 #endif
