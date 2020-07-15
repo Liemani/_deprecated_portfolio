@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // unsigned char* title = "LMTArrayData.c"
-// made by Lieman at 2020.07.14
+// made by Lieman at 2020.07.15
 //
 // description:
 //	LMTArrayData implementation
@@ -12,6 +12,9 @@
 
 
 // preprocessor
+#include <stdlib.h>		// malloc(), realloc(), free()
+#include <string.h>		// memcpy(), strlen()
+#pragma warning(disable:4996) //strcpy()
 #include "LMTArrayData.h"
 
 
@@ -194,7 +197,7 @@ LMTArrayData* newLMTArrayData() {
 // if init from data, make new object.
 // if init from object, make new reference.
 LMTArrayData* newLMTArrayData__String(const char* string) {
-	if (string) return newLMTArrayData__Data((const unsigned char*)string, strlen(string));
+	if (string) return newLMTArrayData__data((const unsigned char*)string, strlen(string));
 
 	return newLMTArrayData();
 }
@@ -208,12 +211,16 @@ LMTArrayData* newLMTArrayData__LMTArrayData__count(LMTArrayData* lmtArrayData, i
 }
 
 LMTArrayData* referenceLMTArrayData__LMTArrayData(LMTArrayData* lmtArrayData) {
+	if (lmtArrayData == NULL) return NULL;
+
 	++lmtArrayData->referenceCount;
 
 	return lmtArrayData;
 }
 
 void deallocLMTArrayData(LMTArrayData* lmtArrayData) {
+	if (lmtArrayData == NULL) return;
+
 	if (LMTArrayData__have_another_reference(lmtArrayData))
 		--lmtArrayData->referenceCount;
 	else {

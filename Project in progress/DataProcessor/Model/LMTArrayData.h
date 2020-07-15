@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // unsigned char* title = "LMTArrayData.h"
-// made by Lieman at 2020.07.14
+// made by Lieman at 2020.07.15
 //
 // description:
 //	LMTArrayData interface
@@ -12,9 +12,6 @@
 
 
 // preprocessor
-#include <stdlib.h>		// malloc(), realloc(), free()
-#include <string.h>		// memcpy()
-#pragma warning(disable:4996) //strcpy()
 
 
 
