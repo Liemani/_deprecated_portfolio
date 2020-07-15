@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "LMTString.c"
-// made by Lieman at 2020.07.14
+// made by Lieman at 2020.07.15
 //
 // description:
 //	LMTString implementation
@@ -12,6 +12,10 @@
 
 
 // preprocessor
+#include <stdlib.h>		// malloc(), realloc(), free()
+#include <string.h>		// strcpy(), strlen(), strcat()
+#include <assert.h>		// assert()
+#pragma warning(disable:4996) //strcpy()
 #include "LMTString.h"
 
 
@@ -20,6 +24,18 @@
 
 // static variable
 static const int ALLOC_INTERVAL = sizeof(int);
+
+
+
+
+
+// static method
+static int LMTString__have_another_reference(const LMTString* lmtString) {
+	//* abstract concept *							* truth table of target *				* result expecting *
+	// if string don't have another reference,	lmtString->referenceCount is false,	and should return false
+	// if string have another reference,		lmtString->referenceCount is true,	and should return true
+	return lmtString->referenceCount;
+}
 
 
 
@@ -110,36 +126,60 @@ static LMTString* allocLMTString() {
 	return lmtString;
 }
 
-static LMTString* newLMTString__designated(char* string, int count, int chunk) {
+static LMTString* newLMTString__designated(LMTArrayData* data) {
 	LMTString* lmtString = allocLMTString();
 
-	lmtString->count = count;
-	lmtString->chunk = chunk;
+	lmtString->data = referenceLMTArrayData__LMTArrayData(data);
 
-	lmtString->string = (char*)malloc(ALLOC_INTERVAL * chunk);
+	for (int i = 0; i < data->count; ++i)
+		if (data->data[i] == '\0') {
+			lmtString->count = i;
+			break;
+		}
 
-	if (string) strcpy(lmtString->string, string);
-	else lmtString->string[0] = '\0';
+	if (lmtString->count == data->count)
+		LMTArrayData__append__Character(&lmtString->data, '\0');
 
-	lmtString->referenceCount = 1;
+	lmtString->referenceCount = 0;
 
 	return lmtString;
 }
 
 LMTString* newLMTString() {
-	return newLMTString__designated(NULL, 0, 1);
+	LMTArrayData* data = newLMTArrayData__String("");
+
+	return newLMTString__designated(data);
 }
 
 LMTString* newLMTString__String(char* string) {
 	if (string == NULL) return newLMTString();
 
-	const int count = strlen(string);
-	const int chunk = count / ALLOC_INTERVAL + 1;
-	
-	return newLMTString__designated(string, count, chunk);
+	LMTArrayData* data = newLMTArrayData__String(string);
+
+	return newLMTString__designated(data);
+}
+
+LMTString* newLMTString__data(LMTArrayData* data) {
+	if (data == NULL) return newLMTString();
+
+	return newLMTString__designated(data);
+}
+
+LMTString* referenceLMTString__LMTString(LMTString* lmtString) {
+	if (lmtString == NULL) return NULL;
+
+	++lmtString->referenceCount;
+
+	return lmtString;
 }
 
 void deallocLMTString(LMTString* lmtString) {
-	free(lmtString->string);
-	free(lmtString);
+	if (lmtString == NULL) return;
+
+	if (LMTString__have_another_reference(lmtString))
+		--lmtString->referenceCount;
+	else {
+		deallocLMTArrayData(lmtString->data);
+		free(lmtString);
+	}
 }

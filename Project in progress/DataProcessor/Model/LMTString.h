@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
 // char* title = "LMTString.h"
-// made by Lieman at 2020.07.14
+// made by Lieman at 2020.07.15
 //
 // description:
 //	LMTString interface
@@ -12,10 +12,7 @@
 
 
 // preprocessor
-#include <stdlib.h>		// malloc(), realloc(), free()
-#include <string.h>		// strcpy(), strlen(), strcat()
-#include <assert.h>		// assert()
-#pragma warning(disable:4996) //strcpy()
+#include "LMTArrayData.h"
 
 
 
@@ -24,8 +21,7 @@
 // structure
 typedef struct LMTString {
 	int count;
-	int chunk;
-	char* string;
+	LMTArrayData* data;
 
 	int referenceCount;
 } LMTString;
@@ -51,5 +47,8 @@ void LMTStringg__removeAll(LMTString* lmtString);
 // LMTString factory method
 LMTString* newLMTString();
 LMTString* newLMTString__String(char* string);
+LMTString* newLMTString__data(LMTArrayData* data);
+
+LMTString* referenceLMTString__LMTString(LMTString* lmtString);
 
 void deallocLMTString(LMTString* lmtString);
