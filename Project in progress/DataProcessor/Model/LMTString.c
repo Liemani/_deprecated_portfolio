@@ -14,9 +14,9 @@
 // preprocessor
 #include <stdlib.h>		// malloc(), realloc(), free()
 #include <string.h>		// strcpy(), strlen(), strcat()
-#include <assert.h>		// assert()
 #pragma warning(disable:4996) //strcpy()
 #include "LMTString.h"
+#include "LMTArrayData.h"
 
 
 
@@ -37,21 +37,81 @@ static int LMTString__have_another_reference(const LMTString* lmtString) {
 	return lmtString->referenceCount;
 }
 
+static int LMTString__dont_have_another_reference(const LMTString* lmtString) {
+	//* abstract concept *							* truth table of target *				* result expecting *
+	// if string don't have another reference,	lmtString->referenceCount is false,	and should return true
+	// if string have another reference,		lmtString->referenceCount is true,	and should return false
+	return !lmtString->referenceCount;
+}
+
+static void LMTString__makeDataStringIfNeed(LMTString* lmtString) {
+	LMTArrayData* data = lmtString->data;
+
+	lmtString->count = LMTArrayData__firstIndex(data, (unsigned char)'\0');
+
+	if (lmtString->count == data->count) {
+		LMTArrayData__append__Character(&lmtString->data, '\0');
+		++lmtString->count;
+	}
+}
+
+static void LMTString__prepareMutating(LMTString** pLMTString) {
+	if (pLMTString == NULL) return;
+	if (*pLMTString == NULL) return;
+	if (LMTString__dont_have_another_reference(*pLMTString)) return;
+
+	LMTString* lmtString = *pLMTString;
+
+	--lmtString->referenceCount;
+	*pLMTString = newLMTString__data(lmtString->data);
+
+
+
+
+	--lmtString->referenceCount;
+	*pLMTString = newLMTString__referenceData;
+
+	LMTArrayData* lmtArrayData = *pLMTArrayData;
+
+	int afterCount = lmtArrayData->count + countDelta;
+	int afterChunk = LMTArrayData__chunk(afterCount);
+
+	if (LMTArrayData__have_another_reference(lmtArrayData)) {
+		--lmtArrayData->referenceCount;
+		*pLMTArrayData = newLMTArrayData__LMTArrayData__count(lmtArrayData, afterCount);
+	} else  if (lmtArrayData->chunk != afterChunk) {
+		lmtArrayData->count = min(lmtArrayData->count, afterCount);
+		lmtArrayData->chunk = afterChunk;
+		lmtArrayData->data = (unsigned char*)realloc(lmtArrayData->data, ALLOC_INTERVAL * afterChunk);
+	}
+}
+
 
 
 
 
 // method
-void LMTString__reallocIfNeed(LMTString* lmtString, int countDelta) {
-	int afterChunk = (lmtString->count + countDelta) / ALLOC_INTERVAL + 1;
+//void LMTString__reallocIfNeed(LMTString* lmtString, int countDelta) {
+//	int afterChunk = (lmtString->count + countDelta) / ALLOC_INTERVAL + 1;
+//
+//	if (lmtString->chunk == afterChunk) return;
+//
+//	lmtString->string = (char*)realloc(lmtString->string, ALLOC_INTERVAL * afterChunk);
+//	lmtString->chunk = afterChunk;
+//}
 
-	if (lmtString->chunk == afterChunk) return;
+void LMTString__append__Character(LMTString** pLMTString, char character) {
+	LMTString* lmtString = *pLMTString;
 
-	lmtString->string = (char*)realloc(lmtString->string, ALLOC_INTERVAL * afterChunk);
-	lmtString->chunk = afterChunk;
-}
+	if (LMTString__have_another_reference(lmtString)) {
+		--lmtString->referenceCount;
+		*pLMTString = newLMTString__data(lmtString->data);
+	} else {
 
-void LMTString__append__Character(LMTString* lmtString, char character) {
+	}
+
+	LMTArrayData__append__Character(&lmtString->data, '\0');
+
 	LMTString__reallocIfNeed(lmtString, 1);
 
 	lmtString->string[lmtString->count] = character;
@@ -129,16 +189,9 @@ static LMTString* allocLMTString() {
 static LMTString* newLMTString__designated(LMTArrayData* data) {
 	LMTString* lmtString = allocLMTString();
 
+	lmtString->count = data->count;
+
 	lmtString->data = referenceLMTArrayData__LMTArrayData(data);
-
-	for (int i = 0; i < data->count; ++i)
-		if (data->data[i] == '\0') {
-			lmtString->count = i;
-			break;
-		}
-
-	if (lmtString->count == data->count)
-		LMTArrayData__append__Character(&lmtString->data, '\0');
 
 	lmtString->referenceCount = 0;
 
@@ -171,6 +224,28 @@ LMTString* referenceLMTString__LMTString(LMTString* lmtString) {
 	++lmtString->referenceCount;
 
 	return lmtString;
+}
+
+void setLMTString__LMTString(LMTString** pLMTString, LMTString* string) {
+	if (pLMTString == NULL) return;
+
+	LMTString* lmtString = *pLMTString;
+
+	if (lmtString == string) return;
+
+	if (lmtString == NULL)
+		*pLMTString = referenceLMTString__LMTString(string);
+
+
+	if (LMTString__have_another_reference(lmtString)) {
+		--(*pLMTString)->referenceCount;
+		*pLMTString = newLMTString__String(lmtString);
+	} else (LMTString__dont_have_another_reference(lmtString)) {
+		lmtString
+	}
+
+	//if (string == NULL)
+	//	*pLMTString = newLMTString();
 }
 
 void deallocLMTString(LMTString* lmtString) {
