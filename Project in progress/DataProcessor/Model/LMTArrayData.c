@@ -113,6 +113,16 @@ void LMTArrayData__removeAll(LMTArrayData** pLMTArrayData) {
 	*pLMTArrayData = newLMTArrayData();
 }
 
+int LMTArrayData__firstIndex(LMTArrayData* lmtArrayData, unsigned char uCharacter) {
+	int count = lmtArrayData->count;
+
+	for (int i = 0; i < count; ++i)
+		if (lmtArrayData->data[i] == uCharacter)
+			return i;
+
+	return count;
+}
+
 // deprecated
 static void LMTArrayData__reallocIfNeed(LMTArrayData** pLMTArrayData, int countDelta) {
 	LMTArrayData* lmtArrayData = *pLMTArrayData;
@@ -210,8 +220,8 @@ LMTArrayData* newLMTArrayData__LMTArrayData__count(LMTArrayData* lmtArrayData, i
 	return lmtArrayData;
 }
 
-LMTArrayData* referenceLMTArrayData__LMTArrayData(LMTArrayData* lmtArrayData) {
-	if (lmtArrayData == NULL) return NULL;
+LMTArrayData* newLMTArrayData__LMTArrayData(LMTArrayData* lmtArrayData) {
+	if (lmtArrayData == NULL) return newLMTArrayData();
 
 	++lmtArrayData->referenceCount;
 

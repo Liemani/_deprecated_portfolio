@@ -48,7 +48,6 @@ void LMTStringg__removeAll(LMTString* lmtString);
 LMTString* newLMTString();
 LMTString* newLMTString__String(char* string);
 LMTString* newLMTString__data(LMTArrayData* data);
-
-LMTString* referenceLMTString__LMTString(LMTString* lmtString);
+LMTString* newLMTString__LMTString(LMTString* lmtString);
 
 void deallocLMTString(LMTString* lmtString);

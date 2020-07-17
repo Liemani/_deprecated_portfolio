@@ -145,7 +145,7 @@ LMTData* newLMTData() {
 }
 
 LMTData* newLMTData__String(char* string) {
-	if (string) return newLMTData__Data((unsigned char *)string, strlen(string));
+	if (string) return newLMTData__data((unsigned char *)string, strlen(string));
 
 	return newLMTData();
 }

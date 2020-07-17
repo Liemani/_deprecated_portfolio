@@ -27,9 +27,58 @@ void test01() {
     printf("%d \n", -1 / 5);
 }
 
-int main(void) {
-    printf("%d \n", strlen(NULL));
+void devision() {
+    int a;
+    int b;
+
+    while (1) {
+        printf("Input a: ");
+        scanf("%d", &a);
+        while (getchar() != '\n');
+        putchar('\n');
+
+        printf("Input b: ");
+        scanf("%d", &b);
+        while (getchar() != '\n');
+        putchar('\n');
+
+        if (b == 0) break;
+
+        printf("%d / %d = %d \n", a, b, a / b);
+        putchar('\n');
+    }
+
+    printf("Closing program \n");
 }
+
+void remainder() {
+    int a;
+    int b;
+
+    while (1) {
+        printf("Input a: ");
+        scanf("%d", &a);
+        while (getchar() != '\n');
+        putchar('\n');
+
+        printf("Input b: ");
+        scanf("%d", &b);
+        while (getchar() != '\n');
+        putchar('\n');
+
+        if (b == 0) break;
+
+        printf("%d %% %d = %d \n", a, b, a % b);
+        putchar('\n');
+    }
+
+    printf("Closing program \n");
+}
+
+//int main(void) {
+//    remainder();
+//    //printf("1 % 0: %d \n", 1 % 0);
+//}
 
 
 

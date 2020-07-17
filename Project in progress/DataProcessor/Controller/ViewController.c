@@ -19,12 +19,12 @@
 
 // method
 void ViewController__entry(ViewController* viewController) {
-	LMTData* characterArray = File__read8Character(viewController->file);
+	//LMTData* characterArray = File__read8Character(viewController->file);
 
-	while (characterArray != EOF) {
-		characterArray = read8Character(viewController->file);
-		View__print__LMTData(characterArray);
-	}
+	//while (characterArray != EOF) {
+	//	characterArray = read8Character(viewController->file);
+	//	View__print__LMTData(characterArray);
+	//}
 }
 
 
@@ -41,13 +41,13 @@ ViewController* allocViewController() {
 ViewController* newViewController() {
 	ViewController* viewController = allocViewController();
 
-	viewController->fileManager = newFileManager();
+	viewController->file = newFileManager();
 
 	return viewController;
 }
 
 void deallocViewController(ViewController* viewController) {
-	deallocFileManager(viewController->fileManager);
+	deallocFile(viewController->file);
 
 	free(viewController);
 }

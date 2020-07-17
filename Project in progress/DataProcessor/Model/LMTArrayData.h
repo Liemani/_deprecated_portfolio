@@ -36,6 +36,7 @@ void LMTArrayData__append__data(LMTArrayData** pLMTArrayData, unsigned char* dat
 void LMTArrayData__append__LMTArrayData(LMTArrayData** pLHS, LMTArrayData* rhs);
 unsigned char LMTArrayData__removeLast(LMTArrayData** pLMTArrayData);
 void LMTArrayData__removeAll(LMTArrayData** pLMTArrayData);
+int LMTArrayData__firstIndex(LMTArrayData* lmtArrayData, unsigned char uCharacter);
 
 // deprecated
 static void LMTArrayData__reallocIfNeed(LMTArrayData** pLMTArrayData, int countDelta);
@@ -50,7 +51,6 @@ LMTArrayData* newLMTArrayData__data(const unsigned char* data, int count);
 LMTArrayData* newLMTArrayData();
 LMTArrayData* newLMTArrayData__String(const char* string);
 LMTArrayData* newLMTArrayData__LMTArrayData__count(LMTArrayData* lmtArrayData, int count);
-
-LMTArrayData* referenceLMTArrayData__LMTArrayData(LMTArrayData* lmtArrayData);
+LMTArrayData* newLMTArrayData__LMTArrayData(LMTArrayData* lmtArrayData);
 
 void deallocLMTArrayData(LMTArrayData* lmtArrayData);

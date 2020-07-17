@@ -19,7 +19,9 @@
 
 // structure
 typedef struct Object {
-	void *nothing;
+	void* data;
+
+	int referenceCount;
 } Object;
 
 

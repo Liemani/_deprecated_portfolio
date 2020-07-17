@@ -213,39 +213,43 @@ LMTString* newLMTString__String(char* string) {
 }
 
 LMTString* newLMTString__data(LMTArrayData* data) {
-	if (data == NULL) return newLMTString();
+	LMTArrayData* stringData = newLMTArrayData__LMTArrayData(data);
 
-	return newLMTString__designated(data);
+	return newLMTString__designated(stringData);
 }
 
-LMTString* referenceLMTString__LMTString(LMTString* lmtString) {
-	if (lmtString == NULL) return NULL;
+LMTString* newLMTString__LMTString(LMTString* lmtString) {
+	if (lmtString == NULL) return newLMTString();
 
 	++lmtString->referenceCount;
 
 	return lmtString;
 }
 
-void setLMTString__LMTString(LMTString** pLMTString, LMTString* string) {
-	if (pLMTString == NULL) return;
+// make replica of parameter name to (pLHS, rhs)
+void setLMTString__LMTString(LMTString** pLHS, const LMTString* rhs) {
+	if (pLHS == NULL) return;
 
-	LMTString* lmtString = *pLMTString;
+	LMTString* lhs = *pLHS;
 
-	if (lmtString == string) return;
+	if (lhs == rhs) return;
 
-	if (lmtString == NULL)
-		*pLMTString = referenceLMTString__LMTString(string);
-
-
-	if (LMTString__have_another_reference(lmtString)) {
-		--(*pLMTString)->referenceCount;
-		*pLMTString = newLMTString__String(lmtString);
-	} else (LMTString__dont_have_another_reference(lmtString)) {
-		lmtString
+	if (lhs == NULL) {
+		*pLHS = newLMTString__LMTString(rhs);
+		return;
 	}
 
-	//if (string == NULL)
-	//	*pLMTString = newLMTString();
+
+	if (LMTString__have_another_reference(lhs))
+		--lhs->referenceCount;
+	else
+		deallocLMTString(lhs);
+
+	*pLHS = newLMTString__LMTString(rhs);
+}
+
+void deleteLMTString(LMTString* lmtString) {
+
 }
 
 void deallocLMTString(LMTString* lmtString) {
