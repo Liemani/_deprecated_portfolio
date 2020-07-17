@@ -10,11 +10,21 @@ friend std::ostream& operator<<(std::ostream& out, const Complex& rhs);
 
 private:
 	static int numberOfComplex;
+	static const int BLOCK_SIZE;
+	static Complex* headOfFreeList;
 	
-	double re_;
-	double im_;
+	union {
+		struct {
+			double re_;
+			double im_;
+		};
+		Complex* next;
+	};
 public:
 	static int getNumberOfComplex();
+	
+	static void* operator new(size_t size);
+	static void operator delete(void* ptr, size_t size);
 
 	Complex(double re = 0.0, double im = 0.0);
 	Complex(const Complex& rhs);

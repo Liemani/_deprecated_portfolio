@@ -1,8 +1,11 @@
 #include <sstream>
 #include <iostream>
+#include <cassert>
 #include "complex.h"
 
 int Complex::numberOfComplex;
+const int Complex::BLOCK_SIZE = 256;
+Complex *Complex::headOfFreeList = NULL;
 
 std::istream& operator>>(std::istream& in, Complex& rhs)
 {
@@ -43,6 +46,48 @@ std::ostream& operator<<(std::ostream& out, const Complex& rhs)
 	out << buf.str();
 	
 	return out;
+}
+
+// static member func.
+void* Complex::operator new(size_t size)
+{
+	if (size != sizeof(Complex))
+		return ::operator new(size);
+	
+	Complex* ptr = headOfFreeList;
+	
+	if (ptr) {
+		headOfFreeList = ptr->next;
+	} else {
+		Complex* pArr = static_cast<Complex*>(::operator new(BLOCK_SIZE * sizeof(Complex)));
+		assert(pArr);
+		
+		for (int i = 1; i < BLOCK_SIZE - 1; ++i)
+			pArr[i].next = &pArr[i + 1];
+		
+		pArr[BLOCK_SIZE - 1].next = NULL;
+		
+		headOfFreeList = &pArr[1];
+		
+		ptr = pArr;
+	}
+	
+	return ptr;
+}
+
+void Complex::operator delete(void* ptr, size_t size)
+{
+	if (ptr == NULL) return;
+	
+	if (size != sizeof(Complex)) {
+		::operator delete(ptr);
+		return;
+	}
+	
+	Complex *deleteNode = static_cast<Complex*>(ptr);
+	
+	deleteNode->next = headOfFreeList;
+	headOfFreeList = deleteNode;
 }
 
 int Complex::getNumberOfComplex()
