@@ -60,7 +60,7 @@ bool Rational::operator==(const Rational& rhs)
 	return num_ == num_ && den_ == den_;
 }
 
-Rational& Rational::reduce()
+const Rational& Rational::reduce() const
 {
 	if (num_ == 0) {
 		den_ = 1;

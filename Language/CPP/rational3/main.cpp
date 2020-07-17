@@ -23,6 +23,10 @@ int main()
 	std::cout << "input r4 : ";
 	std::cin >> r4;
 	
+	const Rational r5 = r4;
+	const Rational r6(9, 12);
+	r6.reduce();
+	
 	std::cout << "r1: " << r1 << std::endl;
 	std::cout << "r2: " << r2 << std::endl;
 	std::cout << "r3: " << r3 << std::endl;

@@ -9,11 +9,11 @@ friend std::ostream& operator<<(std::ostream& out, const Rational& rhs);
 private:
 	static int numberOfRational;
 
-	int num_;
-	int den_;
-	
-	Rational& reduce();		//helper func, tool func
+	mutable int num_;
+	mutable int den_;
 public:
+	const Rational& reduce() const;		//helper func, tool func
+	
 	static int getNumberOfRational();
 
 	Rational(int num = 0, int den = 1);
