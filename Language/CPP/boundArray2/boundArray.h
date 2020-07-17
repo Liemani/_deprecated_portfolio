@@ -9,7 +9,7 @@ private:
 
 public:
 	BoundArray(int lower, int upper);
-	BoundArray(int lower, int upper, T* pArr);
+	BoundArray(int lower, int upper, const T* pArr);
 	//BoundArray(const BoundArray& rhs);		// why?
 	//~BoundArray();	// why?
 	//operator=();		// why?
@@ -31,7 +31,7 @@ BoundArray<T>::BoundArray(int lower, int upper)
 }
 
 template<typename T>
-BoundArray<T>::BoundArray(int lower, int upper, T* pArr)
+BoundArray<T>::BoundArray(int lower, int upper, const T* pArr)
 : SafeArray<T>(pArr + lower, upper - lower + 1), lower_(lower)
 {
 
@@ -67,7 +67,7 @@ int BoundArray<T>::lower() const
 template<typename T>
 int BoundArray<T>::upper() const
 {
-	return lower_ + this->size() - 1;
+	return lower_ + BoundArray<T>::size_ - 1;
 }
 
 #endif
