@@ -43,7 +43,7 @@ bool BoundArray<T>::operator==(const BoundArray<T>& rhs) const
 	if (lower_ != rhs.lower_) return false;
 	if (this == &rhs) return true;
 	
-	return this->SafeArray<T>::operator==((SafeArray<T>)rhs);
+	return this->SafeArray<T>::operator==(static_cast<SafeArray<T>>(rhs));
 }
 
 template<typename T>

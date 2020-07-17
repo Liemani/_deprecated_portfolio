@@ -17,7 +17,7 @@ bool BoundArray::operator==(const BoundArray& rhs) const
 	if (lower_ != rhs.lower_) return false;
 	if (this == &rhs) return true;
 	
-	return this->SafeArray::operator==((SafeArray)rhs);
+	return this->SafeArray::operator==(static_cast<SafeArray>(rhs));
 }
 	
 int& BoundArray::operator[](int index)

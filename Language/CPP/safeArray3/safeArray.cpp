@@ -16,7 +16,7 @@ SafeArray::SafeArray(const int *pArr, int size)
 }
 
 SafeArray::SafeArray(const SafeArray& rhs)
-: Array((Array)rhs)
+: Array(static_cast<Array>(rhs))
 {
 
 }
@@ -28,14 +28,14 @@ SafeArray::~SafeArray()
 
 SafeArray& SafeArray::operator=(const SafeArray& rhs)
 {
-	this->Array::operator=((Array)rhs);
+	this->Array::operator=(static_cast<Array>(rhs));
 	
 	return *this;
 }
 
 bool SafeArray::operator==(const SafeArray& rhs) const
 {
-	return this->Array::operator==((Array)rhs);
+	return this->Array::operator==(static_cast<Array>(rhs));
 }
 
 int& SafeArray::operator[](int index)
@@ -51,3 +51,4 @@ const int& SafeArray::operator[](int index) const
 	
 	return this->Array::operator[](index);
 }
+

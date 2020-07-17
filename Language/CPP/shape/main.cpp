@@ -49,10 +49,10 @@ int main()
 	
 	for (int i = 0; i < 5; ++i) {
 		if (typeid(*shapes[i]) == typeid(Rectangle)) {
-			Rectangle* pr = (Rectangle*)shapes[i];
+			Rectangle* pr = dynamic_cast<Rectangle*>(shapes[i]);
 			std::cout << "perimeter: " << pr->perimeter() << std::endl;
 		} else if (typeid(*shapes[i]) == typeid(Circle)) {
-			Circle* pc = (Circle*)shapes[i];
+			Circle* pc = dynamic_cast<Circle*>(shapes[i]);
 			std::cout << "circumference: " << pc->circumference() << std::endl;
 		}
 	}
