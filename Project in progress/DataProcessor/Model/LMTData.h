@@ -1,7 +1,7 @@
 #pragma once
 //********************************************
-// unsigned char* title = "LMTData.h"
-// made by Lieman at 2020.07.13
+// char* title = "LMTData.h"
+// made by Lieman
 //
 // description:
 //	LMTData interface
@@ -12,20 +12,24 @@
 
 
 // preprocessor
-#include <stdlib.h>		// malloc(), realloc(), free()
-#include <string.h>		// strcpy(), strlen(), strcat()
-#include <assert.h>		// assert()
-#pragma warning(disable:4996) //strcpy()
 
 
 
 
+
+typedef unsigned char Data;
 
 // structure
+// 1 LMTData must match with 1 pData
+// if there is 2 different LMTData have same pData,
+// when one of them deleted, pData must delted,
+// and the other's pData get NULL!
 typedef struct LMTData {
 	int count;
 	int chunk;
-	unsigned char* data;
+	Data* pData;
+
+	int referenceCount;
 } LMTData;
 
 
@@ -33,23 +37,21 @@ typedef struct LMTData {
 
 
 // method
-void LMTData__reallocIfNeed(LMTData* lmtData, int countDelta);
-void LMTData__append__Character(LMTData* lmtData, char character);
-void LMTData__append__data(LMTData* lmtData, unsigned char* data, int count);
-void LMTData__append__LMTData(LMTData* lhs, LMTData* rhs);
-void LMTData__append__hex__fromCharacter(LMTData* lmtData, char character);
-void LMTData__append__visibleCharacter__fromCharacter(LMTData* lmtData, char character);
-unsigned char LMTDatag__removeLast(LMTData* lmtData);
-void LMTDatag__removeAll(LMTData* lmtData);
+void LMTData__append__character(LMTData** ppLMTData, char character);
+void LMTData__append__LMTData(LMTData** ppLHS, LMTData* pRHS);
+Data LMTData__removeLast(LMTData** ppLMTData);
+void LMTData__removeAll(LMTData** ppLMTData);
+int LMTData__firstIndex(LMTData* pLMTData, Data uCharacter);
 
 
 
 
 
 // LMTData factory method
-LMTData* newLMTData__data(unsigned char* data, int count);
+LMTData* newLMTData__designated(const Data* pData, int count, int chunk);
+LMTData* newLMTData__Data(const Data* pData, int count);
 LMTData* newLMTData();
-LMTData* newLMTData__String(char* string);
-LMTData* newLMTData__LMTData(LMTData* lmtData);
+LMTData* newLMTData__string(const char* string);
+LMTData* newLMTData__LMTData(LMTData* pLMTData);
 
-void deallocLMTData(LMTData* lmtData);
+void delLMTData(LMTData* pLMTData);
