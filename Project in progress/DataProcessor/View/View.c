@@ -19,12 +19,12 @@
 
 
 // method
-void View__print__LMTData(LMTData* lmtData) {
-	for (int i = 0; i < lmtData->count; ++i)
-		putchar(lmtData->data[i]);
-
-	putchar('\n');
-}
+//void View__print__LMTData(LMTData* lmtData) {
+//	for (int i = 0; i < lmtData->count; ++i)
+//		putchar(lmtData->data[i]);
+//
+//	putchar('\n');
+//}
 
 
 

@@ -83,11 +83,11 @@ void dataProcessor__ViewController__entry() {
 }
 
 void monoTest01() {
-	LMTData* lmtData = newLMTData();
+	LMTData* pLMTData = newLMTData();
 
-	LMTData__append__Character(lmtData, 'a');
+	LMTData__append__character(&pLMTData, 'a');
 
-	printf("count: %d, [0]: %c \n", lmtData->count, lmtData->data[0]);
+	// printf("count: %d, [0]: %c \n", lmtData->count, lmtData->data[0]);
 }
 
 

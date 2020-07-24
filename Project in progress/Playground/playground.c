@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include "book.h"
 
 #pragma warning(disable:4996)
@@ -75,10 +76,70 @@ void remainder() {
     printf("Closing program \n");
 }
 
-//int main(void) {
-//    remainder();
-//    //printf("1 % 0: %d \n", 1 % 0);
-//}
+void test02() {
+    printf("sizeof(int): %d \n", sizeof(int));
+    printf("sizeof(int*): %d \n", sizeof(int*));
+}
+
+void test03() {
+    int number = 0;
+    scanf("%d", &number);
+
+    printf("1 \t");
+
+    for (int i = 2; i <= number / 2; ++i) {
+        if (number % i == 0) {
+            printf("%d \t", i);
+        }
+    }
+
+    printf("%d", number);
+}
+
+typedef struct Test01 {
+    int first;
+    int second;
+} Test01;
+
+void test04() {
+    if (-1) {
+        printf("-1 is true");
+    }
+}
+
+void test05() {
+    char i = 1;
+    while (i) {
+        printf("%d: %c \n", i, i);
+        ++i;
+    }
+}
+
+void test06() {
+    assert(1 == 0);
+}
+
+typedef struct TestStructure00 TestStructure00;
+
+typedef struct TestStructure01 {
+    TestStructure00* pTest00;
+} TestStructure01;
+
+typedef struct TestStructure00 {
+    int test00;
+} TestStructure00;
+
+void test07() {
+    TestStructure01 test01 = { 0 };
+    TestStructure00 test00 = { 1 };
+    test01.pTest00 = &test00;
+
+    printf("%d", test01.pTest00->test00);
+}
+
+int main(void) {
+    test07();
+}
 
 
 

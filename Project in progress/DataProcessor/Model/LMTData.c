@@ -1,4 +1,3 @@
-#pragma once
 //********************************************
 // char* title = "LMTData.c"
 // made by Lieman
@@ -14,8 +13,30 @@
 // preprocessor
 #include <stdlib.h>		// malloc(), realloc(), free()
 #include <string.h>		// memcpy(), strlen()
+#include <assert.h>		// assert()
 #pragma warning(disable:4996) //memcpy()
 #include "LMTData.h"
+
+
+
+
+
+// structure
+// 1 LMTData must match with 1 pData
+// if there is 2 different LMTData have same pData,
+// when one of them deleted, pData must delted,
+// and the other's pData get NULL!
+typedef unsigned char Data;
+
+struct LMTData {
+	int count;
+	int chunk;
+	Data* pData;
+
+	int referenceCount;
+};
+
+typedef struct LMTData LMTDate;
 
 
 
@@ -31,15 +52,16 @@ static LMTData* pEmptyLMTData = NULL;
 
 // static method
 // what about use '_' for space in the name of which the meanning is important?
-static inline int LMTData__have_another_reference(const LMTData* pLMTData) {
-	// if pLMTData->referenceCount == 0 than arrayData have not another reference,	return false
-	// if pLMTData->referenceCount != 0 than arrayData have another reference,		return true
-	// if arrayData have not another reference,											pLMTData->referenceCount is false
-	// if arrayData have another reference,												pLMTData->referenceCount is true
+static int LMTData__have_another_reference(const LMTData* pLMTData) {
+	assert(pLMTData);
+	// if pLMTData->referenceCount == 0 than arrayData have not another reference,  return false
+	// if pLMTData->referenceCount != 0 than arrayData have another reference,      return true
+	// if arrayData have not another reference,                                     pLMTData->referenceCount is false
+	// if arrayData have another reference,                                         pLMTData->referenceCount is true
 
-	//* abstract concept *							* truth table of target *				* result expecting *
-	// if arrayData don't have another reference,	pLMTData->referenceCount is false,	and should return false
-	// if arrayData have another reference,			pLMTData->referenceCount is true,	and should return true
+	//           * abstract concept *                   * truth table of target *         * result expecting *
+	// if arrayData don't have another reference,   pLMTData->referenceCount is false,  and should return false
+	// if arrayData have another reference,         pLMTData->referenceCount is true,   and should return true
 	return pLMTData->referenceCount;
 }
 
@@ -47,22 +69,47 @@ static inline int LMTData__dont_have_another_reference(const LMTData* pLMTData) 
 	return !LMTData__have_another_reference(pLMTData);
 }
 
+
+
+static inline int LMTData__count_has_changed(int countDelta) {
+	// countDelta != 0    <=>    countDelta
+	return countDelta;
+}
+
+static inline int LMTData__count_has_not_changed(int countDelta) {
+	return !LMTData__count_has_changed(countDelta);
+}
+
+
+
+static inline int LMTData__is_null(void* ptr) {
+	return !LMTData__is_not_null(ptr);
+}
+
+static inline int LMTData__is_not_null(void* ptr) {
+	// ptr != NULL    <=>    ptr
+	return ptr;
+}
+
+
 static inline int LMTData__chunk(int count) {
 	return (count - 1) / ALLOC_INTERVAL + 1;
 }
 
 static void LMTData__realloc(LMTData** ppLMTData, int countDelta) {
-	if (ppLMTData == NULL) return;
-	if (*ppLMTData == NULL) return;
-
 	LMTData* pLMTData = *ppLMTData;
+
+	if (LMTData__count_has_not_changed(countDelta)) return;
+	if (ppLMTData == NULL) return;
+	if (pLMTData == NULL) return;
 
 	int afterCount = pLMTData->count + countDelta;
 	int afterChunk = LMTData__chunk(afterCount);
 
 	if (LMTData__have_another_reference(pLMTData)) {
 		--pLMTData->referenceCount;
-		*ppLMTData = newLMTData__LMTData__designated(pLMTData, afterCount, afterChunk);
+		Data* data = (Data*)malloc(afterCount);
+		*ppLMTData = newLMTData__designated(data, afterCount, afterChunk);
 
 		return;
 	}
@@ -81,48 +128,80 @@ static void LMTData__realloc(LMTData** ppLMTData, int countDelta) {
 
 // method
 void LMTData__append__character(LMTData** ppLMTData, char character) {
-	LMTData__realloc(ppLMTData, 1);
 	LMTData* pLMTData = *ppLMTData;
 
+	if (ppLMTData == NULL) return;
+	if (pLMTData == NULL) return;
+
+	LMTData__realloc(ppLMTData, 1);
+
 	pLMTData->pData[pLMTData->count] = (Data)character;
+
 	++pLMTData->count;
 }
 
 void LMTData__append__string(LMTData** ppLMTData, char* string) {
+	LMTData* pLMTData = *ppLMTData;
 
+	if (ppLMTData == NULL) return;
+	if (pLMTData == NULL) return;
 
+	int count = strlen(string) + 1;
+
+	LMTData__realloc(ppLMTData, count);
+
+	strcpy(pLMTData->pData + pLMTData->count, string);
+
+	pLMTData->count += count;
 }
 
 void LMTData__append__LMTData(LMTData** ppLHS, LMTData* pRHS) {
-	LMTData__prepareMutating(ppLHS, pRHS->count);
 	LMTData* pLHS = *ppLHS;
+
+	if (ppLHS == NULL) return;
+	if (pLHS == NULL) return;
+
+	LMTData__realloc(ppLHS, pRHS->count);
 
 	memcpy(pLHS->pData + pLHS->count, pRHS->pData, pRHS->count);
 
 	pLHS->count += pRHS->count;
 }
 
-Data LMTData__removeLast(LMTData** ppLMTData) {
+int LMTData__removeLast(LMTData** ppLMTData) {
 	LMTData* pLMTData = *ppLMTData;
+
+	if (ppLMTData == NULL) return -1;
+	if (pLMTData == NULL) return -1;
+
 	Data data = pLMTData->pData[pLMTData->count - 1];
 
-	LMTData__prepareMutating(ppLMTData, -1);
+	LMTData__realloc(ppLMTData, -1);
 
 	return data;
 }
 
 void LMTData__removeAll(LMTData** ppLMTData) {
-	delLMTData(*ppLMTData);
+	LMTData* pLMTData = *ppLMTData;
+
+	if (ppLMTData == NULL) return;
+	if (pLMTData == NULL) return;
+
+	delLMTData(ppLMTData);
 
 	*ppLMTData = newLMTData();
 }
 
 int LMTData__firstIndex(LMTData* pLMTData, Data data) {
-	for (int i = 0; i < pLMTData->count; ++i)
+	if (pLMTData == NULL) return;
+
+	int count = pLMTData->count;
+
+	for (int i = 0; i < count; ++i)
 		if (pLMTData->pData[i] == data)
 			return i;
 
-	return pLMTData->count;
+	return count;
 }
 
 
@@ -138,7 +217,7 @@ LMTData* newLMTData__designated(const Data* pData, int count, int chunk) {
 	// pData == NULL && count != 0		<=>		!pData && count
 	if (!pData && count) return NULL;
 
-	if (pData == NULL && pEmptyLMTData != NULL) {
+	if (pData == NULL && pEmptyLMTData) {
 		++pEmptyLMTData->referenceCount;
 		return pEmptyLMTData;
 	}
@@ -167,7 +246,7 @@ inline LMTData* newLMTData() {
 
 LMTData* newLMTData__string(const char* string) {
 	if (string == NULL) return newLMTData();
-	else return newLMTData__data((const Data*)string, strlen(string));
+	else return newLMTData__Data((const Data*)string, strlen(string));
 }
 
 LMTData* newLMTData__LMTData(LMTData* pLMTData) {
@@ -180,7 +259,10 @@ LMTData* newLMTData__LMTData(LMTData* pLMTData) {
 
 
 
-void delLMTData(LMTData* pLMTData) {
+void delLMTData(LMTData** ppLMTData) {
+	LMTData* pLMTData = *ppLMTData;
+
+	if (ppLMTData == NULL) return;
 	if (pLMTData == NULL) return;
 
 	if (LMTData__have_another_reference(pLMTData))

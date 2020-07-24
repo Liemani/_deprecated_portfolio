@@ -81,8 +81,8 @@ void test00() {
     cout << fixed << d << endl;
 }
 
-int main(){
-    test00();
-
-    return 0;
-}
+//int main(){
+//    test00();
+//
+//    return 0;
+//}
