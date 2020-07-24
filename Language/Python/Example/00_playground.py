@@ -156,5 +156,13 @@ def test14():
     print(list(int_list))
 
 
+def set_test():
+    superset = {"a", "b", "c", "d", "e"}
+    subset = {"b", "c", "d"}
+
+    if subset <= superset:
+        del subset
+
+
 if __name__ == "__main__":
-    test14()
+    set_test()
