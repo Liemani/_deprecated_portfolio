@@ -164,5 +164,49 @@ def set_test():
         del subset
 
 
+def test15():
+    thing = input("operate: ")
+    number = round(abs(eval(thing)))
+
+    if chr(number).isalpha():
+        print(chr(number))
+    else:
+        print(number)
+
+
+def simul(list_to_print):
+    string_list = list(map(str, list_to_print))
+
+    print("is all data true:", all(list_to_print))
+    print("length:", len(list_to_print))
+    print("max value:", max(string_list))
+    print("ascending order:", sorted(string_list))
+    print("data number:", list(enumerate(list_to_print)))
+
+
+def test16():
+    simul([1, 3, 5, "A", "b"])
+
+
+def distance(x=0, y=0):
+    from math import sqrt
+
+    if x == 0 and y == 0:
+        x = input("x-axis: ")
+        y = input("y-axis: ")
+
+    x = int(x)
+    y = int(y)
+
+    dist = sqrt(x**2 + y**2)
+
+    print(dist)
+
+
+def test17():
+    distance(3, 4)
+    distance()
+
+
 if __name__ == "__main__":
-    set_test()
+    test17()
