@@ -10,39 +10,58 @@
 
 
 
-// preprocessor
+//********************************************
+// 0. index
+// 1. preprocessor
+//
+// 2. type define
+//
+// 3. static variable
+//
+// 4. function
+//
+// 5. factory function
+//
+// 6. deprecated
+//********************************************
+
+
+
+
+
+// 1. preprocessor
 #include <stdlib.h>		// malloc(), realloc(), free()
 #include <string.h>		// memcpy(), strlen()
 #include <assert.h>		// assert()
+
 #pragma warning(disable:4996) //memcpy()
+
 #include "LMTData.h"
 
 
 
 
 
-// structure
+// 2. type define
 // 1 LMTData must match with 1 pData
 // if there is 2 different LMTData have same pData,
 // when one of them deleted, pData must delted,
 // and the other's pData get NULL!
 typedef unsigned char Data;
 
-struct LMTData {
+typedef struct LMTData {
 	int count;
 	int chunk;
 	Data* pData;
 
 	int referenceCount;
-};
-
-typedef struct LMTData LMTDate;
+} LMTData;
 
 
 
 
 
-// static variable
+// 3. static variable
 static const int ALLOC_INTERVAL = sizeof(int);
 static LMTData* pEmptyLMTData = NULL;
 
@@ -50,7 +69,7 @@ static LMTData* pEmptyLMTData = NULL;
 
 
 
-// static method
+// 4. function
 // what about use '_' for space in the name of which the meanning is important?
 static int LMTData__have_another_reference(const LMTData* pLMTData) {
 	assert(pLMTData);
@@ -80,17 +99,14 @@ static inline int LMTData__count_has_not_changed(int countDelta) {
 	return !LMTData__count_has_changed(countDelta);
 }
 
-
-
-static inline int LMTData__is_null(void* ptr) {
-	return !LMTData__is_not_null(ptr);
-}
-
-static inline int LMTData__is_not_null(void* ptr) {
-	// ptr != NULL    <=>    ptr
-	return ptr;
-}
-
+//static inline int LMTData__is_null(void* ptr) {
+//	return !LMTData__is_not_null(ptr);
+//}
+//
+//static inline int LMTData__is_not_null(void* ptr) {
+//	// ptr != NULL    <=>    ptr
+//	return ptr;
+//}
 
 static inline int LMTData__chunk(int count) {
 	return (count - 1) / ALLOC_INTERVAL + 1;
@@ -109,7 +125,7 @@ static void LMTData__realloc(LMTData** ppLMTData, int countDelta) {
 	if (LMTData__have_another_reference(pLMTData)) {
 		--pLMTData->referenceCount;
 		Data* data = (Data*)malloc(afterCount);
-		*ppLMTData = newLMTData__designated(data, afterCount, afterChunk);
+		*ppLMTData = newLMTData__designated(data, afterCount, afterChunk); // change
 
 		return;
 	}
@@ -124,9 +140,6 @@ static void LMTData__realloc(LMTData** ppLMTData, int countDelta) {
 
 
 
-
-
-// method
 void LMTData__append__character(LMTData** ppLMTData, char character) {
 	LMTData* pLMTData = *ppLMTData;
 
@@ -168,6 +181,8 @@ void LMTData__append__LMTData(LMTData** ppLHS, LMTData* pRHS) {
 	pLHS->count += pRHS->count;
 }
 
+
+
 int LMTData__removeLast(LMTData** ppLMTData) {
 	LMTData* pLMTData = *ppLMTData;
 
@@ -192,6 +207,8 @@ void LMTData__removeAll(LMTData** ppLMTData) {
 	*ppLMTData = newLMTData();
 }
 
+
+
 int LMTData__firstIndex(LMTData* pLMTData, Data data) {
 	if (pLMTData == NULL) return;
 
@@ -206,14 +223,25 @@ int LMTData__firstIndex(LMTData* pLMTData, Data data) {
 
 
 
+int LMTData__descript(LMTData* pLMTData) {
+	printf("[count: %d, chunk: %d reference count: %d] \n", pLMTData->count, pLMTData->chunk, pLMTData->referenceCount);
+
+	for (int i = 0; i < pLMTData->count; ++i)
+		printf("%d ", pLMTData->pData[i]);
+
+	putchar('\n');
+}
 
 
-// LMTData factory method
+
+
+
+// 5. factory function
 static inline LMTData* allocLMTData() {
 	return (LMTData*)malloc(sizeof(LMTData));
 }
 
-LMTData* newLMTData__designated(const Data* pData, int count, int chunk) {
+static LMTData* newLMTData__designated(const Data* pData, int count, int chunk) {
 	// pData == NULL && count != 0		<=>		!pData && count
 	if (!pData && count) return NULL;
 
@@ -236,7 +264,7 @@ LMTData* newLMTData__designated(const Data* pData, int count, int chunk) {
 	return pLMTData;
 }
 
-inline LMTData* newLMTData__Data(const Data* pData, int count) {
+static inline LMTData* newLMTData__Data(const Data* pData, int count) {
 	return newLMTData__designated(pData, count, LMTData__chunk(count));
 }
 
@@ -246,11 +274,11 @@ inline LMTData* newLMTData() {
 
 LMTData* newLMTData__string(const char* string) {
 	if (string == NULL) return newLMTData();
-	else return newLMTData__Data((const Data*)string, strlen(string));
+	else return newLMTData__Data((const Data*)string, strlen(string) + 1);
 }
 
 LMTData* newLMTData__LMTData(LMTData* pLMTData) {
-	if (pLMTData == NULL) return newLMTData();
+	if (pLMTData == NULL) return NULL;
 
 	++pLMTData->referenceCount;
 
@@ -278,7 +306,7 @@ void delLMTData(LMTData** ppLMTData) {
 
 
 
-// deprecated
+// 6. deprecated
 //LMTData* newLMTData__LMTData__count(LMTData* pLMTData, int count) {
 //	int chunk = LMTData__chunk(count);
 //
