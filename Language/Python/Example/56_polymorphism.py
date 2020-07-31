@@ -16,7 +16,7 @@ class Dog(Animal):
         return "Woof! Woof!"
 
 
-def test18():
+def run():
     animals = [Cat("Missy"), Cat("Mr.Mistoffelees"), Dog("Lassie")]
 
     for animal in animals:

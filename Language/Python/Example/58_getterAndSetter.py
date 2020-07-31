@@ -11,7 +11,7 @@ class Person:
         self.__age = value
 
 
-def test20():
+def run():
     james = Person()
     james.age = 20
     print(james.age)

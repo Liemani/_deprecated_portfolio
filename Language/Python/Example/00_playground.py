@@ -208,26 +208,16 @@ def test17():
     distance()
 
 
-
-
-
-
-
-
-
-
-
-
-def test21():
+def test18():
     import urllib.request
     response = urllib.request.urlopen("http://theteamlab.io")
     print(response.read())
 
 
-def test22():
+def test19():
     import webbrowser
     webbrowser.open("http://computing.or.kr")
 
 
 if __name__ == "__main__":
-    test22()
+    test19()

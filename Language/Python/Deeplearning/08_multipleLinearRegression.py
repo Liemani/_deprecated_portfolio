@@ -1,3 +1,5 @@
+import numpy as np
+
 def multiple_linear_regression():
     data = [[2, 0, 81], [4, 4, 93], [6, 2, 91], [8, 3, 97]]
 
@@ -39,3 +41,7 @@ def multiple_linear_regression():
 
         if i % 100 == 0:
             print("epoch=%.f, 기울기1=%.04f, 기울기2=%.04f, 절편=%.04f" % (i, a1, a2, b))
+
+
+if __name__ == "__main__":
+    multiple_linear_regression()

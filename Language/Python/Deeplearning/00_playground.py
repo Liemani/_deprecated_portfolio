@@ -7,10 +7,8 @@ import numpy as np
 
 
 
-
-
-
+        print("Input value: " + str((x1, x2)) + " output value: " + str(y))
 
 
 if __name__ == "__main__":
-    test02()
+    test00()

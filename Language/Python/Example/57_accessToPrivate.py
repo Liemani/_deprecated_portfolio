@@ -7,6 +7,6 @@ class Inventory(object):
         return self.__items
 
 
-def test19():
+def run():
     inventory = Inventory()
     inventory.items = [1]
