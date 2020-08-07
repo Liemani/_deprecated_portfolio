@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo -n Enter user id: && read id
+echo -n Enter password: && read -s password
+
+echo
+
+echo Entered user id: $id
+echo Entered password: $password
