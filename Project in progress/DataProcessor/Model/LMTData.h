@@ -26,6 +26,8 @@ typedef struct LMTData LMTData;
 
 
 // function
+int LMTData__getCount(LMTData* pLMTData);
+
 static int LMTData__have_another_reference(const LMTData* pLMTData);
 static int LMTData__dont_have_another_reference(const LMTData* pLMTData);
 
@@ -33,8 +35,6 @@ static int LMTData__count_has_changed(int countDelta);
 static int LMTData__count_has_not_changed(int countDelta);
 
 static int LMTData__chunk(int count);
-
-static void LMTData__realloc(LMTData** ppLMTData, int countDelta);
 
 
 
@@ -55,11 +55,14 @@ int LMTData__descript(LMTData* pLMTData);
 
 // factory method
 static LMTData* allocLMTData();
+static void reallocLMTData(LMTData** ppLMTData, int countDelta);
+
 static LMTData* newLMTData__designated(const Data* pData, int count, int chunk);
 static LMTData* newLMTData__Data(const Data* pData, int count);
 
 LMTData* newLMTData();
 LMTData* newLMTData__string(const char* string);
-LMTData* newLMTData__LMTData(LMTData* pLMTData);
+
+LMTData* referenceLMTData(LMTData* pLMTData);
 
 void delLMTData(LMTData** pLMTData);

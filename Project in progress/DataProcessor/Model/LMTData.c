@@ -63,7 +63,7 @@ typedef struct LMTData {
 
 // 3. static variable
 static const int ALLOC_INTERVAL = sizeof(int);
-static LMTData* pEmptyLMTData = NULL;
+static LMTData* pEmptyLMTData;
 
 
 
@@ -71,8 +71,21 @@ static LMTData* pEmptyLMTData = NULL;
 
 // 4. function
 // what about use '_' for space in the name of which the meanning is important?
-static int LMTData__have_another_reference(const LMTData* pLMTData) {
+int LMTData__getCount(LMTData* pLMTData) {
+	return pLMTData->count;
+}
+
+
+
+static inline int LMTData__chunk(int count) {
+	return (count - 1) / ALLOC_INTERVAL + 1;
+}
+
+
+
+static inline int LMTData__have_another_reference(const LMTData* pLMTData) {
 	assert(pLMTData);
+
 	// if pLMTData->referenceCount == 0 than arrayData have not another reference,  return false
 	// if pLMTData->referenceCount != 0 than arrayData have another reference,      return true
 	// if arrayData have not another reference,                                     pLMTData->referenceCount is false
@@ -99,43 +112,11 @@ static inline int LMTData__count_has_not_changed(int countDelta) {
 	return !LMTData__count_has_changed(countDelta);
 }
 
-//static inline int LMTData__is_null(void* ptr) {
-//	return !LMTData__is_not_null(ptr);
-//}
-//
-//static inline int LMTData__is_not_null(void* ptr) {
-//	// ptr != NULL    <=>    ptr
-//	return ptr;
-//}
 
-static inline int LMTData__chunk(int count) {
-	return (count - 1) / ALLOC_INTERVAL + 1;
-}
 
-static void LMTData__realloc(LMTData** ppLMTData, int countDelta) {
-	LMTData* pLMTData = *ppLMTData;
-
-	if (LMTData__count_has_not_changed(countDelta)) return;
-	if (ppLMTData == NULL) return;
-	if (pLMTData == NULL) return;
-
-	int afterCount = pLMTData->count + countDelta;
-	int afterChunk = LMTData__chunk(afterCount);
-
-	if (LMTData__have_another_reference(pLMTData)) {
-		--pLMTData->referenceCount;
-		Data* data = (Data*)malloc(afterCount);
-		*ppLMTData = newLMTData__designated(data, afterCount, afterChunk); // change
-
-		return;
-	}
-
-	pLMTData->count = min(pLMTData->count, afterCount);
-
-	if (pLMTData->chunk != afterChunk) {
-		pLMTData->chunk = afterChunk;
-		pLMTData->pData = (Data*)realloc(pLMTData->pData, ALLOC_INTERVAL * afterChunk);
-	}
+// The function which is access the structure directly must not inline
+int getCount(LMTData* pLMTData) {
+	return pLMTData->count;
 }
 
 
@@ -146,7 +127,7 @@ void LMTData__append__character(LMTData** ppLMTData, char character) {
 	if (ppLMTData == NULL) return;
 	if (pLMTData == NULL) return;
 
-	LMTData__realloc(ppLMTData, 1);
+	reallocLMTData(ppLMTData, 1);
 
 	pLMTData->pData[pLMTData->count] = (Data)character;
 
@@ -161,7 +142,7 @@ void LMTData__append__string(LMTData** ppLMTData, char* string) {
 
 	int count = strlen(string) + 1;
 
-	LMTData__realloc(ppLMTData, count);
+	reallocLMTData(ppLMTData, count);
 
 	strcpy(pLMTData->pData + pLMTData->count, string);
 
@@ -174,7 +155,7 @@ void LMTData__append__LMTData(LMTData** ppLHS, LMTData* pRHS) {
 	if (ppLHS == NULL) return;
 	if (pLHS == NULL) return;
 
-	LMTData__realloc(ppLHS, pRHS->count);
+	reallocLMTData(ppLHS, pRHS->count);
 
 	memcpy(pLHS->pData + pLHS->count, pRHS->pData, pRHS->count);
 
@@ -191,7 +172,7 @@ int LMTData__removeLast(LMTData** ppLMTData) {
 
 	Data data = pLMTData->pData[pLMTData->count - 1];
 
-	LMTData__realloc(ppLMTData, -1);
+	reallocLMTData(ppLMTData, -1);
 
 	return data;
 }
@@ -241,8 +222,36 @@ static inline LMTData* allocLMTData() {
 	return (LMTData*)malloc(sizeof(LMTData));
 }
 
+static void reallocLMTData(LMTData** ppLMTData, int countDelta) {
+	LMTData* pLMTData = *ppLMTData;
+
+	if (LMTData__count_has_not_changed(countDelta)) return;
+	if (ppLMTData == NULL) return;
+	if (pLMTData == NULL) return;
+
+	int afterCount = pLMTData->count + countDelta;
+	int afterChunk = LMTData__chunk(afterCount);
+
+	if (LMTData__have_another_reference(pLMTData)) {
+		--pLMTData->referenceCount;
+		Data* data = (Data*)malloc(afterCount);
+		*ppLMTData = newLMTData__designated(data, afterCount, afterChunk); // change
+
+		return;
+	}
+
+	pLMTData->count = min(pLMTData->count, afterCount);
+
+	if (pLMTData->chunk != afterChunk) {
+		pLMTData->chunk = afterChunk;
+		pLMTData->pData = (Data*)realloc(pLMTData->pData, ALLOC_INTERVAL * afterChunk);
+	}
+}
+
+
+
 static LMTData* newLMTData__designated(const Data* pData, int count, int chunk) {
-	// pData == NULL && count != 0		<=>		!pData && count
+	// (!pData && count)    <=>    (pData == NULL && count != 0)
 	if (!pData && count) return NULL;
 
 	if (pData == NULL && pEmptyLMTData) {
@@ -273,11 +282,13 @@ inline LMTData* newLMTData() {
 }
 
 LMTData* newLMTData__string(const char* string) {
-	if (string == NULL) return newLMTData();
+	if (string == NULL) return NULL;
 	else return newLMTData__Data((const Data*)string, strlen(string) + 1);
 }
 
-LMTData* newLMTData__LMTData(LMTData* pLMTData) {
+
+
+LMTData* referenceLMTData(LMTData* pLMTData) {
 	if (pLMTData == NULL) return NULL;
 
 	++pLMTData->referenceCount;
@@ -300,6 +311,8 @@ void delLMTData(LMTData** ppLMTData) {
 		free(pLMTData->pData);
 		free(pLMTData);
 	}
+
+	*ppLMTData = NULL;
 }
 
 
@@ -391,4 +404,13 @@ void delLMTData(LMTData** ppLMTData) {
 //	memcpy(pLMTData->pData + pLMTData->count, data, count);
 //
 //	pLMTData->count += count;
+//}
+
+//static inline int LMTData__is_null(void* ptr) {
+//	return !LMTData__is_not_null(ptr);
+//}
+//
+//static inline int LMTData__is_not_null(void* ptr) {
+//	// ptr != NULL    <=>    ptr
+//	return ptr;
 //}

@@ -19,26 +19,21 @@
 
 
 // structure
-typedef struct LMTString {
-	int count;
-	LMTData* data;
-
-	int referenceCount;
-} LMTString;
+typedef struct LMTString LMTString;
 
 
 
 
 
 // method
-//void LMTString__reallocIfNeed(LMTString* lmtString, int countDelta);
-//void LMTString__append__Character(LMTString* lmtString, char character);
-//void LMTString__append__data(LMTString* lmtString, char* data, int count);
+//void LMTString__reallocIfNeed(LMTString* pLMTString, int countDelta);
+//void LMTString__append__Character(LMTString* pLMTString, char character);
+//void LMTString__append__data(LMTString* pLMTString, char* data, int count);
 //void LMTString__append__LMTString(LMTString* lhs, LMTString* rhs);
-//void LMTString__append__hex__fromCharacter(LMTString* lmtString, char character);
-//void LMTString__append__visibleCharacter__fromCharacter(LMTString* lmtString, char character);
-//char LMTStringg__removeLast(LMTString* lmtString);
-//void LMTStringg__removeAll(LMTString* lmtString);
+//void LMTString__append__hex__fromCharacter(LMTString* pLMTString, char character);
+//void LMTString__append__visibleCharacter__fromCharacter(LMTString* pLMTString, char character);
+//char LMTStringg__removeLast(LMTString* pLMTString);
+//void LMTStringg__removeAll(LMTString* pLMTString);
 
 
 
@@ -46,8 +41,7 @@ typedef struct LMTString {
 
 // LMTString factory method
 LMTString* newLMTString();
-LMTString* newLMTString__String(char* string);
-LMTString* newLMTString__data(LMTData* pData);
+LMTString* newLMTString__string(char* string);
 LMTString* newLMTString__LMTString(LMTString* pLMTString);
 
 void delLMTString(LMTString** ppLMTString);

@@ -1,4 +1,3 @@
-#pragma once
 //********************************************
 // char* title = "LMTString.c"
 // made by Lieman
@@ -11,11 +10,32 @@
 
 
 
-// preprocessor
+//********************************************
+// 0. index
+// 1. preprocessor
+//
+// 2. type define
+//
+// 3. static variable
+//
+// 4. function
+//
+// 5. factory function
+//
+// 6. deprecated
+//********************************************
+
+
+
+
+
+// 1. preprocessor
 #include <stdlib.h>    // malloc(), realloc(), free()
 #include <string.h>    // strcpy(), strlen(), strcat()
 #include <assert.h>    // assert()
+
 #pragma warning(disable:4996)    //strcpy()
+
 #include "LMTString.h"
 #include "LMTData.h"
 
@@ -23,16 +43,37 @@
 
 
 
-// static variable
+// 2. type define
+typedef struct LMTString {
+	int count;
+
+	int dataCount;
+	int chunk;
+	LMTData** ppData;
+
+	int referenceCount;
+} LMTString;
+
+
+
+
+
+// 3. static variable
 static const int ALLOC_INTERVAL = sizeof(int);
-static LMTString* pEmpltyLMTString = NULL;
+static LMTString* pEmptyLMTString;
 
 
 
 
 
-// static method
-static int LMTString__have_another_reference(const LMTString* pLMTString) {
+// 4. function
+static inline int LMTString__chunk(int count) {
+	return (count - 1) / ALLOC_INTERVAL + 1;
+}
+
+
+
+static inline int LMTString__have_another_reference(const LMTString* pLMTString) {
 	assert(pLMTString);
 
 	//* abstract concept *							* truth table of target *				* result expecting *
@@ -62,15 +103,15 @@ static inline int LMTString__dont_have_another_reference(const LMTString* pLMTSt
 //
 //	if (LMTString__dont_have_another_reference(*ppLMTString)) return;
 //
-//	LMTString* lmtString = *ppLMTString;
+//	LMTString* pLMTString = *ppLMTString;
 //
-//	--lmtString->referenceCount;
-//	*ppLMTString = newLMTString__data(lmtString->data);
-//
-//
+//	--pLMTString->referenceCount;
+//	*ppLMTString = newLMTString__data(pLMTString->data);
 //
 //
-//	--lmtString->referenceCount;
+//
+//
+//	--pLMTString->referenceCount;
 //	*ppLMTString = newLMTString__referenceData;
 //
 //	LMTData* pLMTData = *pLMTData;
@@ -90,9 +131,6 @@ static inline int LMTString__dont_have_another_reference(const LMTString* pLMTSt
 
 
 
-
-
-// method
 //void LMTString__reallocIfNeed(LMTString* pLMTString, int countDelta) {
 //	int afterChunk = (pLMTString->count + countDelta) / ALLOC_INTERVAL + 1;
 //
@@ -123,16 +161,16 @@ static inline int LMTString__dont_have_another_reference(const LMTString* pLMTSt
 //	pLMTString->data[pLMTString->count] = '\0';
 //}
 
-//void LMTString__append__String(LMTString* lmtString, char* string) {
+//void LMTString__append__String(LMTString* pLMTString, char* string) {
 //	if (string == NULL) return;
 //
 //	const int count = strlen(string);
 //
-//	LMTString__reallocIfNeed(lmtString, count);
+//	LMTString__reallocIfNeed(pLMTString, count);
 //
-//	strcpy(lmtString->string, string);
+//	strcpy(pLMTString->string, string);
 //
-//	lmtString->count += count;
+//	pLMTString->count += count;
 //}
 
 //void LMTString__append__LMTString(LMTString* lhs, LMTString* rhs) {
@@ -143,7 +181,7 @@ static inline int LMTString__dont_have_another_reference(const LMTString* pLMTSt
 //	lhs->count += rhs->count;
 //}
 
-//void LMTString__append__visibleCharacter__fromCharacter(LMTString* lmtString, char character) {
+//void LMTString__append__visibleCharacter__fromCharacter(LMTString* pLMTString, char character) {
 //	if (
 //		character <= 0 ||
 //		(7 <= character &&
@@ -153,82 +191,125 @@ static inline int LMTString__dont_have_another_reference(const LMTString* pLMTSt
 //		character == 32 ||
 //		127 <= character) {
 //
-//		LMTString__append__Character(lmtString, '.');
+//		LMTString__append__Character(pLMTString, '.');
 //	} else {
-//		LMTString__append__Character(lmtString, character);
+//		LMTString__append__Character(pLMTString, character);
 //	}
 //}
 
-//char LMTStringg__removeLast(LMTString* lmtString) {
-//	char uCharacter = lmtString->string[lmtString->count - 1];
+//char LMTStringg__removeLast(LMTString* pLMTString) {
+//	char uCharacter = pLMTString->string[pLMTString->count - 1];
 //
-//	LMTString__reallocIfNeed(lmtString, -1);
+//	LMTString__reallocIfNeed(pLMTString, -1);
 //
-//	--lmtString->count;
+//	--pLMTString->count;
 //
 //	return uCharacter;
 //}
 
-//void LMTStringg__removeAll(LMTString* lmtString) {
-//	lmtString->count = 0;
-//	lmtString->chunk = 1;
+//void LMTStringg__removeAll(LMTString* pLMTString) {
+//	pLMTString->count = 0;
+//	pLMTString->chunk = 1;
 //
-//	free(lmtString->string);
-//	lmtString->string = (char*)malloc(ALLOC_INTERVAL * lmtString->chunk);
+//	free(pLMTString->string);
+//	pLMTString->string = (char*)malloc(ALLOC_INTERVAL * pLMTString->chunk);
 //}
 
 
 
 
 
-// LMTString factory method
+// 5. factory function
 static inline LMTString* allocLMTString() {
 	return (LMTString*)malloc(sizeof(LMTString));
 }
 
-//static LMTString* newLMTString__designated(LMTData* pData) {    // add count parameter
-//	if (pData == NULL && pEmpltyLMTString) {
-//		++pEmpltyLMTString->referenceCount;
-//		return pEmpltyLMTString;
-//	}
-//
-//	LMTString* lmtString = allocLMTString();
-//
-//	//lmtString->count = count;
-//
-//	lmtString->data = referenceLMTData__LMTData(pData);
-//
-//	lmtString->referenceCount = 0;
-//
-//	return lmtString;
-//}
-//
-//LMTString* newLMTString() {
-//	LMTData* data = newLMTData__String("");
-//
-//	return newLMTString__designated(data);
-//}
-//
-//LMTString* newLMTString__String(char* string) {
-//	if (string == NULL) return newLMTString();
-//
-//	LMTData* data = newLMTData__String(string);
-//
-//	return newLMTString__designated(data);
-//}
-//
+static void reallocLMTString(LMTData** ppLMTString, int countDelta) {
+	LMTString* pLMTString = *ppLMTString;
+
+	if (LMTString__count) {
+
+	}
+}
+
+
+
+static LMTString* newLMTString__designated(LMTData* pLMTData, int count) {
+	// (!pData && (count - 1))    <=>    (pData == NULL && count != 1)
+	if (!pLMTData && (count - 1)) return NULL;
+
+	if (pLMTData == NULL && pEmptyLMTString) {
+		++pEmptyLMTString->referenceCount;
+		return pEmptyLMTString;
+	}
+
+	LMTString* pLMTString = allocLMTString();
+
+	pLMTString->count = count;
+	pLMTString->dataCount = 1;
+	pLMTString->chunk = 1;
+
+	pLMTString->ppData = (LMTData**)malloc(sizeof(LMTData**) * ALLOC_INTERVAL);
+	if (pLMTData) pLMTString->ppData[0] = pLMTData;
+	else {
+		pLMTString->ppData[0] = newLMTData__string("");
+		pEmptyLMTString = pLMTString;
+	}
+
+	pLMTString->referenceCount = 0;
+
+	return pLMTString;
+}
+
+inline LMTString* newLMTString() {
+	return newLMTString__designated(NULL, 0);
+}
+
+LMTString* newLMTString__string(char* string) {
+	if (string == NULL) return NULL;
+
+	LMTData* data = newLMTData__string(string);
+
+	return newLMTString__designated(data, LMTData__getCount(data));
+}
+
+
+
+LMTString* referenceLMTString(LMTString* pLMTString) {
+	if (pLMTString == NULL) return NULL;
+
+	++pLMTString->referenceCount;
+
+	return pLMTString;
+}
+
+
+
+void delLMTString(LMTString** ppLMTString) {
+	LMTString* pLMTString = *ppLMTString;
+
+	if (ppLMTString == NULL) return;
+	if (pLMTString == NULL) return;
+
+	if (LMTString__have_another_reference(pLMTString))
+		--pLMTString->referenceCount;
+	else {
+		if (pLMTString == pEmptyLMTString) pEmptyLMTString == NULL;
+
+		for (int i = 0; i < pLMTString->dataCount ; ++i)
+			delLMTData(pLMTString->ppData[i]);
+		
+		free(pLMTString->ppData);
+		free(pLMTString);
+	}
+
+	*ppLMTString = NULL;
+}
+
 //LMTString* newLMTString__data(LMTData* pData) {
 //	LMTData* stringData = newLMTData__LMTData(pData);
 //
 //	return newLMTString__designated(stringData);
-//}
-//
-//LMTString* newLMTString__LMTString(LMTString* pLMTString) {
-//	if (pLMTString == NULL) return newLMTString();
-//
-//	++pLMTString->referenceCount;
-//
-//	return pLMTString;
 //}
 //
 //// make replica of parameter name to (pLHS, rhs)
@@ -251,19 +332,4 @@ static inline LMTString* allocLMTString() {
 //		delLMTString(pLHS);
 //
 //	*ppLHS = newLMTString__LMTString(pRHS);
-//}
-//
-//void delLMTString(LMTString** ppLMTString) {
-//	LMTString* pLMTString = *ppLMTString;
-//
-//	if (pLMTString == NULL) return;
-//
-//	if (LMTString__have_another_reference(pLMTString))
-//		--pLMTString->referenceCount;
-//	else {
-//		deallocLMTData(pLMTString->data);
-//		free(pLMTString);
-//	}
-//
-//	*ppLMTString = NULL;
 //}
