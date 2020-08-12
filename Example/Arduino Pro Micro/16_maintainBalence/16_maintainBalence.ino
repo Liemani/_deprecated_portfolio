@@ -1,13 +1,55 @@
 // preprocessor
 #include <Wire.h>
 
+#define MOTOR_PIN_FL 6
+#define MOTOR_PIN_FR 10
+#define MOTOR_PIN_RL 5
+#define MOTOR_PIN_RR 9
 
+#define BASE_DUTY_CYCLE_FL 127
+#define BASE_DUTY_CYCLE_FR 127
+#define BASE_DUTY_CYCLE_RL 127
+#define BASE_DUTY_CYCLE_RR 127
+
+#define MPU_SENSOR_REGISTER_ADDRESS 0x3b
+
+
+
+// variable
 
 // class
+class MOTORS {
+private:
+    static const int MOTOR_PIN_ARRAY[4];
+    static const int BASE_DUTY_CYCLE_ARRAY[4];
+    
+    static int motorMultiplierSupplementArray[4];
+    static int motorAdderSupplementArray[4];
+    
+    static int motorDutyCycleArray[4];
+    
+public:
+    static void trace() {
+        for (int i = 0; i < 4; ++i) {
+            motorDutyCycleArray[i] = baseDutyCycle * motorMultiplierSupplementArray[i] + motorAdderSupplementArray[i];
+        }
+    }
+};
+
+const int MOTORS::MOTOR_PIN_ARRAY[4] = {MOTOR_PIN_FL, MOTOR_PIN_FR, MOTOR_PIN_RL, MOTOR_PIN_RR};
+const int MOTORS::BASE_DUTY_CYCLE_ARRAY[4] = {BASE_DUTY_CYCLE_FL, BASE_DUTY_CYCLE_FR, BASE_DUTY_CYCLE_RL, BASE_DUTY_CYCLE_RR};
+
+int MOTORS::motorMultiplierSupplementArray[4];
+int MOTORS::motorAdderSupplementArray[4];
+
+int MOTORS::motorDutycycleArray[4];
+
+
+
 class MPU {
 private:
     // class property
-    static const int sensorValueAddress;
+    static const int sensorRegisterAddress;
 
     static int sensorValue[7];
     static double sensorValue_average[7];
@@ -26,7 +68,7 @@ private:
         static int low_byte;
         
         Wire.beginTransmission(0x68);
-        Wire.write(sensorValueAddress);
+        Wire.write(sensorRegisterAddress);
         Wire.endTransmission(false);
         Wire.requestFrom(0x68, 14, true);
 
@@ -157,15 +199,15 @@ public:
     }
 };
 
-const int MPU::sensorValueAddress = 0x3b;
+const int MPU::sensorRegisterAddress = MPU_SENSOR_REGISTER_ADDRESS;
 
 int MPU::sensorValue[7];
 double MPU::sensorValue_average[7];
 
-double MPU::accel[3] = {0};
+double MPU::accel[3];
 double MPU::velocity[3] = {0};
 
-double MPU::angularVelocity[3] = {0};
+double MPU::angularVelocity[3];
 double MPU::angle[3] = {0};
 
 

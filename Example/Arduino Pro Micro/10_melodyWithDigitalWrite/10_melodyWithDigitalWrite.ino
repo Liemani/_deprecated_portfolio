@@ -1,57 +1,63 @@
 // the sound is not good as i expected
 // retry by modifying the time of delay!!
 
-const int MOTOR_FL = 6;
-const int MOTOR_FR = 10;
-const int MOTOR_BL = 5;
-const int MOTOR_BR = 9;
+// preprocessor
+#define MOTOR_PIN_FL = 6;
+#define MOTOR_PIN_FR = 10;
+#define MOTOR_PIN_BL = 5;
+#define MOTOR_PIN_BR = 9;
 
-const int MOTOR_ARRAY[4] = {MOTOR_FL, MOTOR_FR, MOTOR_BL, MOTOR_BR};
 
-const int melody[] = {262, 294, 330, 349, 392, 440, 494, 523};
 
-int long previousMicroSeconds;
+// variable
+const int MOTOR_ARRAY[4] = {MOTOR_PIN_FL, MOTOR_PIN_FR, MOTOR_PIN_BL, MOTOR_PIN_BR};
+
+const int melody[] = {262, 294, 330, 349, 392, 440, 494, 523};    // hertz
+
 int count;
-int hertzSupplement;
+int hertz;
+int interval;
 
+int long previousTime;    // unit: micro second
+
+int dutyCycle;
+
+
+
+// main function
 void setup() {
-    Serial.begin(115200);
-    
     for (int i = 0; i < 4; ++i) {
         pinMode(MOTOR_ARRAY[i], OUTPUT);
     }
 
-    previousMicroSeconds = micros();
     count = 0;
-    hertzSupplement = melody[count];
+    hertz = melody[count];
+    interval = 1000000 / hertz;
+    
+    previousMicroSeconds = micros();
 }
 
 void loop() {
-    Serial.println(count);
-    
-    Serial.print("micors(): ");
-    Serial.println(micros());
-    Serial.print("prev: ");
-    Serial.println(previousMicroSeconds);
-    
     if (micros() - previousMicroSeconds > 1000000) {
-        previousMicroSeconds = micros();
-
         if (count < 7) {
             ++count;
-            hertzSupplement =  10000 / melody[count];
+            hertz = melody[count];
+            interval = 1000000 / hertz;
         }
+        
+        previousMicroSeconds = micros();
     }
     
     for (int i = 0; i < 4; ++i) {
         digitalWrite(MOTOR_ARRAY[i], HIGH);
     }
-    
-    delayMicroseconds(1 * hertzSupplement);
+
+    dutyCycle = interval / 100;
+    delayMicroseconds(dutyCycle);
 
     for (int i = 0; i <4; ++i) {
         digitalWrite(MOTOR_ARRAY[i], LOW);
     }
     
-    delayMicroseconds(99 * hertzSupplement);
+    delayMicroseconds(interval - dutyCycle);
 }
