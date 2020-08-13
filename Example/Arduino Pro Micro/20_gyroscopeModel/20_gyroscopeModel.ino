@@ -181,7 +181,6 @@ double MOTORS::instantaneousAngleChangeSetPoint[3];
 
 class MPU {
 private:
-    // class property
     static const int sensorRegisterAddress;
 
     static int sensorValue[7];
@@ -193,11 +192,10 @@ private:
 
     static double angularVelocity[3];
     static double instantaneousAngleChange[3];
-    static double angle[3];
+    static double gyroscope[3];    // longitude, latitude, roll
 
 
     
-    // class method
     static void readSensor() {
         static int high_byte;
         static int low_byte;
@@ -240,7 +238,7 @@ public:
         for (int i = 0; i < 3; ++i) {
             velocity[i] = 0;
             
-            angle[i] = 0;
+            gyroscope[i] = 0;
         }
         
         setSensorValue_average();
@@ -275,7 +273,9 @@ public:
 
             angularVelocity[i] = (sensorValue[i + 4] - sensorValue_average[i + 4]) / 131;
             instantaneousAngleChange[i] = angularVelocity[i] * elapsedTime / 1000000;
-            angle[i] += instantaneousAngleChange[i];
+            gyroscope[0] += instantaneousAngleChange[i];
+            gyroscope[1]
+            gyroscope[2]
         }
 
         previousTime = currentTime;
@@ -387,7 +387,7 @@ double MPU::velocity[3];
 
 double MPU::angularVelocity[3];
 double MPU::instantaneousAngleChange[3];
-double MPU::angle[3];
+double MPU::gyroscope[3];
 
 
 
