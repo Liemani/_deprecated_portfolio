@@ -19,7 +19,7 @@ int main() {
 	getline(cin, sentence);
 	
 	istringstream iss(sentence);
-	vector<string> wordVector((istream_iterator<string>(iss)), istream_iterator<string>());
+	vector<string> wordVector(istream_iterator<string>{iss}, istream_iterator<string>());
 	
 	vector<WordCounter*> wordCounterVector;
 	
