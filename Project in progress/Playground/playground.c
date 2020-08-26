@@ -137,9 +137,9 @@ void test07() {
     printf("%d", test01.pTest00->test00);
 }
 
-int main(void) {
-    test07();
-}
+//int main(void) {
+//    test07();
+//}
 
 
 

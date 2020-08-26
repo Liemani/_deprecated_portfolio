@@ -1,3 +1,4 @@
+// for to input Serial1, must no Serial.print()
 // This doen't work!!
 // preprocessor
 #include <stdlib.h>
@@ -451,7 +452,6 @@ void loop() {
             static char* word2;
             word1 = strtok(buffer, " ");
             word2 = strtok(NULL, " ");
-            printInput(word1, word2);
 
             static int motorNumber;
             static int dutyCycle;
@@ -486,7 +486,6 @@ void loop() {
                 MPU::reset();
             } else if (word1[0] == 'b') {
                 shouldDebug = !shouldDebug;
-                Serial1.println("toggle");
             } else if (word1[0] == 'm') {
                 MOTORS::printDescription();
                 MPU::printDescription();
