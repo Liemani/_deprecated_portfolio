@@ -1,0 +1,17 @@
+#!/bin/bash
+
+let a=5+4
+echo $a
+
+let "b = 5 + 4"
+echo $b
+
+let a++
+
+echo $a
+
+let "c = 4 * 5"
+echo $c
+
+let "d = $1 + 30"
+echo $d

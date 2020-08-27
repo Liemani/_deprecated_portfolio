@@ -1,4 +1,4 @@
 #!/bin/bash
-# A sample Bash script, by Lieman
+# This is comment
 
 echo Hello World!
