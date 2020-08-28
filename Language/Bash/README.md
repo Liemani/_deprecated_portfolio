@@ -1,3 +1,3 @@
 # Bash script study
 
-[Link](https://ryanstutorials.net/problem-solving-skills/)
+[Link](https://ryanstutorials.net/bash-scripting-tutorial/)
