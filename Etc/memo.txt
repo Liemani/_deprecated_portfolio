@@ -153,3 +153,53 @@ how to change camera frame??    hint: /camera_info->header.frame_id
  
 api doc: https://docs.ros.org/api/roscpp/html/classros_1_1NodeHandle.html#41fcdf7fd2a2bfa1c42d14d35f8f5a8e
 
+
+
+2020/08/31
+sudo apt-cache search mysql-server
+sudo apt-get install mysql-server-5.7
+sudo apt-get install mysql-client-5.7
+systemctl start mysql
+mysql -u root -p
+\q
+
+cd /etc/mysql/conf.d
+ctrl c v    // from install3 for utf8
+
+sudo /etc/init.d/mysql restart
+mysql -u root -p
+
+create user 'Lieman'@('localhost' or '%') identified by '1234';
+GRANT ALL PRIVILEGES ON *.* TO 'id'@'%' IDENTIFIED BY 'pw';
+\q
+
+cd /etc/mysql/mysql.conf.d
+sudo gedit mysqld.cnf
+make bind-address comment
+sudo /etc/init.d/mysql restart
+sudo apt-get install mysql-workbench
+mysql-workbench
+
+relation 1:1, 1:n, n:n
+
+in vscode
+ctrl shift p c/c++(ui)
+compiler path gcc -> g++
+clang x 64 -> gcc x 64
+standard 17 -> 14
+top tap -> terminal -> configuration basic build work -> anything
+
+file -> default setting -> shortcut key binding -> right top -> open sortcut key(JSON)
+
+Tools -> Create Command-line Launcher...
+Tools -> Create Desktop Entry...
+
+charm
+sudo apt-get install python-pip
+pip install --upgrade pip
+pip install pymysql
+pip install sqlalchemy
+option) pip3 install sqlalchemy
+
+
+
