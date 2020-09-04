@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/ros/catkin_ws/devel/include/**",
+                "/opt/ros/kinetic/include/**",
+                "/home/ros/catkin_ws/src/05_get_aruco_pose/include/**",
+                "/home/ros/catkin_ws/src/a06_get_aruco_multi/include/**",
+                "/home/ros/catkin_ws/src/a07_turtlebot3_ar_tracker/include/**",
+                "/home/ros/catkin_ws/src/a08_turtlebot3_parking/include/**",
+                "/home/ros/catkin_ws/src/aruco_ros/aruco/include/**",
+                "/home/ros/catkin_ws/src/aruco_ros/aruco_ros/include/**",
+                "/home/ros/catkin_ws/src/bebop_autonomy/bebop_driver/include/**",
+                "/home/ros/catkin_ws/src/04_ctrl_linear/include/**",
+                "/home/ros/catkin_ws/src/drone_project/include/**",
+                "/home/ros/catkin_ws/src/ros_tutorial/include/**",
+                "/home/ros/catkin_ws/src/03_takeoff_and_land/include/**",
+                "/home/ros/catkin_ws/src/turtlebot3/turtlebot3_slam/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

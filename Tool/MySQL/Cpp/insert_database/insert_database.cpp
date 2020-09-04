@@ -16,8 +16,8 @@ int main(int argc, char** argv) {
 
     connection = mysql_real_connect(&conn, host, user, pw, db, 3306, (const char*)NULL, 0);
 
-    if (connection == NULL) {
-        std:: cout << "Connection Error: " << mysql_error(&conn) << std::endl;
+    if (connection == NULL) {    // error
+        std::cout << "Connection Error: " << mysql_error(&conn) << std::endl;
     } else {
         std::cout << "Connection Success" << std::endl;
 

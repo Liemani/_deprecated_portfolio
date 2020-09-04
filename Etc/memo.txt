@@ -22,19 +22,17 @@ cs/bebop_autonomy/bebop_driver/launch
 sphinx bebop2.drone
 roscore
 
-rostopic [info] [echo]
-
 c++ -> roscpp
 python -> rospy
 java -> rosjava
 
-std_msgs
-geometry_msgs
-
 fdc ping
+
+iwconfig
 
 @control Gazebo
 ~/.bashrc host_address    // to Gazebo's drone address
+sudo systemctl start firmwared.service
 sphinx bebop2.drone    // drone simulator (Gazebo)
 roscore
 
@@ -118,6 +116,9 @@ search raspicam_node
 git clone https://github.com/UbiquityRobotics/raspicam_node
 cm
 
+rm -rf name
+
+
 roscore
 roslaunch raspicam ~~ launch
 rqt_image_view
@@ -200,6 +201,116 @@ pip install --upgrade pip
 pip install pymysql
 pip install sqlalchemy
 option) pip3 install sqlalchemy
+
+2020/09/02
+1. DB
+- gps
+- serial
+- altitude, velocity
+- flatting
+- odometry
+
+2. Sub Node
+3. input DB data
+
+c/c++(UI)
+/home/user/catkin_ws/devel/include
+
+sourcode -> promram -> sourcode
+
+model -> .sql -> model
+
+cmake file 121, 165
+
+string control
+file clean
+
+
+
+2020/09/03
+
+ground station
+que brownd control
+adu pilot
+
+Position: /bebop/states/ardrone3/PilotingState/PositionChanged
+	bebop_msgs/Ardrone3PilotingStatePositionChanged
+		Header header
+
+		# Latitude position in decimal degrees (500.0 if not available)
+		float64 latitude
+		# Longitude position in decimal degrees (500.0 if not available)
+		float64 longitude
+		# Altitude in meters (from GPS)
+		float64 altitude
+Altitude: /bebop/states/ardrone3/PilotingState/AltitudeChanged
+	bebop_msgs/Ardrone3PilotingStateAltitudeChanged
+		Header header
+
+		# Altitude in meters
+		float64 altitude
+attitude: /bebop/states/ardrone3/PilotingState/AttitudeChanged
+	bebop_msgs/Ardrone3PilotingStateAttitudeChanged
+		Header header
+
+		# roll value (in radian)
+		float32 roll
+		# Pitch value (in radian)
+		float32 pitch
+		# Yaw value (in radian)
+		float32 yaw
+
+
+
+2020/09/04
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
