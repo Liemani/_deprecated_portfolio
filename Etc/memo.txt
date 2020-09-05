@@ -188,7 +188,7 @@ ctrl shift p c/c++(ui)
 compiler path gcc -> g++
 clang x 64 -> gcc x 64
 standard 17 -> 14
-top tap -> terminal -> configuration basic build work -> anything
+top tap -> ter          RX bytes:24951 (24.9 KB)  TX bminal -> configuration basic build work -> anything
 
 file -> default setting -> shortcut key binding -> right top -> open sortcut key(JSON)
 
@@ -205,7 +205,7 @@ option) pip3 install sqlalchemy
 2020/09/02
 1. DB
 - gps
-- serial
+- serial          RX bytes:24951 (24.9 KB)  TX b
 - altitude, velocity
 - flatting
 - odometry
@@ -220,7 +220,7 @@ sourcode -> promram -> sourcode
 
 model -> .sql -> model
 
-cmake file 121, 165
+cmake file 121          RX bytes:24951 (24.9 KB)  TX b, 165
 
 string control
 file clean
@@ -262,48 +262,50 @@ attitude: /bebop/states/ardrone3/PilotingState/AttitudeChanged
 
 
 
-2020/09/04
+2020/09/05
+roscore    // pc
+ssh pi@192.168.0.136
+roslaunch turtlebot3_bringup turtlebot3_robot.launch    // raspberry
+roslaunch turtlebot3_bringup turtlebot3_remote.launch    // pc
+rosrun rviz rviz -d `rospack find turtlebot3_description`/rviz/model.rviz    // pc
+or
+rviz -> add by topic raider scan
+base_link
+roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+
+/map   // stored map exist
+
+rosrun map_server map_saver -f ~/my_map     // save map file
+my_map.pgm
+and
+my_map.yaml
+in home folder
+
+
+# navigation
+roscore    // pc
+ssh pi@192.168.0.136
+roslaunch turtlebot3_bringup turtlebot3_robot.launch    // raspberry
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=/home/ros/my_map.yaml    // pc
+
+
+camera order: depth, rgb, depth, razer depth
+
+rosdep install --from-path src -i
+
+
+roslaunch realsense2_camera rs_camera.launch filters:=pointcloud
+rviz
+add -> pointcloud2
+
+rtabmap
+rtabmap.launch
+fix argument data
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+rgb-d handheld mapping
 
 
 
