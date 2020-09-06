@@ -307,6 +307,14 @@ fix argument data
 
 rgb-d handheld mapping
 
+1. finde 3d slam package similar to rtabmap ros
+2. draw a map with d435 (3d or 2d)
+3. brief the package and the process (screenshot or etc)
+
+1. find package for x
+2. do something with turtlebot / bebop / d435
+3. briefing
+
 
 
 
