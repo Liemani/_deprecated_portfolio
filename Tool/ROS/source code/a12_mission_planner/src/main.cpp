@@ -1,7 +1,7 @@
 #include <string>
 
-#include "MissionPlanner.h"
-#include "MissionPlannerState.h"
+#include "Controller/MissionPlanner.h"
+#include "Model/MissionPlannerState.h"
 
 using std::string;
 using std::stod;

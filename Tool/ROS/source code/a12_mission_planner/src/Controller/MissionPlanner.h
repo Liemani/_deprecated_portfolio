@@ -12,8 +12,8 @@
 #include <bebop_msgs/Ardrone3PilotingStateAltitudeChanged.h>
 #include <bebop_msgs/Ardrone3PilotingStateAttitudeChanged.h>
 
-#include "GlobalPosition.h"
-#include "MissionPlannerState.h"
+#include "../Model/GlobalPosition.h"
+#include "../Model/MissionPlannerState.h"
 
 using std::vector;
 

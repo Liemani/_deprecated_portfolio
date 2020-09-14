@@ -6,8 +6,8 @@
 #include <geometry_msgs/Twist.h>
 
 #include "MissionPlanner.h"
-#include "GlobalPosition.h"
-#include "MissionPlannerState.h"
+#include "../Model/GlobalPosition.h"
+#include "../Model/MissionPlannerState.h"
 
 int getch() {
     int ch;
@@ -30,7 +30,7 @@ int getch() {
 }
 
 MissionPlanner::MissionPlanner(int argc, char** argv) {
-    ros::init(argc, argv, "a12_mission_planner");
+    ros::init(argc, argv, "a12_mission_planner");    // project name
     nh = new ros::NodeHandle();
 
     state = stop;
@@ -64,56 +64,74 @@ void MissionPlanner::publish() {
 
     if (input_data == 116) {    // takeoff
         takeoff_pub.publish(emptyMsg);
-        return;
     } else if (input_data == 98) {    // land
         land_pub.publish(emptyMsg);
-        return;
     } else if (input_data == 103) {    // reset
         reset_pub.publish(emptyMsg);
-        return;
     } else if (input_data == 119) {    // forward
         twistMsg.linear.x = 0.5;
         twistMsg.linear.y = 0;
         twistMsg.linear.z = 0;
         twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 115) {    // backward
         twistMsg.linear.x = -0.5;
         twistMsg.linear.y = 0;
         twistMsg.linear.z = 0;
         twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 97) {    // leftward
         twistMsg.linear.x = 0;
         twistMsg.linear.y = 0.5;
         twistMsg.linear.z = 0;
         twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 100) {    // rightward
         twistMsg.linear.x = 0;
         twistMsg.linear.y = -0.5;
         twistMsg.linear.z = 0;
         twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 105) {    // upward
         twistMsg.linear.x = 0;
         twistMsg.linear.y = 0;
         twistMsg.linear.z = 0.5;
         twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 107) {    // downward
         twistMsg.linear.x = 0;
         twistMsg.linear.y = 0;
         twistMsg.linear.z = -0.5;
         twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 106) {    // turn left
         twistMsg.linear.x = 0;
         twistMsg.linear.y = 0;
         twistMsg.linear.z = 0;
         twistMsg.angular.z = 0.5;
+
+        cmd_vel_pub.publish(twistMsg);
     } else if (input_data == 108) {    // turn right
         twistMsg.linear.x = 0;
         twistMsg.linear.y = 0;
         twistMsg.linear.z = 0;
         twistMsg.angular.z = -0.5;
-    } 
 
-    cmd_vel_pub.publish(twistMsg);
+        cmd_vel_pub.publish(twistMsg);
+    }  else if (input_data == 113) {    // hovering
+        twistMsg.linear.x = 0;
+        twistMsg.linear.y = 0;
+        twistMsg.linear.z = 0;
+        twistMsg.angular.z = 0;
+
+        cmd_vel_pub.publish(twistMsg);
+    }
 }
 
 void MissionPlanner::positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr& msg) {
@@ -133,7 +151,7 @@ void MissionPlanner::attitudeChanged(const bebop_msgs::Ardrone3PilotingStateAtti
 
 void MissionPlanner::debugDescription() {
     ROS_INFO(" ");    // for to stamp time
-    printf("state: s \n", currentPosition.latitude);
+    // printf("state: %f \n", this->state);
     printf("\n");
     printf("latitude: %.15f \n", currentPosition.latitude);
     printf("longitude: %.15f \n", currentPosition.longitude);

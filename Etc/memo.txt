@@ -45,7 +45,6 @@ rqt_image_view    // drone camera on
 
 roslaunch bebop_tools bebop_nodelet_iv.launch
 
-
 /bebop/cmd_vel    // move freely
 
 
@@ -266,7 +265,8 @@ attitude: /bebop/states/ardrone3/PilotingState/AttitudeChanged
 roscore    // pc
 ssh pi@192.168.0.136
 roslaunch turtlebot3_bringup turtlebot3_robot.launch    // raspberry
-roslaunch turtlebot3_bringup turtlebot3_remote.launch    // pc
+roslaunch turtlebot3_bringup turtlebot3_remote.launch    // pc only connect
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch    // pc for teleop
 rosrun rviz rviz -d `rospack find turtlebot3_description`/rviz/model.rviz    // pc
 or
 rviz -> add by topic raider scan
@@ -314,6 +314,146 @@ rgb-d handheld mapping
 1. find package for x
 2. do something with turtlebot / bebop / d435
 3. briefing
+
+
+2020/0908
+https://github.com/introlab/rtabmap_ros#installation
+
+안내
+트래킹
+맵만들기
+군집비행
+주차
+
+개발 개요 동기(배경, 목표)
+워크플로우
+리크스 최소화
+개발 일정(23일 종료)
+팀 내 담당 업무(~활용, ~구현)
+
+정통부 iop 혁신 인재 양성 사업
+
+
+IoT MQTT(느림)
+OPC?UA
+
+namespace
+
+
+드론 군집 비행
+
+
+
+
+export ROS_MASTER_URI=http://localhost:11311
+roscore --port 11311 >/dev/null 2>&1 &
+rosrun master_discovery_fkie master_discovery >/dev/null 2>&1 &
+rosrun master_sync_fkie master_sync >/dev/null 2>&1 &
+
+rostopic pub /test/topic std_msgs/String 'Hello World' -r 1
+
+
+export ROS_MASTER_URI=http://localhost:11312
+roscore --port 11312 >/dev/null 2>&1 &
+rosrun master_discovery_fkie master_discovery >/dev/null 2>&1 &
+rosrun master_sync_fkie master_sync >/dev/null 2>&1 &
+
+rostopic echo /test/topic
+
+
+
+
+
+
+
+
+개발 방향
+
+point to point 구현
+multimaster_fkie 패키지를 활용해 여러 드론을 동시에 컨트롤
+위 두개를 합쳐서 군집 비행 구현
+
+
+
+
+
+bringup.launch -> multi name
+bibop_node.launch -> namespacestarted with pid [22042]
+
+
+
+
+qtcreator
+
+sudo apt install qtcreator
+caution)
+- qstring
+
+
+
+
+bashrc ip address must wifi ip address!!
+
+cat /proc/sys/net/ipv4/ip_forward
+sudo sh -c "echo 1 >/proc/sys/net/ipv4/ip_forward"
+cat /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+sudo sh -c "echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts"
+
+roscore >/dev/null 2>&1
+rostopic pub /test/topic std_msgs/String 'Hello World' -r 1
+rostopic echo /test/topic
+rosrun fkie_master_discovery master_discovery >/dev/null 2>&1
+rosrun fkie_master_sync master_sync >/dev/null 2>&1
+
+hostname
+hostname -I
+
+sudo gedit /etc/hosts
+
+
+3대 연결 탤레옵
+스핑크스로 테스트
+내일은 실제 비밥 이착륙
+
+
+
+2020/09/10
+turtlebot3
+110
+4개의 파일을 cp한다
+
+
+2020/09/11
+sudo wpa_supplicant wp
+
+
+<multimaster-fkie>
+roslaunch bebop_driver bebop_node_namespace_slave.launch
+roslaunch fkie_master_discovery master_discovery.launch
+roslaunch fkie_master_sync master_sync.launch
+
+rostopic echo /master_discovery/linkstats
+
+
+<sphinx multi master>
+./sphinx_bebop2.sh
+roslaunch bebop_driver bebop_node_sphinx_namespace.launch
+
+
+
+2020/09/12
+스핑크스 여러개 실행해보기
+
+
+
+2020/09/18
+roslaunch bebop_driver bebop1_sphinx.launch
+roslaunch bebop_driver bebop2_sphinx.launch
+roslaunch bebop_driver bebop3_sphinx.launch
+
+git remote set-url origin git@github.com:username/repo.git
+
+
 
 
 

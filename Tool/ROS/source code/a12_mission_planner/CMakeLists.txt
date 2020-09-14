@@ -137,10 +137,10 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/mission_planner_node.cpp)
 add_executable(${PROJECT_NAME}_node
   src/main.cpp
-  src/MissionPlanner.h
-  src/MissionPlanner.cpp
-  src/GlobalPosition.h
-  src/GlobalPosition.cpp
+  src/Controller/MissionPlanner.h
+  src/Controller/MissionPlanner.cpp
+  src/Model/GlobalPosition.h
+  src/Model/GlobalPosition.cpp
 )
 
 ## Rename C++ executable without prefix
