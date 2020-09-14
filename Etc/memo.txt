@@ -446,12 +446,14 @@ roslaunch bebop_driver bebop_node_sphinx_namespace.launch
 
 
 
-2020/09/18
+2020/09/14
 roslaunch bebop_driver bebop1_sphinx.launch
 roslaunch bebop_driver bebop2_sphinx.launch
 roslaunch bebop_driver bebop3_sphinx.launch
 
-git remote set-url origin git@github.com:username/repo.git
+
+
+
 
 
 

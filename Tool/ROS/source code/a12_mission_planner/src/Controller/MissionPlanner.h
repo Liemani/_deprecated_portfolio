@@ -1,6 +1,7 @@
 #ifndef MISSIONPLANNER_H
 #define MISSIONPLANNER_H
 
+#include <string>
 #include <vector>
 
 #include <ros/ros.h>
@@ -11,17 +12,19 @@
 #include <bebop_msgs/Ardrone3PilotingStatePositionChanged.h>
 #include <bebop_msgs/Ardrone3PilotingStateAltitudeChanged.h>
 #include <bebop_msgs/Ardrone3PilotingStateAttitudeChanged.h>
+#include <bebop_msgs/Ardrone3PilotingStateFlyingStateChanged.h>
 
 #include "../Model/GlobalPosition.h"
-#include "../Model/MissionPlannerState.h"
 
 using std::vector;
 
 class MissionPlanner {
 private:
+    std::string name;
+
     ros::NodeHandle* nh;
 
-    MissionPlannerState state;
+    uint8_t state;
 
     ros::Publisher takeoff_pub;
     ros::Publisher land_pub;
@@ -31,6 +34,7 @@ private:
     ros::Subscriber positionSub;
     ros::Subscriber altitudeSub;
     ros::Subscriber attitudeSub;
+    ros::Subscriber flyingStateSub;
 
     int input_data;
     std_msgs::Empty emptyMsg;
@@ -42,20 +46,19 @@ private:
     float pitch;
     float yaw;
 
+    uint8_t flyingState;
+
 public:
-    vector<GlobalPosition> targetPositionVector;
+    MissionPlanner(int argc, char** argv, std::string name = "bebop");
 
-    MissionPlanner(int argc, char** argv);
-
-    MissionPlannerState getState();
-
-    void moveToTargetPosition();
+    void moveToTargetPosition(GlobalPosition targetPosition);
 
     void publish();
 
     void positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr& msg);
     void altitudeChanged(const bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr& msg);
     void attitudeChanged(const bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr& msg);
+    void flyingStateChanged(const bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::ConstPtr& msg);
 
     void debugDescription();
 };
