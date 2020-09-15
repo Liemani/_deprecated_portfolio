@@ -451,7 +451,8 @@ roslaunch bebop_driver bebop1_sphinx.launch
 roslaunch bebop_driver bebop2_sphinx.launch
 roslaunch bebop_driver bebop3_sphinx.launch
 
-
+https://www.movable-type.co.uk/scripts/latlong.html
+http://www-star.st-and.ac.uk/~fv/webnotes/chapter3.htm
 
 
 
