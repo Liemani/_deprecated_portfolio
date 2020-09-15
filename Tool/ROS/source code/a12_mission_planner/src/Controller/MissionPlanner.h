@@ -26,6 +26,8 @@ private:
 
     uint8_t state;
 
+    int missionState;
+
     ros::Publisher takeoff_pub;
     ros::Publisher land_pub;
     ros::Publisher reset_pub;
@@ -41,17 +43,40 @@ private:
     geometry_msgs::Twist twistMsg;
 
     GlobalPosition currentPosition;
+    GlobalPosition savedPosition;
     
     float roll;
     float pitch;
-    float yaw;
+    float bearing_rad;
 
     uint8_t flyingState;
+    
+    // mission variable
+    double latitudeA_rad;
+    double longitudeA_rad;
+
+    double latitudeB_rad;
+    double longitudeB_rad;
+
+    double deltaLatitude_rad;
+    double deltaLongitude_rad;
+
+
+
+    double a;
+    double distance;
+
+
+
+    double X;
+    double Y;
+
+    double directionAngle;
 
 public:
     MissionPlanner(int argc, char** argv, std::string name = "bebop");
 
-    void moveToTargetPosition(GlobalPosition targetPosition);
+    void moveToTargetPosition();
 
     void publish();
 

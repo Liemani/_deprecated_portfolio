@@ -1,4 +1,7 @@
+#include <cstdlib>    // std::stof
+
 #include "Controller/MissionPlanner.h"
+#include "Model/GlobalPosition.h"
 
 int main(int argc, char** argv) {
     MissionPlanner missionPlanner(argc, argv);
@@ -6,15 +9,11 @@ int main(int argc, char** argv) {
 
     ROS_INFO("argc: %d", argc);
 
-    if (argc == 1) {
-        while (ros::ok()) {
-            ros::spinOnce();
+    while (ros::ok()) {
+        ros::spinOnce();
 
-            missionPlanner.publish();
-            missionPlanner.debugDescription();
-        }
-    } else if (argc == 4) {
-        missionPlanner.moveToTargetPosition(targetPosition);
+        missionPlanner.publish();
+        missionPlanner.debugDescription();
     }
 
     return 0;
