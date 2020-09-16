@@ -1,0 +1,1 @@
+gcc bearingCalculrator.c -lm    // -lm for #include <math.h>

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(a13_mission_planner2)
+project(a14_drone_controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)    # for stod
+add_compile_options(-std=c++11)    # for thread
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -21,6 +21,13 @@ find_package(catkin REQUIRED COMPONENTS
 
 set(LMTPath ../../LMT)
 include_directories(${LMTPath})
+
+# list(APPEND CMAKE_PREFIX_PATH ${LMTPath})
+# find_library(libtest_LIBRARY test)
+
+# include_directories(~/.local/share/LMT)
+# list(APPEND CMAKE_PREFIX_PATH "~/.local/share/LMT")
+# find_library(libtest_LIBRARY ${PROJECT_NAME}_node)
 
 # custom code end #
 
@@ -117,7 +124,7 @@ include_directories(${LMTPath})
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES a13_mission_planner2
+#  LIBRARIES a14_drone_controller
 #  CATKIN_DEPENDS bebop_msgs geometry_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -135,7 +142,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/a13_mission_planner2.cpp
+#   src/${PROJECT_NAME}/a14_drone_controller.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -148,13 +155,8 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node
   src/main.cpp
-  ${LMTPath}/Model/MissionPlanner.h
-  ${LMTPath}/Model/MissionPlanner.cpp
-  ${LMTPath}/Model/CartesianCoordinate.h
   ${LMTPath}/Model/CartesianCoordinate.cpp
-  ${LMTPath}/Model/GlobalPosition.h
   ${LMTPath}/Model/GlobalPosition.cpp
-  ${LMTPath}/Model/Drone.h
   ${LMTPath}/Model/Drone.cpp
 )
 
@@ -220,7 +222,7 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_a13_mission_planner2.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_a14_drone_controller.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

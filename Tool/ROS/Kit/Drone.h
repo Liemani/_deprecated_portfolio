@@ -14,8 +14,14 @@
 #include <geometry_msgs/Twist.h>
 
 #include "CartesianCoordinate.h"
-
 #include "GlobalPosition.h"
+#include "MissionPlanner.h"
+
+
+
+
+
+class MissionPlanner;
 
 
 
@@ -24,6 +30,9 @@
 class Drone {
 private:
     std::string name;
+
+    MissionPlanner* pPlanner
+    void (*callWhenPositionChanged)(MissionPlanner& planner);
 
     std_msgs::Empty emptyMsg;
     geometry_msgs::Twist twistMsg;
@@ -42,8 +51,9 @@ private:
     // subscribe variable
     uint8_t flyingState;
 
-    GlobalPosition currentGlobalPosition;
-    CartesianCoordinate currentCalculatedPosition;
+    GlobalPosition globalPosition;
+    CartesianCoordinate matchingCalculatedPosition;
+    CartesianCoordinate calculatedCurrentPosition;
     
     float bearing;
 
@@ -54,12 +64,55 @@ private:
     void odometryChanged(const nav_msgs::Odometry::ConstPtr& msg);
 
 public:
-    Drone(string name, ros::NodeHandle* nodeHandle);
+    Drone(MissionPlanner* planner,
+        ros::NodeHandle* pNodeHandle,
+        std::string ncurrentCalculatedPositioname = "bebop");
+
+
+
+    uint8_t getFlyingState();
+    std::string getName();
+    float getBearing();
+
+    GlobalPosition getGlobalPosition();
+
+    double getLatitude();
+    double getLongitude();
+    double getAltitude();
+
+    double getMatchingX();
+    double getMatchingY();
+    double getMatchingZ();
+
+    double getCalculatedX();
+    double getCalculatedY();
+    double getCalculatedZ();
+
+    void setCallWhenPositionChanged(void (*callWhenPositionChanged)(MissionPlanner& planner, Drone));
+
+
+
+
 
     void takeoff();
     void land();
     void reset();
+    
     void fly(double x, double y, double z, double yaw);
+
+
+
+    // inline
+    void hover() { fly(0, 0, 0, 0); }
+
+    void flyForward(double ratio)   { fly(+ratio, 0, 0, 0); }
+    void flyBackward(double ratio)  { fly(-ratio, 0, 0, 0); }
+    void flyLeftward(double ratio)  { fly(0, +ratio, 0, 0); }
+    void flyRightward(double ratio) { fly(0, -ratio, 0, 0); }
+    void flyUpward(double ratio)    { fly(0, 0, +ratio, 0); }
+    void flyDownward(double ratio)  { fly(0, 0, -ratio, 0); }
+    void flyTurnLefft(double ratio) { fly(0, 0, 0, +ratio); }
+    void flyTurnRight(double ratio) { fly(0, 0, 0, -ratio); }
     
 };
 

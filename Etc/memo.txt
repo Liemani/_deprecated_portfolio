@@ -462,6 +462,55 @@ spherical calculation(good):    https://www.igismap.com/formula-to-find-bearing-
 
 
 
+2020-09-16
+- TD DO -
+make multithread, so key input shall not block the program's progress
+renewal the form of mission controller
+C++에서 클래스를 선언만 하고 초기화하고 싶지 않은데 어떻게 하지? 포인터나 쓰자 일단
+
+
+
+vs
+market place
+remote ssh
+ctrl shif p
+ssh
+add new ssh host
+ssh pi@192.168.0.136
+add
+connect to host
+enter password
+then, you can see the connecting state at the bottom left conner
+
+
+
+이 경우 쓰레드를 사용하는 것이 바람직하지 않다
+각각의 드론이 완전 별도로 비행하는 것이 아니고
+각각 연관되서 일정한 모양으로 비행해야하기 때문이다
+
+스테이틱도 쓰지말자 링크에서 자신의 멤버를 찾지 못하는 에러가 발생한다
+함수 포인터를 쓸 때는 클래스의 맴버 함수를 쓰지 말자
+
+- tomorrow to do -
+make call back function for bearing and altitude!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
