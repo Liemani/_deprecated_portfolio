@@ -15,24 +15,26 @@
 
 #include "CartesianCoordinate.h"
 #include "GlobalPosition.h"
-#include "MissionPlanner.h"
+#include "Mission.h"
 
 
 
 
 
-class MissionPlanner;
+class Mission;
+class Drone;
 
-
-
-
+typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
 class Drone {
 private:
     std::string name;
 
-    MissionPlanner* pPlanner
-    void (*callWhenPositionChanged)(MissionPlanner& planner);
+    Mission* pMission;
+
+    CallWhenDroneChanged callWhenPositionChanged;
+    CallWhenDroneChanged callWhenAltitudeChanged;
+    CallWhenDroneChanged callWhenBearingChanged;
 
     std_msgs::Empty emptyMsg;
     geometry_msgs::Twist twistMsg;
@@ -52,11 +54,13 @@ private:
     uint8_t flyingState;
 
     GlobalPosition globalPosition;
-    CartesianCoordinate matchingCalculatedPosition;
-    CartesianCoordinate calculatedCurrentPosition;
+    CartesianCoordinate calculatedCartesianCoordinateMatchingGlobalPosition;
+
+    CartesianCoordinate calculatedCartesianCoordinate;
     
     float bearing;
 
+    // call back function
     void positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr& msg);
     void altitudeChanged(const bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr& msg);
     void attitudeChanged(const bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr& msg);
@@ -64,12 +68,11 @@ private:
     void odometryChanged(const nav_msgs::Odometry::ConstPtr& msg);
 
 public:
-    Drone(MissionPlanner* planner,
-        ros::NodeHandle* pNodeHandle,
-        std::string ncurrentCalculatedPositioname = "bebop");
+    Drone(ros::NodeHandle* pNodeHandle, std::string name = "bebop");
 
+    void debugDescription();
 
-
+    // get set function
     uint8_t getFlyingState();
     std::string getName();
     float getBearing();
@@ -88,17 +91,17 @@ public:
     double getCalculatedY();
     double getCalculatedZ();
 
-    void setCallWhenPositionChanged(void (*callWhenPositionChanged)(MissionPlanner& planner, Drone));
+    void setMission(Mission* pMission);
 
 
 
 
-
+    // control function
     void takeoff();
     void land();
     void reset();
     
-    void fly(double x, double y, double z, double yaw);
+    void fly(double x, double y, double z, double yaw = 0.0);
 
 
 

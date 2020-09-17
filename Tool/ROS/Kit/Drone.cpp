@@ -8,13 +8,14 @@ using std::string;
 
 
 
-Drone::Drone(MissionPlanner* pPlanner,
-        ros::NodeHandle* pNodeHandle,
-        std::string ncurrentCalculatedPositioname = "bebop") {
+Drone::Drone(ros::NodeHandle* pNodeHandle,std::string name) {
     this->name = name;
 
-    this->pPlanner = pPlanner;
-    this->callWhenPositionChanged = callWhenPositionChanged;
+    this->pMission = NULL;
+
+    callWhenPositionChanged = NULL;
+    callWhenAltitudeChanged = NULL;
+    callWhenBearingChanged = NULL;
 
     positionSub = pNodeHandle->subscribe(name + "/states/ardrone3/PilotingState/PositionChanged", QUEUE_SIZE, &Drone::positionChanged, this);
     altitudeSub = pNodeHandle->subscribe(name + "/states/ardrone3/PilotingState/AltitudeChanged", QUEUE_SIZE, &Drone::altitudeChanged, this);
@@ -31,9 +32,14 @@ Drone::Drone(MissionPlanner* pPlanner,
     bearing = 0.0;
 }
 
-
-
-
+void Drone::debugDescription() {
+    printf("Drone description \n");
+    printf("CalculatedCartesianCoordinate \n");
+    printf("  x: %0.12f \n", calculatedCartesianCoordinate.x);
+    printf("  y: %0.12f \n", calculatedCartesianCoordinate.y);
+    printf("  z: %0.12f \n", calculatedCartesianCoordinate.z);
+    printf("------------ \n");
+}
 
 uint8_t Drone::getFlyingState() {
     return flyingState;
@@ -47,7 +53,7 @@ float Drone::getBearing() {
     return bearing;
 }
 
-GlobalPosition getGlobalPosition() {
+GlobalPosition Drone::getGlobalPosition() {
     return globalPosition;
 }
 
@@ -64,27 +70,35 @@ double Drone::getAltitude() {
 }
 
 double Drone::getMatchingX() {
-    return matchingCalculatedPosition.x;
+    return calculatedCartesianCoordinateMatchingGlobalPosition.x;
 }
 
 double Drone::getMatchingY() {
-    return matchingCalculatedPosition.y;
+    return calculatedCartesianCoordinateMatchingGlobalPosition.y;
 }
 
 double Drone::getMatchingZ() {
-    return matchingCalculatedPosition.z;
+    return calculatedCartesianCoordinateMatchingGlobalPosition.z;
 }
 
 double Drone::getCalculatedX() {
-    return calculatedCurrentPosition.x;
+    return calculatedCartesianCoordinate.x;
 }
 
 double Drone::getCalculatedY() {
-    return calculatedCurrentPosition.y;
+    return calculatedCartesianCoordinate.y;
 }
 
 double Drone::getCalculatedZ() {
-    return calculatedCurrentPosition.z;
+    return calculatedCartesianCoordinate.z;
+}
+
+void Drone::setMission(Mission* pMission) {
+    this->pMission = pMission;
+
+    callWhenPositionChanged = pMission->getCallWhenPositionChanged();
+    callWhenAltitudeChanged = pMission->getCallWhenAltitudeChanged();
+    callWhenBearingChanged = pMission->getCallWhenBearingChanged();
 }
 
 
@@ -96,17 +110,24 @@ void Drone::positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChang
     globalPosition.latitude = msg->latitude;
     globalPosition.longitude = msg->longitude;
 
-    matchingCalculatedPosition = calculatedCurrentPosition;
+    calculatedCartesianCoordinateMatchingGlobalPosition.x = calculatedCartesianCoordinate.x;
+    calculatedCartesianCoordinateMatchingGlobalPosition.y = calculatedCartesianCoordinate.y;
 
-    if (callWhenPositionChanged) callWhenPositionChanged(*pPlanner, *this);
+    if (callWhenPositionChanged) callWhenPositionChanged(pMission, *this);
 }
 
 void Drone::altitudeChanged(const bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr& msg) {
     globalPosition.altitude = msg->altitude;
+
+    calculatedCartesianCoordinateMatchingGlobalPosition.z = calculatedCartesianCoordinate.z;
+
+    if (callWhenAltitudeChanged) callWhenAltitudeChanged(pMission, *this);
 }
 
 void Drone::attitudeChanged(const bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr& msg) {
     bearing = msg->yaw;    // msg->yaw is magnetic bearing_rad
+
+    if (callWhenBearingChanged) callWhenBearingChanged(pMission, *this);
 }
 
 void Drone::flyingStateChanged(const bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::ConstPtr& msg) {
@@ -114,9 +135,9 @@ void Drone::flyingStateChanged(const bebop_msgs::Ardrone3PilotingStateFlyingStat
 }
 
 void Drone::odometryChanged(const nav_msgs::Odometry::ConstPtr& msg) {
-    calculatedCurrentPosition.x = msg->pose.pose.position.x;
-    calculatedCurrentPosition.y = msg->pose.pose.position.y;
-    calculatedCurrentPosition.z = msg->pose.pose.position.z;
+    calculatedCartesianCoordinate.x = msg->pose.pose.position.x;
+    calculatedCartesianCoordinate.y = msg->pose.pose.position.y;
+    calculatedCartesianCoordinate.z = msg->pose.pose.position.z;
 }
 
 

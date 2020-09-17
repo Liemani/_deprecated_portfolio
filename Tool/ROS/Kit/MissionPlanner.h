@@ -3,10 +3,11 @@
 
 #include <ros/ros.h>
 #include <stdio.h>    // getchar()
-#include <math.h>
 
 #include "Drone.h"
 #include "GlobalPosition.h"
+#include "Mission.h"
+#include "MyMission.h"
 
 
 
@@ -25,51 +26,38 @@ class Drone;
 
 
 class MissionPlanner {
+// callback function
+friend void callWhenPositionChanged(MissionPlanner& planner, Drone& drone);
+friend void callWhenAltitudeChanged(MissionPlanner& planner, Drone& drone);
+friend void callWhenBearingChanged(MissionPlanner& planner, Drone& drone);
+
 private:
+    int* pCommand;
+
     std::vector<Drone*> pDrone_vector;
 
     ros::NodeHandle* pNodeHandle;
+
+    Mission* mission;
 
     int missionState;
 
     GlobalPosition targetGlobalPosition;
 
-    bool (*mission)(MissionPlanner& planner, std::vector<Drone*>& droneVector);
-
 public:
-    MissionPlanner(int argc, char** argv, ros::NodeHandle* pNodeHandle);
+    MissionPlanner(int argc, char** argv, ros::NodeHandle* pNodeHandle, int* pCommand);
 
+    // get set function
     double getTargetLatitude();
     double getTargetLongitude();
     double getTargetAltitude();
 
-    bool processCommand(int command);
+    void processCommand();
     void doMission();
     void debugDescription();
 
-    // mission variable
-    double latitudeA;
-    double longitudeA;
-    double latitudeB;
-    double longitudeB;
-    double deltaLatitude;
-    double deltaLongitude;
-
-    double a;
-    double distance;
-
-    double X;
-    double Y;
-    double directionAngle;
-
-    double targetOdometryX;
-    double targetOdometryY;
+    void loop();
 
 };
-
-static void callWhenPositionChanged(MissionPlanner& planner);
-
-// mission
-static bool flyToTargetPosition_1(MissionPlanner& planner, std::vector<Drone*>& droneVector);
 
 #endif
