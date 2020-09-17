@@ -496,6 +496,26 @@ make call back function for bearing and altitude!!
 
 
 
+2020-09-17
+clion plug-ins
+콜백 함수는 미션에 넣어놓고 인자도 미션을 받게 해서
+해당 미션에 필요한 변수를 바꾸도록 하자
+미션에는 실행 함수도 있어서
+미션 플래너는 미션과 드론만 가지고
+드론에 적절한 미션 콜백 함수를 넣어주면
+콜백 함수로 미션의 변수를 적절히 변경해주면서
+실시간으로 미션의 실행함수를 실행해주도록 하자
+
+static member variable must initialized is good way
+// how to access member variable in static member function(friend or?)
+
+techical writing
+1. need skill
+2. shorted description
+3. exercise
+
+what happen when make get set function inline function in c++?(in c, it make error)
+
 
 
 

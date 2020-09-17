@@ -2,7 +2,7 @@
 #include <thread>
 #include <termio.h>    // struct termios
 
-#include <Controller/MissionPlanner.h>
+#include <Model/MissionPlanner.h>
 
 
 
@@ -49,17 +49,15 @@ void getPressedKey() {
 int main(int argc, char** argv) {
     thread getPressedKey_thread = thread(getPressedKey);
 
-    ros::init(argc, argv, "a13_mission_planner_node");
+    ros::init(argc, argv, "a13_mission_planner2_node");
     ros::NodeHandle nh = ros::NodeHandle();
 
-    MissionPlanner missionPlanner = MissionPlanner(argc, argv, &nh);
+    MissionPlanner missionPlanner = MissionPlanner(argc, argv, &nh, &pressedKey);
 
     while (ros::ok()) {
         ros::spinOnce();
 
-        if (missionPlanner.processCommand(pressedKey)) pressedKey = 0;
-        missionPlanner.doMission();
-        // missionPlanner.debugDescription();
+        missionPlanner.loop();
     }
 
     return 0;
