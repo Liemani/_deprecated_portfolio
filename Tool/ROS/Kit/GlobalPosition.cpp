@@ -5,3 +5,8 @@ GlobalPosition::GlobalPosition(double latitude, double longitude, double altitud
     this->longitude = longitude;
     this->altitude = altitude;
 }
+
+bool GlobalPosition::isReady() {
+    // fix this later to containning (globalPosition(latitude, longitude), altitude)
+    return latitude != 0.0 && longitude != 0.0 && altitude != 0.0;
+}

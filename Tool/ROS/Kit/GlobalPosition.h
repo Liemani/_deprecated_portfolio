@@ -7,6 +7,8 @@ struct GlobalPosition {
     double altitude;
 
     GlobalPosition(double latitude = 0.0, double longitude = 0.0, double altitude = 0.0);
+    bool isReady();
+
 };
 
 #endif

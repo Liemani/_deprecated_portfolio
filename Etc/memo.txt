@@ -518,6 +518,18 @@ what happen when make get set function inline function in c++?(in c, it make err
 
 
 
+2020-09-18
+will need setup call back and process start callback?
+make base class MissionHandler
+make MissionHandler's callback function so it takes drone and mission
+consider the interface(using main function would be good? 
+don't start right after set mission to drone, but start when ready
+
+
+
+
+
+
 
 
 

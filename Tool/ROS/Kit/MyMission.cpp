@@ -50,10 +50,10 @@ void MyMission::calculateTargetCartesianCoordinateXY(Drone& drone) {
 
     const double X = cos(latitudeB) * sin(deltaLongitude);
     const double Y = cos(latitudeA) * sin(latitudeB) - sin(latitudeA) * cos(latitudeB) * cos(deltaLongitude);
-    const double targetAngle = drone.getBearing() - atan2(X, Y);
+    const double targetBearing = atan2(X, Y);
 
-    targetCartesianCoordinate.x = drone.getMatchingX() + distance * cos(targetAngle);
-    targetCartesianCoordinate.y = drone.getMatchingY() + distance * sin(targetAngle);
+    targetCartesianCoordinate.x = drone.getCalculatedX() + distance * cos(targetBearing);
+    targetCartesianCoordinate.y = drone.getCalculatedY() + distance * sin(-targetBearing);
 
     calculateTargetDistance(drone);
 }
@@ -70,7 +70,7 @@ void MyMission::calculateTargetDistance(Drone& drone) {
     targetPlaneDistance = sqrt(pow(delta_x, 2.0) + pow(delta_y, 2.0));
     targetDistance = sqrt(pow(targetPlaneDistance, 2.0) + pow(delta_z, 2.0));
 
-    directionAngle = atan((targetCartesianCoordinate.y - drone.getCalculatedY()) / (targetCartesianCoordinate.x - drone.getCalculatedX()));
+    targetAngle = drone.getBearing() - atan2((targetCartesianCoordinate.y - drone.getCalculatedY()), (targetCartesianCoordinate.x - drone.getCalculatedX()));
 }
 
 
@@ -85,13 +85,13 @@ MyMission::MyMission(GlobalPosition& targetGlobalPosition) {
 //  true: end this mission
 //  false: on going
 bool MyMission::perform(std::vector<Drone*>& pDrone_vector) {
-    // if drone number is not 1 end mission
+    // if drone number is not 1, end mission
     if (pDrone_vector.size() != 1) return true;
 
     calculateTargetDistance(*pDrone_vector[0]);
 
-    const double ratioX = cos(directionAngle) / targetDistance * targetPlaneDistance;
-    const double ratioY = sin(directionAngle) / targetDistance * targetPlaneDistance;
+    const double ratioX = cos(targetAngle) / targetDistance * targetPlaneDistance;
+    const double ratioY = sin(targetAngle) / targetDistance * targetPlaneDistance;
     const double ratioZ = (targetCartesianCoordinate.z - pDrone_vector[0]->getCalculatedZ()) / targetDistance;
 
     if (targetDistance > 1) {
@@ -108,8 +108,6 @@ bool MyMission::perform(std::vector<Drone*>& pDrone_vector) {
 
 void MyMission::debugDescription() {
     printf("MyMission dscription \n");
-    printf("Target distance: %0.12f \n", targetDistance);
-    printf("Direction angle: %0.12f \n", directionAngle);
     printf("Target global position \n");
     printf("  latitude  : %0.12f \n", targetGlobalPosition.latitude);
     printf("  longitude : %0.12f \n", targetGlobalPosition.longitude);
@@ -118,18 +116,11 @@ void MyMission::debugDescription() {
     printf("  x: %0.12f \n", targetCartesianCoordinate.x);
     printf("  y: %0.12f \n", targetCartesianCoordinate.y);
     printf("  z: %0.12f \n", targetCartesianCoordinate.z);
+    printf("Target distance: %0.12f \n", targetDistance);
+    printf("Target angle: %0.12f \n", targetAngle / PI * 180);
+    // printf("Target global position \n");
+    // printf("  latitude  : %0.12f \n", targetGlobalPosition.latitude);
+    // printf("  longitude : %0.12f \n", targetGlobalPosition.longitude);
+    // printf("  altitude  : %0.12f \n", targetGlobalPosition.altitude);
     printf("-------------------------- \n");
 }
-
-// get set function
-// CallWhenDroneChanged MyMission::getCallWhenPositionChanged() {
-//     return callWhenPositionChanged;
-// }
-
-// CallWhenDroneChanged MyMission::getCallWhenAltitudeChanged() {
-//     return callWhenAltitudeChanged;
-// }
-
-// CallWhenDroneChanged MyMission::getCallWhenBearingChanged() {
-//     return callWhenBearingChanged;
-// }

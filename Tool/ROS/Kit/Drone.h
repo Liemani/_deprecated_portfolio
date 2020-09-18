@@ -30,12 +30,14 @@ class Drone {
 private:
     std::string name;
 
+    // mission
     Mission* pMission;
 
     CallWhenDroneChanged callWhenPositionChanged;
     CallWhenDroneChanged callWhenAltitudeChanged;
     CallWhenDroneChanged callWhenBearingChanged;
 
+    // ros
     std_msgs::Empty emptyMsg;
     geometry_msgs::Twist twistMsg;
 
@@ -54,13 +56,13 @@ private:
     uint8_t flyingState;
 
     GlobalPosition globalPosition;
-    CartesianCoordinate calculatedCartesianCoordinateMatchingGlobalPosition;
+    CartesianCoordinate odometryMatchingGlobalPosition;
 
-    CartesianCoordinate calculatedCartesianCoordinate;
+    CartesianCoordinate odometry;
     
     float bearing;
 
-    // call back function
+    // subscribe call back function
     void positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr& msg);
     void altitudeChanged(const bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr& msg);
     void attitudeChanged(const bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr& msg);
@@ -71,6 +73,8 @@ public:
     Drone(ros::NodeHandle* pNodeHandle, std::string name = "bebop");
 
     void debugDescription();
+
+    bool isReady();
 
     // get set function
     uint8_t getFlyingState();
@@ -95,7 +99,6 @@ public:
 
 
 
-
     // control function
     void takeoff();
     void land();
@@ -108,14 +111,20 @@ public:
     // inline
     void hover() { fly(0, 0, 0, 0); }
 
-    void flyForward(double ratio)   { fly(+ratio, 0, 0, 0); }
-    void flyBackward(double ratio)  { fly(-ratio, 0, 0, 0); }
-    void flyLeftward(double ratio)  { fly(0, +ratio, 0, 0); }
-    void flyRightward(double ratio) { fly(0, -ratio, 0, 0); }
-    void flyUpward(double ratio)    { fly(0, 0, +ratio, 0); }
-    void flyDownward(double ratio)  { fly(0, 0, -ratio, 0); }
-    void flyTurnLefft(double ratio) { fly(0, 0, 0, +ratio); }
-    void flyTurnRight(double ratio) { fly(0, 0, 0, -ratio); }
+    void flyForward(double ratio)   { fly(+ratio, 0.0, 0.0); }
+    void flyBackward(double ratio)  { fly(-ratio, 0.0, 0.0); }
+    void flyLeftward(double ratio)  { fly(0.0, +ratio, 0.0); }
+    void flyRightward(double ratio) { fly(0.0, -ratio, 0.0); }
+    void flyUpward(double ratio)    { fly(0.0, 0.0, +ratio); }
+    void flyDownward(double ratio)  { fly(0.0, 0.0, -ratio); }
+    
+    void flyTurnLefft(double ratio) { fly(0.0, 0.0, 0.0, +ratio); }
+    void flyTurnRight(double ratio) { fly(0.0, 0.0, 0.0, -ratio); }
+
+    void flyForwardLeftward(double ratio)   { fly(+ratio, +ratio, 0.0); }
+    void flyForwardRightward(double ratio)  { fly(+ratio, -ratio, 0.0); }
+    void flyBackwardLeftward(double ratio)  { fly(-ratio, +ratio, 0.0); }
+    void flyBackwardRightward(double ratio) { fly(-ratio, -ratio, 0.0); }
     
 };
 

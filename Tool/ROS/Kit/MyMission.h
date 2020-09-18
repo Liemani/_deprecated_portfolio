@@ -25,7 +25,7 @@ class MyMission: public Mission {
     // mission variable
     double targetPlaneDistance;
     double targetDistance;
-    double directionAngle;
+    double targetAngle;
 
     CartesianCoordinate targetCartesianCoordinate;
 
@@ -41,7 +41,7 @@ public:
 
     void debugDescription();
 
-    // get set function
+    // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }
     CallWhenDroneChanged getCallWhenAltitudeChanged() { return callWhenAltitudeChanged; }
     CallWhenDroneChanged getCallWhenBearingChanged() { return callWhenBearingChanged; }

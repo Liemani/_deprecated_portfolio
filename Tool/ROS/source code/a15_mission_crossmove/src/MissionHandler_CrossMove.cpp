@@ -1,4 +1,4 @@
-#include "MissionPlanner.h"
+#include "MissionHandler_CrossMove.h"
 
 #define state_landed 0
 #define state_takingOff 1
@@ -25,13 +25,18 @@ using std::string;
 
 // member function
 MissionPlanner::MissionPlanner(int argc, char** argv, ros::NodeHandle* pNodeHandle, int* pCommand) {
-    ros::init(argc, argv, "a13_mission_planner_node2");    // node name
+    ros::init(argc, argv, "a15_mission_planner_node2");    // node name
     this->pNodeHandle = pNodeHandle;
 
     this->pCommand = pCommand;
 
-    Drone* drone = new Drone(pNodeHandle);
-    pDrone_vector.push_back(drone);
+    Drone* drone1 = new Drone(pNodeHandle, "bebop1");
+    Drone* drone2 = new Drone(pNodeHandle, "bebop2");
+    Drone* drone3 = new Drone(pNodeHandle, "bebop3");
+
+    pDrone_vector.push_back(drone1);
+    pDrone_vector.push_back(drone2);
+    pDrone_vector.push_back(drone3);
 
     missionState = state_noMission;
     mission = NULL;
@@ -71,12 +76,14 @@ void MissionPlanner::processCommand() {
 
             *pCommand = 0;
             break;
-        case 120:    // active fly mission
+        case 120:    // active cross move mission
             if (mission) delete mission;
-            mission = new MyMission(targetGlobalPosition);
+            mission = new Mission_CrossMove(pDrone_vector[1]->getAltitude() + 0.5);
             
             missionState = state_onMission;
             pDrone_vector[0]->setMission(mission);
+            pDrone_vector[1]->setMission(mission);
+            pDrone_vector[2]->setMission(mission);
 
             *pCommand = 0;
             break;

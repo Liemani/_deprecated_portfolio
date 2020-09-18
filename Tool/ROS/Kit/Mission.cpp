@@ -29,15 +29,3 @@ bool Mission::perform(std::vector<Drone*>& pDrone_vector) {
 void Mission::debugDescription() {
     // code goes here...
 }
-
-CallWhenDroneChanged Mission::getCallWhenPositionChanged() {
-    return callWhenPositionChanged;
-}
-
-CallWhenDroneChanged Mission::getCallWhenAltitudeChanged() {
-    return callWhenAltitudeChanged;
-}
-
-CallWhenDroneChanged Mission::getCallWhenBearingChanged() {
-    return callWhenBearingChanged;
-}

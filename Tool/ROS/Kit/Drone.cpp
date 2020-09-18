@@ -35,10 +35,16 @@ Drone::Drone(ros::NodeHandle* pNodeHandle,std::string name) {
 void Drone::debugDescription() {
     printf("Drone description \n");
     printf("CalculatedCartesianCoordinate \n");
-    printf("  x: %0.12f \n", calculatedCartesianCoordinate.x);
-    printf("  y: %0.12f \n", calculatedCartesianCoordinate.y);
-    printf("  z: %0.12f \n", calculatedCartesianCoordinate.z);
+    printf("  x: %0.12f \n", odometry.x);
+    printf("  y: %0.12f \n", odometry.y);
+    printf("  z: %0.12f \n", odometry.z);
     printf("------------ \n");
+}
+
+bool Drone::isReady() {
+    if (globalPosition.isReady() && odometry.isReady()) return true;
+    
+    return false;
 }
 
 uint8_t Drone::getFlyingState() {
@@ -70,27 +76,27 @@ double Drone::getAltitude() {
 }
 
 double Drone::getMatchingX() {
-    return calculatedCartesianCoordinateMatchingGlobalPosition.x;
+    return odometryMatchingGlobalPosition.x;
 }
 
 double Drone::getMatchingY() {
-    return calculatedCartesianCoordinateMatchingGlobalPosition.y;
+    return odometryMatchingGlobalPosition.y;
 }
 
 double Drone::getMatchingZ() {
-    return calculatedCartesianCoordinateMatchingGlobalPosition.z;
+    return odometryMatchingGlobalPosition.z;
 }
 
 double Drone::getCalculatedX() {
-    return calculatedCartesianCoordinate.x;
+    return odometry.x;
 }
 
 double Drone::getCalculatedY() {
-    return calculatedCartesianCoordinate.y;
+    return odometry.y;
 }
 
 double Drone::getCalculatedZ() {
-    return calculatedCartesianCoordinate.z;
+    return odometry.z;
 }
 
 void Drone::setMission(Mission* pMission) {
@@ -110,8 +116,8 @@ void Drone::positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChang
     globalPosition.latitude = msg->latitude;
     globalPosition.longitude = msg->longitude;
 
-    calculatedCartesianCoordinateMatchingGlobalPosition.x = calculatedCartesianCoordinate.x;
-    calculatedCartesianCoordinateMatchingGlobalPosition.y = calculatedCartesianCoordinate.y;
+    odometryMatchingGlobalPosition.x = odometry.x;
+    odometryMatchingGlobalPosition.y = odometry.y;
 
     if (callWhenPositionChanged) callWhenPositionChanged(pMission, *this);
 }
@@ -119,7 +125,7 @@ void Drone::positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChang
 void Drone::altitudeChanged(const bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr& msg) {
     globalPosition.altitude = msg->altitude;
 
-    calculatedCartesianCoordinateMatchingGlobalPosition.z = calculatedCartesianCoordinate.z;
+    odometryMatchingGlobalPosition.z = odometry.z;
 
     if (callWhenAltitudeChanged) callWhenAltitudeChanged(pMission, *this);
 }
@@ -135,9 +141,9 @@ void Drone::flyingStateChanged(const bebop_msgs::Ardrone3PilotingStateFlyingStat
 }
 
 void Drone::odometryChanged(const nav_msgs::Odometry::ConstPtr& msg) {
-    calculatedCartesianCoordinate.x = msg->pose.pose.position.x;
-    calculatedCartesianCoordinate.y = msg->pose.pose.position.y;
-    calculatedCartesianCoordinate.z = msg->pose.pose.position.z;
+    odometry.x = msg->pose.pose.position.x;
+    odometry.y = msg->pose.pose.position.y;
+    odometry.z = msg->pose.pose.position.z;
 }
 
 
