@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <thread>
 #include <termio.h>    // struct termios
+#include <map>
 
 #include <Model/Drone.h>
 
@@ -14,17 +15,50 @@
 #define state_motorRamping 7
 #define state_emergencyLanding 8
 
-
-
-
-
 #define RATIO 0.5
+
+using std::map;
+using std::thread;
 
 
 
 
 
 int pressedKey;
+
+typedef void (*CommandProcessor)(Drone& drone, double ratio);
+
+map<int, CommandProcessor> commandMap = {
+    {48,
+        [](Drone& drone, double ratio) {    // takeoff
+            if (drone.getFlyingState() == state_landed)
+                drone.takeoff();
+        }
+    },
+    {10,
+        [](Drone& drone, double ratio) {    // land
+            if (drone.getFlyingState() == state_hovering)
+                drone.land();
+        }
+    },
+    { 46, [](Drone& drone, double ratio){ drone.reset(); } },
+
+    { 49, [](Drone& drone, double ratio){ drone.flyBackwardLeftward(ratio); } },
+    { 50, [](Drone& drone, double ratio){ drone.flyBackward(ratio); } },
+    { 51, [](Drone& drone, double ratio){ drone.flyBackwardRightward(ratio); } },
+    { 52, [](Drone& drone, double ratio){ drone.flyLeftward(ratio); } },
+    { 53, [](Drone& drone, double ratio){ drone.hover(); } },
+    { 54, [](Drone& drone, double ratio){ drone.flyRightward(ratio); } },
+    { 55, [](Drone& drone, double ratio){ drone.flyForwardLeftward(ratio); } },
+    { 56, [](Drone& drone, double ratio){ drone.flyForward(ratio); } },
+    { 57, [](Drone& drone, double ratio){ drone.flyForwardRightward(ratio); } },
+
+    { 45, [](Drone& drone, double ratio){ drone.flyUpward(ratio); } },
+    { 43, [](Drone& drone, double ratio){ drone.flyDownward(ratio); } },
+
+    { 47, [](Drone& drone, double ratio){ drone.flyTurnLefft(ratio); } },
+    { 42, [](Drone& drone, double ratio){ drone.flyTurnRight(ratio); } },
+};
 
 
 
@@ -61,92 +95,27 @@ void debugDescription(Drone* drone) {
 }
 
 int main(int argc, char** argv) {
-    std::thread first(getPressedKey);
+    thread first(getPressedKey);
 
     ros::init(argc, argv, "a14_drone_controller_node");
     ros::NodeHandle pNodeHandle;
 
     Drone* pDrone;
 
-    if (argc == 1) {
+    if (argc == 1) {    // use default name 'bebop'
         pDrone = new Drone(&pNodeHandle);
-    } else if (argc == 2) {
+    } else if (argc == 2) {    // use custom input name "argv[1]"
         pDrone = new Drone(&pNodeHandle, argv[1]);
     }
 
     while (ros::ok()) {
         ros::spinOnce();
+        if (pressedKey == 0) continue;
 
-        switch(pressedKey) {
-            case 116:    // takeoff
-                if (pDrone->getFlyingState() == state_landed)
-                    pDrone->takeoff();
-
-                pressedKey = 0;
-                break;
-            case 98:    // land
-                if (pDrone->getFlyingState() == state_hovering)
-                    pDrone->land();
-
-                pressedKey = 0;
-                break;
-            case 103:    // reset
-                pDrone->reset();
-
-                pressedKey = 0;
-                break;
-            case 119:    // forward
-                pDrone->fly(RATIO, 0, 0, 0);
-
-                pressedKey = 0;
-                break;
-            case 115:    // backward
-                pDrone->fly(-RATIO, 0, 0, 0);
-
-                pressedKey = 0;
-                break;
-            case 97:    // leftward
-                pDrone->fly(0, RATIO, 0, 0);
-
-                pressedKey = 0;
-                break;
-            case 100:    // rightward
-                pDrone->fly(0, -RATIO, 0, 0);
-
-                pressedKey = 0;
-                break;
-            case 105:    // upward
-                pDrone->fly(0, 0, RATIO, 0);
-
-                pressedKey = 0;
-                break;
-            case 107:    // downward
-                pDrone->fly(0, 0, -RATIO, 0);
-
-                pressedKey = 0;
-                break;
-            case 106:    // turn left
-                pDrone->fly(0, 0, 0, RATIO);
-
-                pressedKey = 0;
-                break;
-            case 108:    // turn right
-                pDrone->fly(0, 0, 0, -RATIO);
-
-                pressedKey = 0;
-                break;
-            case 113:    // hovering
-                pDrone->fly(0, 0, 0, 0);
-
-                pressedKey = 0;
-                break;
-            case 99:    // debug description
-                debugDescription(pDrone);
-
-                pressedKey = 0;
-                break;
-            default:
-                break;
+        static CommandProcessor commandProcessor;
+        if (commandProcessor = commandMap[pressedKey]) {
+            commandProcessor(*pDrone, RATIO);
+            pressedKey = 0;
         }
     }
 

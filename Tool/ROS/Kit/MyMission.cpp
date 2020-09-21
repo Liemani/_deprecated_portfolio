@@ -52,8 +52,8 @@ void MyMission::calculateTargetCartesianCoordinateXY(Drone& drone) {
     const double Y = cos(latitudeA) * sin(latitudeB) - sin(latitudeA) * cos(latitudeB) * cos(deltaLongitude);
     const double targetBearing = atan2(X, Y);
 
-    targetCartesianCoordinate.x = drone.getCalculatedX() + distance * cos(targetBearing);
-    targetCartesianCoordinate.y = drone.getCalculatedY() + distance * sin(-targetBearing);
+    targetCartesianCoordinate.x = drone.getMatchingX() + distance * cos(targetBearing);
+    targetCartesianCoordinate.y = drone.getMatchingY() + distance * sin(-targetBearing);
 
     calculateTargetDistance(drone);
 }
@@ -63,14 +63,14 @@ void MyMission::calculateTargetCartesianCoordinateZ(Drone& drone) {
 }
 
 void MyMission::calculateTargetDistance(Drone& drone) {
-    const double delta_x = targetCartesianCoordinate.x - drone.getCalculatedX();
-    const double delta_y = targetCartesianCoordinate.y - drone.getCalculatedY();
-    const double delta_z = targetCartesianCoordinate.z - drone.getCalculatedZ();
+    const double delta_x = targetCartesianCoordinate.x - drone.getOdometryX();
+    const double delta_y = targetCartesianCoordinate.y - drone.getOdometryY();
+    const double delta_z = targetCartesianCoordinate.z - drone.getOdometryZ();
 
     targetPlaneDistance = sqrt(pow(delta_x, 2.0) + pow(delta_y, 2.0));
     targetDistance = sqrt(pow(targetPlaneDistance, 2.0) + pow(delta_z, 2.0));
 
-    targetAngle = drone.getBearing() - atan2((targetCartesianCoordinate.y - drone.getCalculatedY()), (targetCartesianCoordinate.x - drone.getCalculatedX()));
+    targetAngle = drone.getBearing() + atan2((targetCartesianCoordinate.y - drone.getOdometryY()), (targetCartesianCoordinate.x - drone.getOdometryX()));
 }
 
 
@@ -92,12 +92,12 @@ bool MyMission::perform(std::vector<Drone*>& pDrone_vector) {
 
     const double ratioX = cos(targetAngle) / targetDistance * targetPlaneDistance;
     const double ratioY = sin(targetAngle) / targetDistance * targetPlaneDistance;
-    const double ratioZ = (targetCartesianCoordinate.z - pDrone_vector[0]->getCalculatedZ()) / targetDistance;
+    const double ratioZ = (targetCartesianCoordinate.z - pDrone_vector[0]->getOdometryZ()) / targetDistance;
 
     if (targetDistance > 1) {
         pDrone_vector[0]->fly(SPEED * ratioX, SPEED * ratioY, SPEED * ratioZ);
-    } else if (targetDistance > 0.1) {
-        pDrone_vector[0]->fly(targetDistance * ratioX, targetDistance * ratioY, targetDistance * ratioZ);
+    } else if (targetDistance > 0.15) {
+        pDrone_vector[0]->fly(targetDistance / 10 * ratioX, targetDistance / 10 * ratioY, targetDistance * ratioZ);
     } else {
         pDrone_vector[0]->hover();
         return true;

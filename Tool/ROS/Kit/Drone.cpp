@@ -87,15 +87,15 @@ double Drone::getMatchingZ() {
     return odometryMatchingGlobalPosition.z;
 }
 
-double Drone::getCalculatedX() {
+double Drone::getOdometryX() {
     return odometry.x;
 }
 
-double Drone::getCalculatedY() {
+double Drone::getOdometryY() {
     return odometry.y;
 }
 
-double Drone::getCalculatedZ() {
+double Drone::getOdometryZ() {
     return odometry.z;
 }
 
@@ -118,6 +118,7 @@ void Drone::positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChang
 
     odometryMatchingGlobalPosition.x = odometry.x;
     odometryMatchingGlobalPosition.y = odometry.y;
+    odometryMatchingGlobalPositionOrientationZ = odometryOrientationZ;
 
     if (callWhenPositionChanged) callWhenPositionChanged(pMission, *this);
 }
@@ -134,6 +135,8 @@ void Drone::attitudeChanged(const bebop_msgs::Ardrone3PilotingStateAttitudeChang
     bearing = msg->yaw;    // msg->yaw is magnetic bearing_rad
 
     if (callWhenBearingChanged) callWhenBearingChanged(pMission, *this);
+
+    debugTestDescription();
 }
 
 void Drone::flyingStateChanged(const bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::ConstPtr& msg) {
@@ -144,6 +147,16 @@ void Drone::odometryChanged(const nav_msgs::Odometry::ConstPtr& msg) {
     odometry.x = msg->pose.pose.position.x;
     odometry.y = msg->pose.pose.position.y;
     odometry.z = msg->pose.pose.position.z;
+    odometryOrientationZ = msg->pose.pose.orientation.z;    // -1 ~ 1
+
+    debugTestDescription();
+}
+
+void Drone::debugTestDescription() {
+    // printf("Bearing: %0.12f \n", bearing);
+    // printf("Bearing(angle): %0.12f \n", bearing / M_PI * 180);
+    // printf("OdometryOrientationZ: %0.12f \n", odometryOrientationZ);
+    // printf("---------------------------------- \n");
 }
 
 

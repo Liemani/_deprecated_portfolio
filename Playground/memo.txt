@@ -1,1 +1,2 @@
 gcc bearingCalculrator.c -lm    // -lm for #include <math.h>
+g++ -std=c++11 07_mapExam.cpp -pthread    // -pthread for #include <thread>

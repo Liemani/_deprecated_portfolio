@@ -24,9 +24,8 @@ using std::string;
 
 
 // member function
-MissionPlanner::MissionPlanner(int argc, char** argv, ros::NodeHandle* pNodeHandle, int* pCommand) {
-    ros::init(argc, argv, "a13_mission_planner_node2");    // node name
-    this->pNodeHandle = pNodeHandle;
+MissionPlanner::MissionPlanner(ros::NodeHandle* pNodeHandle, int* pCommand) {
+   this->pNodeHandle = pNodeHandle;
 
     this->pCommand = pCommand;
 
@@ -112,9 +111,9 @@ void MissionPlanner::debugDescription() {
         printf("  Altitude  : %.12f \n", pDrone_vector[i]->getAltitude());
         printf("  Bearing   : %.12f \n", pDrone_vector[i]->getBearing());
         printf("Cartesian coordinate \n");
-        printf("  x : %.12f \n", pDrone_vector[i]->getCalculatedX());
-        printf("  y : %.12f \n", pDrone_vector[i]->getCalculatedY());
-        printf("  z : %.12f \n", pDrone_vector[i]->getCalculatedZ());
+        printf("  x : %.12f \n", pDrone_vector[i]->getOdometryX());
+        printf("  y : %.12f \n", pDrone_vector[i]->getOdometryY());
+        printf("  z : %.12f \n", pDrone_vector[i]->getOdometryZ());
         printf("Flying state: %d \n", pDrone_vector[i]->getFlyingState());
         printf("----------------------- \n");
     }

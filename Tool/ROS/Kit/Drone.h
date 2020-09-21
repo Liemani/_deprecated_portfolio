@@ -56,11 +56,14 @@ private:
     uint8_t flyingState;
 
     GlobalPosition globalPosition;
+    float bearing;
+
     CartesianCoordinate odometryMatchingGlobalPosition;
+    double odometryMatchingGlobalPositionOrientationZ;
 
     CartesianCoordinate odometry;
+    double odometryOrientationZ;
     
-    float bearing;
 
     // subscribe call back function
     void positionChanged(const bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr& msg);
@@ -69,6 +72,8 @@ private:
     void flyingStateChanged(const bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::ConstPtr& msg);
     void odometryChanged(const nav_msgs::Odometry::ConstPtr& msg);
 
+    void debugTestDescription();
+    
 public:
     Drone(ros::NodeHandle* pNodeHandle, std::string name = "bebop");
 
@@ -91,9 +96,9 @@ public:
     double getMatchingY();
     double getMatchingZ();
 
-    double getCalculatedX();
-    double getCalculatedY();
-    double getCalculatedZ();
+    double getOdometryX();
+    double getOdometryY();
+    double getOdometryZ();
 
     void setMission(Mission* pMission);
 

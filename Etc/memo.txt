@@ -527,6 +527,27 @@ don't start right after set mission to drone, but start when ready
 
 
 
+2020-09-21
+recalculate odometry
+think about making switch dictionary
+mission in mission
+make missionHandler
+think about physics
+if don't make ros::Handler in main, making in the MissionHandler would make error?
+
+check when use real drone
+is odometry z calculated from bearing? (in simulator, yes)
+
+dictionary[subscript]: in c++, dictionary'ssubsrcipt use reference type, so if the value changed the result value get wrong value.(it must return the end, but it even returns totally wrong value!!)
+
+make multi drone telle op
+- can choose a drone to fly
+- can control all drone at once
+
+
+
+
+
 
 
 

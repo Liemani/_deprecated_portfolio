@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "a13_mission_planner2_node");
     ros::NodeHandle nh = ros::NodeHandle();
 
-    MissionPlanner missionPlanner = MissionPlanner(argc, argv, &nh, &pressedKey);
+    MissionPlanner missionPlanner = MissionPlanner(&nh, &pressedKey);
 
     while (ros::ok()) {
         ros::spinOnce();

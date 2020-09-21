@@ -45,7 +45,7 @@ private:
     GlobalPosition targetGlobalPosition;
 
 public:
-    MissionPlanner(int argc, char** argv, ros::NodeHandle* pNodeHandle, int* pCommand);
+    MissionPlanner(ros::NodeHandle* pNodeHandle, int* pCommand);
 
     // get set function
     double getTargetLatitude();
