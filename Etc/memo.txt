@@ -528,12 +528,12 @@ don't start right after set mission to drone, but start when ready
 
 
 2020-09-21
-recalculate odometry
-think about making switch dictionary
-mission in mission
-make missionHandler
-think about physics
-if don't make ros::Handler in main, making in the MissionHandler would make error?
+o recalculate odometry
+o think about making switch dictionary
+x mission in mission
+o make missionHandler
+x think about physics
+x if don't make ros::Handler in main, making in the MissionHandler would make error?
 
 check when use real drone
 is odometry z calculated from bearing? (in simulator, yes)
@@ -544,14 +544,30 @@ make multi drone telle op
 - can choose a drone to fly
 - can control all drone at once
 
+what about wheel click interface? like black blade and soul's ctrl interface?
+
+https://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf
 
 
 
+2020-09-22
+make error less
+make location class name more readably
+make MissionHandler
+adjust sqrt to diagonally flight for to describe diagonal movement
 
+what would happen when i override member function to other access modifier?
+search the way to pass instance's member function pointer as argument
+	ex) (functionPointer, this, a)
+make the end point of fly mission at global location changed
 
+ros bookmark:    https://groups.google.com/forum/#!topic/korea-ros-users/-8oCi3b8d6Y
 
-
-
+to do for mission
+- fly linear
+- back origin point
+- move specific position
+- fly curve
 
 
 

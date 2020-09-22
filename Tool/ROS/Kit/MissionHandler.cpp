@@ -1,36 +1,52 @@
+#include <ros/ros.h>
 #include "MissionHandler.h"
 
 #define state_noMission 0
 #define state_onMission 1
 
-MissionHandler::MissionHandler(ros::NodeHandle* pNodeHandle, int* pCommand) {
-    this->pNodeHandle = pNodeHandle;
-    this->pCommand = pCommand;
 
-    missionState = 0;
-}
 
-void MissionHandler::loop() {
-    this->processCommand();
-    this->doMission();
-}
 
+
+// protected member function
 void MissionHandler::processCommand() {
 
 }
 
-void MissionHandler::doMission() {
+void MissionHandler::perform() {
     if (missionState != state_onMission) return;
 
-    static bool shouldStop = true;
+    static bool shouldStop;
+    shouldStop = true;
     
-    for (int i = 0; i != pMission_vector.size(); ++i)
-        shouldStop &= pMission_vector[i]->perform(pDrone_vector);
+    for (std::vector<Mission*>::iterator iter = pMission_vector.begin(); iter != pMission_vector.end(); ++iter)
+        shouldStop &= (*iter)->perform(pDrone_vector);
     
     if (shouldStop)
-        missionState = 0;
+        missionState = state_noMission;
 }
 
-void MissionHandler::debugDescription() {
+// void MissionHandler::debugDescription() {
 
+// }
+
+
+
+
+
+// public member function
+MissionHandler::MissionHandler(int argc, char** argv, char* nodeName, int* pCommand) {
+    ros::init(argc, argv, nodeName);
+    this->pCommand = pCommand;
+
+    pNodeHandle = new ros::NodeHandle;
+
+    missionState = state_noMission;
+}
+
+void MissionHandler::loop() {
+    while(ros::ok()) {
+        this->processCommand();
+        this->perform();
+    }
 }

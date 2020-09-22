@@ -1,31 +1,37 @@
 #ifndef MISSIONHANDLER_H
 #define MISSIONHANDLER_H
 
+#include <vector>
+
 #include "Drone.h"
+#include "Mission.h"
 
 
 
 
 
 class Drone;
+class Mission;
 
 class MissionHandler {
-    ros::NodeHandle* pNodeHandle;
+protected:
     int* pCommand;
 
-    std::vector<Drone*> pDrone_vector;
-    std::vector<Mission*> pMission_vector;
+    ros::NodeHandle* pNodeHandle;
 
     int missionState;
 
-public:
-    MissionHandler(ros::NodeHandle* pNodeHandle, int* pCommand);
-
-    void loop();
+    std::vector<Drone*> pDrone_vector;
+    std::vector<Mission*> pMission_vector;
     
     void processCommand();
-    void doMission();
-    void debugDescription();
+    void perform();
+    // void debugDescription();
+
+public:
+    MissionHandler(int argc, char** argv, char* nodeName, int* pCommand);
+
+    void loop();
 
 };
 

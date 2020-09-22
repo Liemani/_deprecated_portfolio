@@ -84,7 +84,12 @@ void MissionPlanner::processCommand() {
 
             *pCommand = 0;
             break;
-        case 113:    // reset drone[0]
+        case 113:    // land drone[0]
+            pDrone_vector[0]->land();
+
+            *pCommand = 0;
+            break;
+        case 27:    // reset drone[0]
             pDrone_vector[0]->reset();
 
             *pCommand = 0;

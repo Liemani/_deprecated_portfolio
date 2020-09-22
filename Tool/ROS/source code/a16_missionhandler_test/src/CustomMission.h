@@ -1,27 +1,23 @@
-#ifndef MYMISSION_H
-#define MYMISSION_H
+#ifndef CUSTOMMISSION_H
+#define CUSTOMMISSION_H
 
-#include <stdio.h>
-#include <math.h>
+#include <vector>
 
-#include "GlobalPosition.h"
-#include "CartesianCoordinate.h"
-#include "Mission.h"
-
+#include <Mission.h>
 
 
 
 
 typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
-class MyMission: public Mission {
-protected:
+class Drone;
+class Mission;
+
+class CustomMission: public Mission {
     // callback function
     static void callWhenPositionChanged(Mission* mission, Drone& drone);
     static void callWhenAltitudeChanged(Mission* mission, Drone& drone);
     static void callWhenBearingChanged(Mission* mission, Drone& drone);
-
-    GlobalPosition targetGlobalPosition;
 
     // mission variable
     double targetPlaneDistance;
@@ -36,7 +32,7 @@ protected:
     void calculateTargetDistance(Drone& drone);
 
 public:
-    MyMission(GlobalPosition& targetGlobalPosition);
+    GlobalPosition targetGlobalPosition;
 
     virtual bool perform(std::vector<Drone*>& pDrone_vector);
 
