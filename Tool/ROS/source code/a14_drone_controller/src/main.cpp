@@ -2,8 +2,9 @@
 #include <thread>
 #include <termio.h>    // struct termios
 #include <map>
+#include <ros/ros.h>
 
-#include <Model/Drone.h>
+#include <Drone.h>
 
 #define state_landed 0
 #define state_takingOff 1
@@ -41,23 +42,23 @@ map<int, CommandProcessor> commandMap = {
                 drone.land();
         }
     },
-    { 46, [](Drone& drone, double ratio){ drone.reset(); } },
+    { 46, [](Drone& drone, double ratio) { drone.reset(); } },
 
-    { 49, [](Drone& drone, double ratio){ drone.flyBackwardLeftward(ratio); } },
-    { 50, [](Drone& drone, double ratio){ drone.flyBackward(ratio); } },
-    { 51, [](Drone& drone, double ratio){ drone.flyBackwardRightward(ratio); } },
-    { 52, [](Drone& drone, double ratio){ drone.flyLeftward(ratio); } },
-    { 53, [](Drone& drone, double ratio){ drone.hover(); } },
-    { 54, [](Drone& drone, double ratio){ drone.flyRightward(ratio); } },
-    { 55, [](Drone& drone, double ratio){ drone.flyForwardLeftward(ratio); } },
-    { 56, [](Drone& drone, double ratio){ drone.flyForward(ratio); } },
-    { 57, [](Drone& drone, double ratio){ drone.flyForwardRightward(ratio); } },
+    { 49, [](Drone& drone, double ratio) { drone.flyBackwardLeftward(ratio); } },
+    { 50, [](Drone& drone, double ratio) { drone.flyBackward(ratio); } },
+    { 51, [](Drone& drone, double ratio) { drone.flyBackwardRightward(ratio); } },
+    { 52, [](Drone& drone, double ratio) { drone.flyLeftward(ratio); } },
+    { 53, [](Drone& drone, double ratio) { drone.hover(); } },
+    { 54, [](Drone& drone, double ratio) { drone.flyRightward(ratio); } },
+    { 55, [](Drone& drone, double ratio) { drone.flyForwardLeftward(ratio); } },
+    { 56, [](Drone& drone, double ratio) { drone.flyForward(ratio); } },
+    { 57, [](Drone& drone, double ratio) { drone.flyForwardRightward(ratio); } },
 
-    { 45, [](Drone& drone, double ratio){ drone.flyUpward(ratio); } },
-    { 43, [](Drone& drone, double ratio){ drone.flyDownward(ratio); } },
+    { 45, [](Drone& drone, double ratio) { drone.flyUpward(ratio); } },
+    { 43, [](Drone& drone, double ratio) { drone.flyDownward(ratio); } },
 
-    { 47, [](Drone& drone, double ratio){ drone.flyTurnLefft(ratio); } },
-    { 42, [](Drone& drone, double ratio){ drone.flyTurnRight(ratio); } },
+    { 47, [](Drone& drone, double ratio) { drone.flyTurnLefft(ratio); } },
+    { 42, [](Drone& drone, double ratio) { drone.flyTurnRight(ratio); } },
 };
 
 

@@ -1,9 +1,6 @@
 #include <ros/ros.h>
 #include "MissionHandler.h"
 
-#define state_noMission 0
-#define state_onMission 1
-
 
 
 
@@ -14,7 +11,7 @@ void MissionHandler::processCommand() {
 }
 
 void MissionHandler::perform() {
-    if (missionState != state_onMission) return;
+    if (!isOnMission) return;
 
     static bool shouldStop;
     shouldStop = true;
@@ -23,7 +20,7 @@ void MissionHandler::perform() {
         shouldStop &= (*iter)->perform(pDrone_vector);
     
     if (shouldStop)
-        missionState = state_noMission;
+        isOnMission = false;
 }
 
 // void MissionHandler::debugDescription() {
@@ -41,11 +38,13 @@ MissionHandler::MissionHandler(int argc, char** argv, char* nodeName, int* pComm
 
     pNodeHandle = new ros::NodeHandle;
 
-    missionState = state_noMission;
+    isOnMission = false;
 }
 
 void MissionHandler::loop() {
     while(ros::ok()) {
+        ros::spinOnce();
+
         this->processCommand();
         this->perform();
     }

@@ -1,6 +1,5 @@
 #include "MyMission.h"
 
-#define PI 3.141592
 #define RADIUS_OF_EARTH 6371
 
 #define SPEED 0.5
@@ -32,11 +31,11 @@ void MyMission::callWhenBearingChanged(Mission* pMission, Drone& drone) {
 
 // private member function
 void MyMission::calculateTargetCartesianCoordinateXY(Drone& drone) {
-    const double latitudeA = drone.getLatitude() / 180 * PI;
-    const double longitudeA = drone.getLongitude() / 180 * PI;
+    const double latitudeA = drone.getLatitude() / 180 * M_PI;
+    const double longitudeA = drone.getLongitude() / 180 * M_PI;
 
-    const double latitudeB = targetGlobalPosition.latitude / 180 * PI;
-    const double longitudeB = targetGlobalPosition.longitude / 180 * PI;
+    const double latitudeB = targetGlobalPosition.latitude / 180 * M_PI;
+    const double longitudeB = targetGlobalPosition.longitude / 180 * M_PI;
 
     const double deltaLatitude = latitudeB - latitudeA;
     const double deltaLongitude = longitudeB - longitudeA;
@@ -117,7 +116,7 @@ void MyMission::debugDescription() {
     printf("  y: %0.12f \n", targetCartesianCoordinate.y);
     printf("  z: %0.12f \n", targetCartesianCoordinate.z);
     printf("Target distance: %0.12f \n", targetDistance);
-    printf("Target angle: %0.12f \n", targetAngle / PI * 180);
+    printf("Target angle: %0.12f \n", targetAngle / M_PI * 180);
     // printf("Target global position \n");
     // printf("  latitude  : %0.12f \n", targetGlobalPosition.latitude);
     // printf("  longitude : %0.12f \n", targetGlobalPosition.longitude);

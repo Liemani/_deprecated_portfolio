@@ -32,6 +32,15 @@ Drone::Drone(ros::NodeHandle* pNodeHandle,std::string name) {
     bearing = 0.0;
 }
 
+void Drone::debugGlobalPosition() {
+    printf("Drone global position \n");
+    printf("Global Position \n");
+    printf("  latitude  : %0.12f \n", globalPosition.latitude);
+    printf("  longitude : %0.12f \n", globalPosition.longitude);
+    printf("  altitude  : %0.12f \n", globalPosition.altitude);
+    printf("-------------------------- \n");
+}
+
 void Drone::debugDescription() {
     printf("Drone description \n");
     printf("CalculatedCartesianCoordinate \n");

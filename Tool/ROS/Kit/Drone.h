@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include <string>
+#include <math.h>    // M_SQRT1_2
 
 #include <bebop_msgs/Ardrone3PilotingStatePositionChanged.h>
 #include <bebop_msgs/Ardrone3PilotingStateAltitudeChanged.h>
@@ -77,6 +78,7 @@ private:
 public:
     Drone(ros::NodeHandle* pNodeHandle, std::string name = "bebop");
 
+    void debugGlobalPosition();
     void debugDescription();
 
     bool isReady();
@@ -100,6 +102,7 @@ public:
     double getOdometryY();
     double getOdometryZ();
 
+    // This function accept callback functions from mission.
     void setMission(Mission* pMission);
 
 
@@ -126,10 +129,10 @@ public:
     void flyTurnLefft(double ratio) { fly(0.0, 0.0, 0.0, +ratio); }
     void flyTurnRight(double ratio) { fly(0.0, 0.0, 0.0, -ratio); }
 
-    void flyForwardLeftward(double ratio)   { fly(+ratio, +ratio, 0.0); }
-    void flyForwardRightward(double ratio)  { fly(+ratio, -ratio, 0.0); }
-    void flyBackwardLeftward(double ratio)  { fly(-ratio, +ratio, 0.0); }
-    void flyBackwardRightward(double ratio) { fly(-ratio, -ratio, 0.0); }
+    void flyForwardLeftward(double ratio)   { fly(+ratio * M_SQRT1_2, +ratio * M_SQRT1_2, 0.0); }
+    void flyForwardRightward(double ratio)  { fly(+ratio * M_SQRT1_2, -ratio * M_SQRT1_2, 0.0); }
+    void flyBackwardLeftward(double ratio)  { fly(-ratio * M_SQRT1_2, +ratio * M_SQRT1_2, 0.0); }
+    void flyBackwardRightward(double ratio) { fly(-ratio * M_SQRT1_2, -ratio * M_SQRT1_2, 0.0); }
     
 };
 

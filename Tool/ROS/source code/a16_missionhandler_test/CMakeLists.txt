@@ -148,7 +148,7 @@ add_executable(${PROJECT_NAME}_node
   ${LMTPath}/GlobalPosition.cpp
   ${LMTPath}/Drone.cpp
   ${LMTPath}/Mission.cpp
-  ${LMTPath}/KeyEventController.cpp
+  ${LMTPath}/KeyEventHandler.cpp
 )
 
 ## Rename C++ executable without prefix

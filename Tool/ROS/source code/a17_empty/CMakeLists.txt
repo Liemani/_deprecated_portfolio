@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(a13_mission_planner2)
+project(a17_empty)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)    # for stod
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -10,21 +10,10 @@ add_compile_options(-std=c++11)    # for stod
 find_package(catkin REQUIRED COMPONENTS
   bebop_msgs
   geometry_msgs
+  nav_msgs
   roscpp
   std_msgs
-  nav_msgs
 )
-
-
-
-# custom code #
-
-set(LMTPath ../../LMT)
-include_directories(${LMTPath})
-
-# custom code end #
-
-
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -83,7 +72,7 @@ include_directories(${LMTPath})
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   bebop_msgs#   geometry_msgs#   std_msgs
+#   bebop_msgs#   geometry_msgs#   nav_msgs#   std_msgs
 # )
 
 ################################################
@@ -117,8 +106,8 @@ include_directories(${LMTPath})
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES a13_mission_planner2
-#  CATKIN_DEPENDS bebop_msgs geometry_msgs roscpp std_msgs
+#  LIBRARIES a17_empty
+#  CATKIN_DEPENDS bebop_msgs geometry_msgs nav_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -126,16 +115,19 @@ catkin_package(
 ## Build ##
 ###########
 
+set(LMTPath ../../LMT)
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${LMTPath}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/a13_mission_planner2.cpp
+#   src/${PROJECT_NAME}/a17_empty.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -148,12 +140,15 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node
   src/main.cpp
-  ${LMTPath}/MissionPlanner.cpp
+  src/CustomMissionHandler.cpp
+  src/CustomMission.cpp
+  
+  ${LMTPath}/MissionHandler.cpp
   ${LMTPath}/CartesianCoordinate.cpp
   ${LMTPath}/GlobalPosition.cpp
   ${LMTPath}/Drone.cpp
   ${LMTPath}/Mission.cpp
-  ${LMTPath}/MyMission.cpp
+  ${LMTPath}/KeyEventHandler.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -218,7 +213,7 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_a13_mission_planner2.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_a17_empty.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

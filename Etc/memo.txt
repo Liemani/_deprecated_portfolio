@@ -551,7 +551,7 @@ https://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf
 
 
 2020-09-22
-make error less
+make location error less
 make location class name more readably
 make MissionHandler
 adjust sqrt to diagonally flight for to describe diagonal movement
@@ -568,6 +568,30 @@ to do for mission
 - back origin point
 - move specific position
 - fly curve
+
+
+
+2020-09-23
+x fix the issue that "ISO C++ forbids converting a string constant to ‘char*’"
+x what would be good #1 return int value #2 get int pointer as argument
+o the problem that thread which is stored in pointer doesn't killed when the program turned off
+x check the difference of speed between horizontal move and vertical move
+x make speed study code for real drone before use real one
+x make shell script for several thing
+x - multi drone spinx
+
+gook talker:    https://stackoverflow.com/questions/12202656/c11-lambda-implementation-and-memory-model
+
+x use ros service, param etc
+x make stop at subscribing time
+o empty pkg
+x trim CustomMission
+x add function that add drone
+o change name isOnMission -> isMissionOn
+x adjust to consider speed to fly
+
+
+
 
 
 

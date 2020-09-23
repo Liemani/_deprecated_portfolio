@@ -1,12 +1,8 @@
-#include <stdio.h>    // for debuggin prinf()
-#include <thread>
+#include <stdio.h>    // printf()
+#include <thread>    // thread
 #include <termio.h>    // struct termios
 
-#include <Model/MissionPlanner.h>
-
-
-
-
+#include <MissionPlanner.h>
 
 using std::thread;
 

@@ -19,12 +19,12 @@ protected:
 
     ros::NodeHandle* pNodeHandle;
 
-    int missionState;
+    bool isOnMission;
 
     std::vector<Drone*> pDrone_vector;
     std::vector<Mission*> pMission_vector;
     
-    void processCommand();
+    virtual void processCommand();    // must virtual for to use derived class's function in the loop function
     void perform();
     // void debugDescription();
 

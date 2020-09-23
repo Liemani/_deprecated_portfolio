@@ -1,16 +1,15 @@
+#include <stdio.h>    // getchar()
 #include <termio.h>
 
-#include "KeyEventController.h"
-
-using std::thread;
+#include "KeyEventHandler.h"
 
 
 
 
 
-int* KeyEventController::pPressedKey = NULL;
+int* KeyEventHandler::pPressedKey = NULL;    // you must init the class member variable!!
 
-int getch() {
+static int getch() {
     int ch;
 
     struct termios buf, save;
@@ -30,12 +29,12 @@ int getch() {
     return ch;
 }
 
-void KeyEventController::getPressedKey() {
+void KeyEventHandler::getPressedKey() {
     while(true)
         *pPressedKey = getch();
 }
 
-thread* KeyEventController::makeKeyEventThread(int* pPressedKey) {
-    KeyEventController::pPressedKey = pPressedKey;
-    return new thread(getPressedKey);
+SimpleFunction KeyEventHandler::generateFunction(int* pPressedKey) {
+    KeyEventHandler::pPressedKey = pPressedKey;
+    return getPressedKey;
 }

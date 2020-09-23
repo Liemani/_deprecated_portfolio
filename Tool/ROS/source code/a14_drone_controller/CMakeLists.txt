@@ -155,9 +155,9 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node
   src/main.cpp
-  ${LMTPath}/Model/CartesianCoordinate.cpp
-  ${LMTPath}/Model/GlobalPosition.cpp
-  ${LMTPath}/Model/Drone.cpp
+  ${LMTPath}/CartesianCoordinate.cpp
+  ${LMTPath}/GlobalPosition.cpp
+  ${LMTPath}/Drone.cpp
 )
 
 ## Rename C++ executable without prefix

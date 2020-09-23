@@ -15,8 +15,16 @@ void CustomMissionHandler::processCommand() {
 
     if (*pCommand == 113) {    // 'q': set mission
         if (missionState == state_noMission) {
-            pMission_vector.clear();
-            pMission_vector.push_back(new CustomMission);
+            if (pMission_vector.size() == 1) {
+                delete pMission_vector[0];
+                pMission_vector.clear();
+            }
+
+            CustomMission* pCustomMission = new CustomMission;
+            pMission_vector.push_back(pCustomMission);
+            pDrone_vector[0]->setMission(pCustomMission);
+
+            printf("New Custom Mission Has Enrolled!!");
         }
     } else if (*pCommand == 115) {    // 's': save current location
         if (missionState == state_onMission) {
