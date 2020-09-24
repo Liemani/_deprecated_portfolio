@@ -1,9 +1,11 @@
-#include <stdio.h>    // printf()
+#include <string>
 
 #include <Drone.h>
 
 #include "CustomMissionHandler.h"
-#include "GoingUp.h"
+#include "Mission/GoingUp.h"
+
+using std::string;
 
 
 
@@ -31,5 +33,8 @@ CustomMissionHandler::CustomMissionHandler(int argc, char** argv, int* pCommand)
     pDrone_vector.push_back(new Drone(pNodeHandle));
     pMission_vector.push_back(new GoingUp);
     
+    // If you want to link mission to drone(mission's callback function will be adjusted),
+    // you must call drone.setMission(mission).
+    // One Drone only can hold 1 mission.
     pDrone_vector[0]->setMission(pMission_vector[0]);
 }

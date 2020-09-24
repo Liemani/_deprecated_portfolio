@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <vector>
-#include <Drone.h>
 #include <math.h>
 
-
+#include <Drone.h>
 
 #include "GoingUp.h"
 
-#define RADIUS_OF_EARTH 6371
 #define SPEED 0.5
 
 using std::vector;
@@ -37,6 +35,11 @@ void GoingUp::callWhenBearingChanged(Mission* pMission, Drone& drone) {
 // return value:
 //  true: end this mission
 //  false: on going
+GoingUp::GoingUp()
+: Mission() {
+    // initializing code goes here...
+}
+
 bool GoingUp::perform(std::vector<Drone*>& pDrone_vector) {
     double altitudeDifference = targetAltitude - pDrone_vector[0]->getAltitude();
 

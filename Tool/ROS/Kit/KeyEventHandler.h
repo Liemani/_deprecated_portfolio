@@ -11,10 +11,10 @@ class KeyEventHandler {
 private:
     static int* pPressedKey;
 
-    static void getPressedKey();
+    static void handleKeyEvent();
 
 public:
-    static SimpleFunction generateFunction(int* pPressedKey);
+    static SimpleFunction getHandleKeyEvent(int* pPressedKey);
 
 };
 

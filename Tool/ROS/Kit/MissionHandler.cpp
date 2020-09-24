@@ -1,5 +1,10 @@
 #include <ros/ros.h>
+
+#include <string>
+
 #include "MissionHandler.h"
+
+using std::string;
 
 
 
@@ -32,8 +37,9 @@ void MissionHandler::perform() {
 
 
 // public member function
-MissionHandler::MissionHandler(int argc, char** argv, char* nodeName, int* pCommand) {
+MissionHandler::MissionHandler(int argc, char** argv, string nodeName, int* pCommand) {
     ros::init(argc, argv, nodeName);
+    
     this->pCommand = pCommand;
 
     pNodeHandle = new ros::NodeHandle;

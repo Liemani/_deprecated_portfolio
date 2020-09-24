@@ -29,12 +29,12 @@ static int getch() {
     return ch;
 }
 
-void KeyEventHandler::getPressedKey() {
+void KeyEventHandler::handleKeyEvent() {
     while(true)
         *pPressedKey = getch();
 }
 
-SimpleFunction KeyEventHandler::generateFunction(int* pPressedKey) {
+SimpleFunction KeyEventHandler::getHandleKeyEvent(int* pPressedKey) {
     KeyEventHandler::pPressedKey = pPressedKey;
-    return getPressedKey;
+    return handleKeyEvent;
 }

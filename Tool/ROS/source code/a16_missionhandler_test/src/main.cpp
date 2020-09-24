@@ -10,12 +10,13 @@ using std::thread;
 
 
 
-int pressedKey;
-
 int main(int argc, char** argv) {
-    thread keyEventHandleThread = thread(KeyEventHandler::generateFunction(&pressedKey));
+    int pressedKey;
+
+    thread keyEventHandleThread = thread(KeyEventHandler::getHandleKeyEvent(&pressedKey));
 
     CustomMissionHandler missionHandler(argc, argv, &pressedKey);
+
     missionHandler.loop();
 
     return 0;

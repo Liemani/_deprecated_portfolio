@@ -8,10 +8,10 @@
 
 
 
-typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
 class Drone;
-class Mission;
+
+typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
 class GoingUp: public Mission {
     // callback function
@@ -20,6 +20,8 @@ class GoingUp: public Mission {
     static void callWhenBearingChanged(Mission* mission, Drone& drone);
 
 public:
+    GoingUp();
+
     virtual bool perform(std::vector<Drone*>& pDrone_vector);
     
     void saveTargetPosition(Drone& drone);

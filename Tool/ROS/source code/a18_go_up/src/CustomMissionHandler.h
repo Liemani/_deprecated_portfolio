@@ -10,7 +10,6 @@
 class CustomMissionHandler: public MissionHandler {
 protected:
     void processCommand();
-    void commandFunction();
 
 public:
     CustomMissionHandler(int argc, char** argv, int* pCommand);

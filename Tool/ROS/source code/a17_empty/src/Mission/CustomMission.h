@@ -8,10 +8,10 @@
 
 
 
-typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
 class Drone;
-class Mission;
+
+typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
 class CustomMission: public Mission {
     // callback function
@@ -19,22 +19,10 @@ class CustomMission: public Mission {
     static void callWhenAltitudeChanged(Mission* mission, Drone& drone);
     static void callWhenBearingChanged(Mission* mission, Drone& drone);
 
-    // mission variable
-    double targetPlaneDistance;
-    double targetDistance;
-    double targetAngle;
-
-    CartesianCoordinate targetCartesianCoordinate;
-
-    // private static function
-    void calculateTargetCartesianCoordinateXY(Drone& drone);
-    void calculateTargetCartesianCoordinateZ(Drone& drone);
-    void calculateTargetDistance(Drone& drone);
-
 public:
-    GlobalPosition targetGlobalPosition;
+    CustomMission();
 
-    virtual bool perform(std::vector<Drone*>& pDrone_vector);
+    bool perform(std::vector<Drone*>& pDrone_vector);
 
     void debugDescription();
 

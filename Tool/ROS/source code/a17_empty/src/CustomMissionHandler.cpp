@@ -1,9 +1,11 @@
-#include <stdio.h>    // printf()
+#include <string>
 
 #include <Drone.h>
 
 #include "CustomMissionHandler.h"
-#include "CustomMission.h"
+#include "Mission/CustomMission.h"
+
+using std::string;
 
 
 

@@ -141,7 +141,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_node
   src/main.cpp
   src/CustomMissionHandler.cpp
-  src/GoingUp.cpp
+  src/Mission/GoingUp.cpp
   
   ${LMTPath}/MissionHandler.cpp
   ${LMTPath}/CartesianCoordinate.cpp

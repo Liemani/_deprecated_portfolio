@@ -1,6 +1,7 @@
 #ifndef MISSIONHANDLER_H
 #define MISSIONHANDLER_H
 
+#include <string>
 #include <vector>
 
 #include "Drone.h"
@@ -26,10 +27,10 @@ protected:
     
     virtual void processCommand();    // must virtual for to use derived class's function in the loop function
     void perform();
-    // void debugDescription();
+    // virtual void debugDescription();
 
 public:
-    MissionHandler(int argc, char** argv, char* nodeName, int* pCommand);
+    MissionHandler(int argc, char** argv, std::string nodeName, int* pCommand);
 
     void loop();
 

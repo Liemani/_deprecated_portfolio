@@ -2,7 +2,7 @@
 #include <Drone.h>
 #include <math.h>
 
-#include "CustomMission.h"
+#include "FlyToPoint.h"
 
 #define RADIUS_OF_EARTH 6371
 #define SPEED 0.5
@@ -14,19 +14,21 @@ using std::vector;
 
 
 // callback function
-void CustomMission::callWhenPositionChanged(Mission* pMission, Drone& drone) {
-    CustomMission* pCustomMission = (CustomMission*)pMission;
+void FlyToPoint::callWhenPositionChanged(Mission* pMission, Drone& drone) {
+    FlyToPoint* pFlyToPoint = (FlyToPoint*)pMission;
 
-    pCustomMission->calculateTargetCartesianCoordinateXY(drone);
+    pFlyToPoint->calculateTargetCartesianCoordinateXY(drone);
+
+    pFlyToPoint->isPossibleEnd = true;
 }
 
-void CustomMission::callWhenAltitudeChanged(Mission* pMission, Drone& drone) {
-    CustomMission* pCustomMission = (CustomMission*)pMission;
+void FlyToPoint::callWhenAltitudeChanged(Mission* pMission, Drone& drone) {
+    FlyToPoint* pFlyToPoint = (FlyToPoint*)pMission;
     
-    pCustomMission->calculateTargetCartesianCoordinateZ(drone);
+    pFlyToPoint->calculateTargetCartesianCoordinateZ(drone);
 }
 
-void CustomMission::callWhenBearingChanged(Mission* pMission, Drone& drone) {
+void FlyToPoint::callWhenBearingChanged(Mission* pMission, Drone& drone) {
     // code goes here...
 }
 
@@ -35,7 +37,7 @@ void CustomMission::callWhenBearingChanged(Mission* pMission, Drone& drone) {
 
 
 // private member function
-void CustomMission::calculateTargetCartesianCoordinateXY(Drone& drone) {
+void FlyToPoint::calculateTargetCartesianCoordinateXY(Drone& drone) {
     const double latitudeA = drone.getLatitude() / 180 * M_PI;
     const double longitudeA = drone.getLongitude() / 180 * M_PI;
 
@@ -62,11 +64,11 @@ void CustomMission::calculateTargetCartesianCoordinateXY(Drone& drone) {
     calculateTargetDistance(drone);
 }
 
-void CustomMission::calculateTargetCartesianCoordinateZ(Drone& drone) {
+void FlyToPoint::calculateTargetCartesianCoordinateZ(Drone& drone) {
     targetCartesianCoordinate.z = drone.getMatchingZ() - drone.getAltitude() + targetGlobalPosition.altitude;
 }
 
-void CustomMission::calculateTargetDistance(Drone& drone) {
+void FlyToPoint::calculateTargetDistance(Drone& drone) {
     const double delta_x = targetCartesianCoordinate.x - drone.getOdometryX();
     const double delta_y = targetCartesianCoordinate.y - drone.getOdometryY();
     const double delta_z = targetCartesianCoordinate.z - drone.getOdometryZ();
@@ -85,7 +87,12 @@ void CustomMission::calculateTargetDistance(Drone& drone) {
 // return value:
 //  true: end this mission
 //  false: on going
-bool CustomMission::perform(std::vector<Drone*>& pDrone_vector) {
+FlyToPoint::FlyToPoint()
+: Mission() {
+    isPossibleEnd = false;
+}
+
+bool FlyToPoint::perform(std::vector<Drone*>& pDrone_vector) {
     // if drone number is not 1, end mission
     if (pDrone_vector.size() != 1) return true;
     for (vector<Drone*>::iterator iter = pDrone_vector.begin(); iter != pDrone_vector.end(); ++iter)
@@ -104,14 +111,16 @@ bool CustomMission::perform(std::vector<Drone*>& pDrone_vector) {
         pDrone_vector[0]->fly(targetDistance / 10 * ratioX, targetDistance / 10 * ratioY, targetDistance * ratioZ);
     } else {
         pDrone_vector[0]->hover();
-        return true;
+        return isPossibleEnd;
     }
+
+    isPossibleEnd = false;
 
     return false;
 }
 
-void CustomMission::debugDescription() {
-    printf("CustomMission dscription \n");
+void FlyToPoint::debugDescription() {
+    printf("FlyToPoint dscription \n");
     printf("Target global position \n");
     printf("  latitude  : %0.12f \n", targetGlobalPosition.latitude);
     printf("  longitude : %0.12f \n", targetGlobalPosition.longitude);
