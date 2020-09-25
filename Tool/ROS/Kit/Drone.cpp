@@ -116,6 +116,14 @@ void Drone::setMission(Mission* pMission) {
     callWhenBearingChanged = pMission->getCallWhenBearingChanged();
 }
 
+void Drone::removeMission() {
+    this->pMission = NULL;
+
+    callWhenPositionChanged = NULL;
+    callWhenAltitudeChanged = NULL;
+    callWhenBearingChanged = NULL;
+}
+
 
 
 

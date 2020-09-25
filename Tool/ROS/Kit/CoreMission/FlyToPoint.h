@@ -33,6 +33,9 @@ class FlyToPoint: public CoreMission {
     void calculateTargetCartesianCoordinateZ(Drone& drone);
     void calculateTargetDistance(Drone& drone);
 
+    bool isReadyCalculateTargetCartesianCoordinateXY;
+    bool isReadyCalculateTargetCartesianCoordinateZ;
+
 public:
     FlyToPoint();
 
@@ -43,6 +46,8 @@ public:
     GlobalPosition targetGlobalPosition;
 
     void setTargetGlobalPosition(GlobalPosition targetGlobalPosition);
+
+    bool isReady();
 
     // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }

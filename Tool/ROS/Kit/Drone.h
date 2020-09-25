@@ -104,6 +104,7 @@ public:
 
     // This function accept callback functions from mission.
     void setMission(Mission* pMission);
+    void removeMission();
 
 
 

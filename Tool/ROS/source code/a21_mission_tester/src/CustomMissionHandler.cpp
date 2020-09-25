@@ -1,8 +1,22 @@
+#include <stdio.h>
 #include <string>
 
 #include <Drone.h>
+#include <ConcreteMission/3/ArrangeStair.h>
 
 #include "CustomMissionHandler.h"
+
+#define state_landed 0
+#define state_takingOff 1
+#define state_hovering 2
+#define state_flying 3
+#define state_landing 4
+#define state_emergency 5
+#define state_userTakeOff 6
+#define state_motorRamping 7
+#define state_emergencyLanding 8
+
+#define SPEED 0.5
 
 using std::string;
 
@@ -11,7 +25,57 @@ using std::string;
 
 
 void CustomMissionHandler::processCommand() {
-    // action code for command goes here...
+    int command = this->command;
+
+    if (!command) return;
+    
+
+    for (int i = 0; i < pDrone_vector.size(); ++i) {
+        if (command == 48) {    // '0': takeoff
+            if (pDrone_vector[i]->getFlyingState() == state_landed)
+                pDrone_vector[i]->takeoff();
+        } else if (command == 10) {    // 'Enter': land
+            if (pDrone_vector[i]->getFlyingState() == state_hovering)
+                pDrone_vector[i]->land();
+        } else if (command == 46) { pDrone_vector[i]->reset(); }    // '.': reset
+        else if (command == 49) { pDrone_vector[i]->flyBackwardLeftward(SPEED); }
+        else if (command == 50) { pDrone_vector[i]->flyBackward(SPEED); }
+        else if (command == 51) { pDrone_vector[i]->flyBackwardRightward(SPEED); }
+        else if (command == 52) { pDrone_vector[i]->flyLeftward(SPEED); }
+        else if (command == 53) { pDrone_vector[i]->hover(); }
+        else if (command == 54) { pDrone_vector[i]->flyRightward(SPEED); }
+        else if (command == 55) { pDrone_vector[i]->flyForwardLeftward(SPEED); }
+        else if (command == 56) { pDrone_vector[i]->flyForward(SPEED); }
+        else if (command == 57) { pDrone_vector[i]->flyForwardRightward(SPEED); }
+
+        else if (command == 45) { pDrone_vector[i]->flyUpward(SPEED); }
+        else if (command == 43) { pDrone_vector[i]->flyDownward(SPEED); }
+
+        else if (command == 47) { pDrone_vector[i]->flyTurnLefft(SPEED); }
+        else if (command == 42) { pDrone_vector[i]->flyTurnRight(SPEED); }
+    }
+
+    if (command == 32) {
+        if (isOnMission) {
+            printf("Is On Mission \n");
+        } else {
+            ArrangeStair* pMission = (ArrangeStair*)pMission_vector[0];
+            pMission->setTargetGlobalPosition(pDrone_vector);
+
+            isOnMission = true;
+
+            printf("Mission Start \n");
+        }
+    } else if (command == 100) {
+        ArrangeStair* pMission = (ArrangeStair*)pMission_vector[0];
+        pMission->debugDescription();
+
+        for (int i = 0; i < 3; ++i) {
+            pDrone_vector[i]->debugDescription();
+        }
+    }
+
+    this->command = 0;
 }
 
 
@@ -21,5 +85,9 @@ void CustomMissionHandler::processCommand() {
 // public
 CustomMissionHandler::CustomMissionHandler(int argc, char** argv)
 : MissionHandler(argc, argv, "a21_mission_tester") {
-    // initializing drone code here...
+    pDrone_vector.push_back(new Drone(pNodeHandle, "bebop1"));
+    pDrone_vector.push_back(new Drone(pNodeHandle, "bebop2"));
+    pDrone_vector.push_back(new Drone(pNodeHandle, "bebop3"));
+
+    pMission_vector.push_back(new ArrangeStair(pDrone_vector));
 }

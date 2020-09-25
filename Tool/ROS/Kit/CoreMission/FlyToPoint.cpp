@@ -62,13 +62,17 @@ void FlyToPoint::calculateTargetCartesianCoordinateXY(Drone& drone) {
     targetCartesianCoordinate.y = drone.getMatchingY() + distance * sin(-targetBearing);
 
     calculateTargetDistance(drone);
+
+    isReadyCalculateTargetCartesianCoordinateXY = true;
 }
 
 void FlyToPoint::calculateTargetCartesianCoordinateZ(Drone& drone) {
     targetCartesianCoordinate.z = drone.getMatchingZ() - drone.getAltitude() + targetGlobalPosition.altitude;
+
+    isReadyCalculateTargetCartesianCoordinateZ = true;
 }
 
-void FlyToPoint::calculateTargetDistance(Drone& drone) {
+void FlyToPoint::calculateTargetDistance(Drone& drone) {    // slow function orient
     const double delta_x = targetCartesianCoordinate.x - drone.getOdometryX();
     const double delta_y = targetCartesianCoordinate.y - drone.getOdometryY();
     const double delta_z = targetCartesianCoordinate.z - drone.getOdometryZ();
@@ -87,6 +91,9 @@ void FlyToPoint::calculateTargetDistance(Drone& drone) {
 FlyToPoint::FlyToPoint()
 : CoreMission() {
     isPossibleEnd = false;
+
+    isReadyCalculateTargetCartesianCoordinateXY = false;
+    isReadyCalculateTargetCartesianCoordinateZ = false;
 }
 
 // return value:
@@ -136,4 +143,8 @@ void FlyToPoint::debugDescription() {
 
 void FlyToPoint::setTargetGlobalPosition(GlobalPosition targetGlobalPosition) {
     this->targetGlobalPosition = targetGlobalPosition;
+}
+
+bool FlyToPoint::isReady() {
+    return isReadyCalculateTargetCartesianCoordinateXY && isReadyCalculateTargetCartesianCoordinateZ;
 }

@@ -37,6 +37,7 @@ void CustomMissionHandler::processCommand() {
     } else if (command == 32) {    // ' ': perform mission
         isOnMission = true;
     } else if (command == 100) {    // 'd': print debug
+        pDrone_vector[0]->debugDescription();
         pMission_vector[0]->debugDescription();
     }
 
