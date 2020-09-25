@@ -2,7 +2,7 @@
 
 ## 0. How to set environment
 
-Copy Kit folder to catkin_ws.
+Copy LMT folder to catkin_ws.
 
 ## 1. Make new project(package)
 
@@ -16,11 +16,14 @@ You have to copy these 5 files.
 
 - CMakeLists.txt
 - src/main.cpp
+- src/CustomMissionHandler.h
 - src/CustomMissionHandler.cpp
-- src/CustomMission.h
-- src/CustomMission.cpp
 
-## 3. Customize CustomMissionHandler.cpp file
+## 3. Modify CMakeLists.txt
+
+- line 2: set proper project name
+
+## 4. Customize CustomMissionHandler.cpp file
 
 Change "a17_empty_node" to your proper node name in the constructor.
 
@@ -33,16 +36,14 @@ CustomMissionHandler::CustomMissionHandler(int argc, char** argv, int* pCommand)
 
 Now customize constructor and processCommand function.
 
-## 4. Customize CustomMission class
+## 5. Customize CustomCoreMission or CustomConcreteMission class
+
+If you'd like to control only 1 drone, use CustomCoreMission. Or, if you want to control multiple drone, use CustomConcreteMission. Else, you can use both, to adopd CustomCoreMission as module of CustomConcreteMission.
 
 - Compose perform function.
 - Add class member as you wish.
 - If you want, you can compose callback function executed in drone (ex. callWhenPositionChanged).
 
-## 5. Modify CMakeLists.txt
-
-- line 2: set proper project name
-- line 141: set proper file name
 
 ## 6. Reference
 

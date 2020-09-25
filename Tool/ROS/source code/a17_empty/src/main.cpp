@@ -11,11 +11,9 @@ using std::thread;
 
 
 int main(int argc, char** argv) {
-    int pressedKey;
+    CustomMissionHandler missionHandler(argc, argv);
 
-    thread keyEventHandleThread = thread(KeyEventHandler::getHandleKeyEvent(&pressedKey));
-
-    CustomMissionHandler missionHandler(argc, argv, &pressedKey);
+    thread keyEventHandleThread = thread(KeyEventHandler::getHandleKeyEvent(missionHandler.getPCommand()));
 
     missionHandler.loop();
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(a16_missionhandler_test)
+project(a20_drone_in_a_line)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -106,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES a16_missionhandler_test
+#  LIBRARIES a17_empty
 #  CATKIN_DEPENDS bebop_msgs geometry_msgs nav_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -127,7 +127,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/a16_missionhandler_test.cpp
+#   src/${PROJECT_NAME}/a17_empty.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -215,7 +215,7 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_a16_missionhandler_test.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_a17_empty.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

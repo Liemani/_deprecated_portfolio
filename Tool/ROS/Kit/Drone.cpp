@@ -8,7 +8,7 @@ using std::string;
 
 
 
-Drone::Drone(ros::NodeHandle* pNodeHandle,std::string name) {
+Drone::Drone(ros::NodeHandle* pNodeHandle, std::string name) {
     this->name = name;
 
     this->pMission = NULL;

@@ -135,20 +135,22 @@ include_directories(
 ## either from message generation or dynamic reconfigure
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+file(GLOB SRCPathFiles
+  src/*.cpp
+)
+
+file(GLOB LMTPathFiles
+  ${LMTPath}/*.cpp
+  ${LMTPath}/CoreMission/*.cpp
+  ${LMTPath}/ConcreteMission/*.cpp
+)
+
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node
-  src/main.cpp
-  src/CustomMissionHandler.cpp
-  src/Mission/GoingUp.cpp
-  
-  ${LMTPath}/MissionHandler.cpp
-  ${LMTPath}/CartesianCoordinate.cpp
-  ${LMTPath}/GlobalPosition.cpp
-  ${LMTPath}/Drone.cpp
-  ${LMTPath}/Mission.cpp
-  ${LMTPath}/KeyEventHandler.cpp
+  ${SRCPathFiles}
+  ${LMTPathFiles}
 )
 
 ## Rename C++ executable without prefix

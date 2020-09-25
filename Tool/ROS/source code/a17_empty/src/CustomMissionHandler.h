@@ -12,7 +12,7 @@ protected:
     void processCommand();
 
 public:
-    CustomMissionHandler(int argc, char** argv, int* pCommand);
+    CustomMissionHandler(int argc, char** argv);
     
 };
 

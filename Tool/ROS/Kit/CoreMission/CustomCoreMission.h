@@ -1,7 +1,5 @@
-#ifndef GOINGUP_H
-#define GOINGUP_H
-
-#include <vector>
+#ifndef CUSTOMCOREMISSION_H
+#define CUSTOMCOREMISSION_H
 
 #include <CoreMission.h>
 
@@ -13,20 +11,16 @@ class Drone;
 
 typedef void (*CallWhenDroneChanged)(Mission* pMission, Drone& drone);
 
-class GoingUp: public CoreMission {
+class CustomCoreMission: public CoreMission {
     // callback function
     static void callWhenPositionChanged(Mission* pMission, Drone& drone);
     static void callWhenAltitudeChanged(Mission* pMission, Drone& drone);
     static void callWhenBearingChanged(Mission* pMission, Drone& drone);
 
 public:
-    GoingUp();
+    CustomCoreMission();
 
-    virtual bool perform(Drone* pDrone);
-    
-    void saveTargetPosition(double targetAltitude);
-
-    double targetAltitude;
+    bool perform(Drone* pDrone);
 
     void debugDescription();
 

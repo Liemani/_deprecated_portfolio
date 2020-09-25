@@ -32,31 +32,31 @@ void GoingUp::callWhenBearingChanged(Mission* pMission, Drone& drone) {
 
 
 // public
-// return value:
-//  true: end this mission
-//  false: on going
 GoingUp::GoingUp()
-: Mission() {
+: CoreMission() {
     // initializing code goes here...
 }
 
-bool GoingUp::perform(std::vector<Drone*>& pDrone_vector) {
-    double altitudeDifference = targetAltitude - pDrone_vector[0]->getAltitude();
+// return value:
+//  true: end this mission
+//  false: on going
+bool GoingUp::perform(Drone* pDrone) {
+    double altitudeDifference = targetAltitude - pDrone->getAltitude();
 
     if (altitudeDifference > 0.5) {
-        pDrone_vector[0]->flyUpward(SPEED);
+        pDrone->flyUpward(SPEED);
     } else if (altitudeDifference < -0.5) {
-        pDrone_vector[0]->flyDownward(SPEED);
+        pDrone->flyDownward(SPEED);
     } else {
-        pDrone_vector[0]->hover();
+        pDrone->hover();
         return true;
     }
 
     return false;
 }
 
-void GoingUp::saveTargetPosition(Drone& drone) {
-    targetAltitude = drone.getAltitude() + 1;
+void GoingUp::saveTargetPosition(double targetAltitude) {
+    this->targetAltitude = targetAltitude + 1;
 }
 
 void GoingUp::debugDescription() {

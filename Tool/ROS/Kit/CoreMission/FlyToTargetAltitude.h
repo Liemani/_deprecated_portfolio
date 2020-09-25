@@ -1,9 +1,9 @@
-#ifndef CUSTOMMISSION_H
-#define CUSTOMMISSION_H
+#ifndef FLYTOTARGETALTITUDE_H
+#define FLYTOTARGETALTITUDE_H
 
 #include <vector>
 
-#include <Mission.h>
+#include <CoreMission.h>
 
 
 
@@ -13,18 +13,22 @@ class Drone;
 
 typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
-class CustomMission: public Mission {
+class FlyToTargetAltitude: public CoreMission {
     // callback function
     static void callWhenPositionChanged(Mission* mission, Drone& drone);
     static void callWhenAltitudeChanged(Mission* mission, Drone& drone);
     static void callWhenBearingChanged(Mission* mission, Drone& drone);
 
 public:
-    CustomMission();
+    FlyToTargetAltitude();
 
-    bool perform(std::vector<Drone*>& pDrone_vector);
+    bool perform(Drone* pDrone);
 
     void debugDescription();
+
+    double targetAltitude;
+
+    void setTargetAltitude(double targetAltitude);
 
     // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }

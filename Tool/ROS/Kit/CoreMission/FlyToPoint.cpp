@@ -84,33 +84,29 @@ void FlyToPoint::calculateTargetDistance(Drone& drone) {
 
 
 // public
-// return value:
-//  true: end this mission
-//  false: on going
 FlyToPoint::FlyToPoint()
-: Mission() {
+: CoreMission() {
     isPossibleEnd = false;
 }
 
-bool FlyToPoint::perform(std::vector<Drone*>& pDrone_vector) {
-    // if drone number is not 1, end mission
-    if (pDrone_vector.size() != 1) return true;
-    for (vector<Drone*>::iterator iter = pDrone_vector.begin(); iter != pDrone_vector.end(); ++iter)
-        if ((*iter)->isReady() == false)
-            return false;
+// return value:
+//  true: end this mission
+//  false: on going
+bool FlyToPoint::perform(Drone* pDrone) {
+    if (pDrone->isReady() == false) return false;
 
-    calculateTargetDistance(*pDrone_vector[0]);
+    calculateTargetDistance(*pDrone);
 
     const double ratioX = cos(targetAngle) / targetDistance * targetPlaneDistance;
     const double ratioY = sin(targetAngle) / targetDistance * targetPlaneDistance;
-    const double ratioZ = (targetCartesianCoordinate.z - pDrone_vector[0]->getOdometryZ()) / targetDistance;
+    const double ratioZ = (targetCartesianCoordinate.z - pDrone->getOdometryZ()) / targetDistance;
 
-    if (targetDistance > 1) {
-        pDrone_vector[0]->fly(SPEED * ratioX, SPEED * ratioY, SPEED * ratioZ);
+    if (targetDistance > 1.5) {
+        pDrone->fly(SPEED * ratioX, SPEED * ratioY, SPEED * ratioZ);
     } else if (targetDistance > 0.15) {
-        pDrone_vector[0]->fly(targetDistance / 10 * ratioX, targetDistance / 10 * ratioY, targetDistance * ratioZ);
+        pDrone->fly(targetDistance / 10 * ratioX, targetDistance / 10 * ratioY, targetDistance * ratioZ);
     } else {
-        pDrone_vector[0]->hover();
+        pDrone->hover();
         return isPossibleEnd;
     }
 
@@ -136,4 +132,8 @@ void FlyToPoint::debugDescription() {
     // printf("  longitude : %0.12f \n", targetGlobalPosition.longitude);
     // printf("  altitude  : %0.12f \n", targetGlobalPosition.altitude);
     printf("-------------------------- \n");
+}
+
+void FlyToPoint::setTargetGlobalPosition(GlobalPosition targetGlobalPosition) {
+    this->targetGlobalPosition = targetGlobalPosition;
 }

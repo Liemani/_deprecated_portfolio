@@ -4,6 +4,9 @@
 
 #include "MissionHandler.h"
 
+#include "CoreMission.h"
+#include "ConcreteMission.h"
+
 using std::string;
 
 
@@ -18,11 +21,18 @@ void MissionHandler::processCommand() {
 void MissionHandler::perform() {
     if (!isOnMission) return;
 
-    static bool shouldStop;
-    shouldStop = true;
+    bool shouldStop = true;
     
-    for (std::vector<Mission*>::iterator iter = pMission_vector.begin(); iter != pMission_vector.end(); ++iter)
-        shouldStop &= (*iter)->perform(pDrone_vector);
+    for (std::vector<Mission*>::iterator iter = pMission_vector.begin(); iter != pMission_vector.end(); ++iter) {
+        CoreMission* coreMission = dynamic_cast<CoreMission*>(*iter);
+        ConcreteMission* concreteMission = dynamic_cast<ConcreteMission*>(*iter);
+
+        if (coreMission) {
+            shouldStop &= coreMission->perform(pDrone_vector[0]);
+        } else if (concreteMission) {
+            shouldStop &= concreteMission->perform(pDrone_vector);
+        }
+    }
     
     if (shouldStop)
         isOnMission = false;
@@ -37,10 +47,10 @@ void MissionHandler::perform() {
 
 
 // public member function
-MissionHandler::MissionHandler(int argc, char** argv, string nodeName, int* pCommand) {
+MissionHandler::MissionHandler(int argc, char** argv, string nodeName) {
     ros::init(argc, argv, nodeName);
-    
-    this->pCommand = pCommand;
+
+    command = 0;
 
     pNodeHandle = new ros::NodeHandle;
 
@@ -54,4 +64,8 @@ void MissionHandler::loop() {
         this->processCommand();
         this->perform();
     }
+}
+
+int* MissionHandler::getPCommand() {
+    return &command;
 }

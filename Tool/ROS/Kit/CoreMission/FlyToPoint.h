@@ -3,21 +3,21 @@
 
 #include <vector>
 
-#include <Mission.h>
+#include <CoreMission.h>
 
 
 
 
-typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
+typedef void (*CallWhenDroneChanged)(Mission* pMission, Drone& drone);
 
 class Drone;
 class Mission;
 
-class FlyToPoint: public Mission {
+class FlyToPoint: public CoreMission {
     // callback function
-    static void callWhenPositionChanged(Mission* mission, Drone& drone);
-    static void callWhenAltitudeChanged(Mission* mission, Drone& drone);
-    static void callWhenBearingChanged(Mission* mission, Drone& drone);
+    static void callWhenPositionChanged(Mission* pMission, Drone& drone);
+    static void callWhenAltitudeChanged(Mission* pMission, Drone& drone);
+    static void callWhenBearingChanged(Mission* pMission, Drone& drone);
 
     // mission variable
     double targetPlaneDistance;
@@ -36,11 +36,13 @@ class FlyToPoint: public Mission {
 public:
     FlyToPoint();
 
-    GlobalPosition targetGlobalPosition;
-
-    virtual bool perform(std::vector<Drone*>& pDrone_vector);
+    virtual bool perform(Drone* pDrone);
 
     void debugDescription();
+
+    GlobalPosition targetGlobalPosition;
+
+    void setTargetGlobalPosition(GlobalPosition targetGlobalPosition);
 
     // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }

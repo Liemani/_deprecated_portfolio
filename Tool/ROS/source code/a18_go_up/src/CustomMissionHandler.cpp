@@ -12,15 +12,15 @@ using std::string;
 
 
 void CustomMissionHandler::processCommand() {
-    if (*pCommand == 's') {    // save position
+    if (command == 's') {    // 's': save position
         GoingUp* goingUp = (GoingUp*)pMission_vector[0];
 
-        goingUp->saveTargetPosition(*pDrone_vector[0]);
-    } else if (*pCommand == ' ') {    // perform mission
+        goingUp->saveTargetPosition(pDrone_vector[0]->getAltitude());
+    } else if (command == ' ') {    // ' ': perform mission
         isOnMission = true;
     }
 
-    *pCommand = 0;
+    command = 0;
 }
 
 
@@ -28,8 +28,8 @@ void CustomMissionHandler::processCommand() {
 
 
 // public
-CustomMissionHandler::CustomMissionHandler(int argc, char** argv, int* pCommand)
-: MissionHandler(argc, argv, "a18_go_up_node", pCommand) {
+CustomMissionHandler::CustomMissionHandler(int argc, char** argv)
+: MissionHandler(argc, argv, "a18_go_up_node") {
     pDrone_vector.push_back(new Drone(pNodeHandle));
     pMission_vector.push_back(new GoingUp);
     

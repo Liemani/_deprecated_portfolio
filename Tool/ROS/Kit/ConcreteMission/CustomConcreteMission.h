@@ -1,9 +1,9 @@
-#ifndef GOINGUP_H
-#define GOINGUP_H
+#ifndef CUSTOMCONCRETEMISSION_H
+#define CUSTOMCONCRETEMISSION_H
 
 #include <vector>
 
-#include <CoreMission.h>
+#include <ConcreteMission.h>
 
 
 
@@ -13,20 +13,16 @@ class Drone;
 
 typedef void (*CallWhenDroneChanged)(Mission* pMission, Drone& drone);
 
-class GoingUp: public CoreMission {
+class CustomConcreteMission: public ConcreteMission {
     // callback function
     static void callWhenPositionChanged(Mission* pMission, Drone& drone);
     static void callWhenAltitudeChanged(Mission* pMission, Drone& drone);
     static void callWhenBearingChanged(Mission* pMission, Drone& drone);
 
 public:
-    GoingUp();
+    CustomConcreteMission();
 
-    virtual bool perform(Drone* pDrone);
-    
-    void saveTargetPosition(double targetAltitude);
-
-    double targetAltitude;
+    bool perform(std::vector<Drone*> pDrone_vector);
 
     void debugDescription();
 

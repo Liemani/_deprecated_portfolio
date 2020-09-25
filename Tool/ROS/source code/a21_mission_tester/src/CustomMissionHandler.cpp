@@ -3,8 +3,6 @@
 #include <Drone.h>
 
 #include "CustomMissionHandler.h"
-#include "Mission/CustomCoreMission.h"
-#include "Mission/CustomConcreteMission.h"
 
 using std::string;
 
@@ -22,6 +20,6 @@ void CustomMissionHandler::processCommand() {
 
 // public
 CustomMissionHandler::CustomMissionHandler(int argc, char** argv)
-: MissionHandler(argc, argv, "a17_empty_node") {
+: MissionHandler(argc, argv, "a21_mission_tester") {
     // initializing drone code here...
 }

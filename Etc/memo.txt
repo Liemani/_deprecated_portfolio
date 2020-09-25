@@ -580,7 +580,7 @@ x make speed study code for real drone before use real one
 x make shell script for several thing
 x - multi drone spinx
 
-gook talker:    https://stackoverflow.com/questions/12202656/c11-lambda-implementation-and-memory-model
+good talker:    https://stackoverflow.com/questions/12202656/c11-lambda-implementation-and-memory-model
 
 x use ros service, param etc
 x make stop at subscribing time
@@ -592,6 +592,19 @@ x adjust to consider speed to fly
 
 
 
+2020-09-24
+o fix the issue that "ISO C++ forbids converting a string constant to ‘char*’"
+o make stop at subscribing time
+x file generating program
+    generateBase packageName
+    generateMission missionName
+x why problem not printed string??
+
+
+
+2020-09-25
+stdio.h로 입출력을 다른 쓰레드로 처리할 경우 입력받는 커맨드 라인에는 글자가 출력되지 않기 때문에
+출력을 보내서 출력이 되어있는 상태에서 \n을 보내지 않으면 계속해서 출력이 안된 상태로 있는다!
 
 
 

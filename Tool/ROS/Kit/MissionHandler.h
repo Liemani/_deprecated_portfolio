@@ -16,7 +16,7 @@ class Mission;
 
 class MissionHandler {
 protected:
-    int* pCommand;
+    int command;
 
     ros::NodeHandle* pNodeHandle;
 
@@ -30,9 +30,11 @@ protected:
     // virtual void debugDescription();
 
 public:
-    MissionHandler(int argc, char** argv, std::string nodeName, int* pCommand);
+    MissionHandler(int argc, char** argv, std::string nodeName);
 
     void loop();
+
+    int* getPCommand();
 
 };
 

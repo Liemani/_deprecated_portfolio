@@ -8,8 +8,8 @@
 
 
 
-class Drone;
 class Mission;
+class Drone;
 
 typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
 
@@ -22,8 +22,6 @@ class Mission {
 protected:
 
 public:
-    virtual bool perform(std::vector<Drone*>& pDrone_vector);
-
     virtual void debugDescription();
 
     // get callback function
