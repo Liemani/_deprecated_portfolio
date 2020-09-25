@@ -2,13 +2,13 @@
 
 ## 0. How to set environment
 
-Copy LMT folder to catkin_ws.
+Copy Kit folder to catkin_ws.
 
 ## 1. Make new project(package)
 
 Put your package name instead of ${package_name}.
 
-    catkin_create_pkg ${package_name} roscpp std_msgs geometry_msgs bebop_msgs nav_msgs
+    $ catkin_create_pkg ${package_name} roscpp std_msgs geometry_msgs bebop_msgs nav_msgs
 
 ## 2. Copy files from a17_empty project
 
@@ -49,4 +49,4 @@ If you'd like to control only 1 drone, use CustomCoreMission. Or, if you want to
 
 a18_go_up project is the sample, check it.
 
-If you want more example,  a16_missionhandler_test.
+If you want more example, see a16_missionhandler_test.
