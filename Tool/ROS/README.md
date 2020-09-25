@@ -2,7 +2,7 @@
 
 ## 0. How to set environment
 
-Copy Kit folder to catkin_ws.
+Copy LMT folder to catkin_ws.
 
 ## 1. Make new project(package)
 
