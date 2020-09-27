@@ -142,7 +142,7 @@ file(GLOB SRCPathFiles
 file(GLOB LMTPathFiles
   ${LMTPath}/*.cpp
   ${LMTPath}/CoreMission/*.cpp
-  ${LMTPath}/ConcreteMission/*.cpp
+  ${LMTPath}/ConcreteMission/3/*.cpp
 )
 
 ## Declare a C++ executable
