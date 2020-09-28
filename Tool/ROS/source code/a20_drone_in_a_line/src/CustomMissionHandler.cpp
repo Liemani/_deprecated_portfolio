@@ -60,5 +60,5 @@ CustomMissionHandler::CustomMissionHandler(int argc, char** argv)
     pDrone_vector.push_back(new Drone(pNodeHandle, "bebop2"));
     pDrone_vector.push_back(new Drone(pNodeHandle, "bebop3"));
 
-    pMission_vector.push_back(new DroneInALine(pDrone_vector));
+    pMission_vector.push_back(new DroneInALine());
 }

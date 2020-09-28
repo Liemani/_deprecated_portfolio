@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <CoreMission.h>
+#include "../CoreMission.h"
 
 
 
@@ -18,22 +18,24 @@ class FlyToTargetAltitude: public CoreMission {
     static void callWhenPositionChanged(Mission* mission, Drone& drone);
     static void callWhenAltitudeChanged(Mission* mission, Drone& drone);
     static void callWhenBearingChanged(Mission* mission, Drone& drone);
+private:
+
 
 public:
+
     FlyToTargetAltitude();
+    double targetAltitude;
+    double currentAltitude;
 
     bool perform(Drone* pDrone);
 
     void debugDescription();
 
-    double targetAltitude;
-
-    void setTargetAltitude(double targetAltitude);
-
     // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }
     CallWhenDroneChanged getCallWhenAltitudeChanged() { return callWhenAltitudeChanged; }
     CallWhenDroneChanged getCallWhenBearingChanged() { return callWhenBearingChanged; }
+
 
 };
 

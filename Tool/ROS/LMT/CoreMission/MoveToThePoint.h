@@ -1,11 +1,7 @@
-#ifndef ARRANGESTAIR_H
-#define ARRANGESTAIR_H
+#ifndef CUSTOMCOREMISSION_H
+#define CUSTOMCOREMISSION_H
 
-#include <vector>
-
-#include <ConcreteMission.h>
-
-#include <CoreMission/FlyToPoint.h>
+#include <CoreMission.h>
 
 
 
@@ -15,22 +11,31 @@ class Drone;
 
 typedef void (*CallWhenDroneChanged)(Mission* pMission, Drone& drone);
 
-class ArrangeStair: public ConcreteMission {
+class MoveToThePoint: public CoreMission {
     // callback function
     static void callWhenPositionChanged(Mission* pMission, Drone& drone);
     static void callWhenAltitudeChanged(Mission* pMission, Drone& drone);
     static void callWhenBearingChanged(Mission* pMission, Drone& drone);
 
-    std::vector<FlyToPoint*> pMission_vector;
-
 public:
-    ArrangeStair(std::vector<Drone*>& pDrone_vector);
+    MoveToThePoint();
 
-    bool perform(std::vector<Drone*>& pDrone_vector);
+    double targetBearing;
+    double currentBearing;
+    double targetLatitude;
+    double targetLongitude;
+    double currentLatitude;
+    double currentLongitude;
+    double gapOfBearing_;
+    double distance_;
+
+    double gapOfBearing(double currentBearing, double targetBearing);
+    double findTargetBearing(double Latitude, double Longitude, double targetLatitude, double targetLongitude);
+    double distance(double Latitude, double Longitude, double targetLatitude, double targetLongitude);
+
+    bool perform(Drone* pDrone);
 
     void debugDescription();
-
-    void setTargetGlobalPosition(std::vector<Drone*>& pDrone_vector);
 
     // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }

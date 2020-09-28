@@ -1,5 +1,5 @@
-#ifndef CUSTOMMISSION_H
-#define CUSTOMMISSION_H
+#ifndef KEEPCROSSMOVING_H
+#define KEEPCROSSMOVING_H
 
 #include <vector>
 
@@ -9,28 +9,24 @@
 
 
 
-
 class Drone;
 
-typedef void (*CallWhenDroneChanged)(Mission* mission, Drone& drone);
+typedef void (*CallWhenDroneChanged)(Mission* pMission, Drone& drone);
 
-class DroneInALine: public ConcreteMission {
+class KeepCrossMoving: public ConcreteMission {
     // callback function
-    static void callWhenPositionChanged(Mission* mission, Drone& drone);
-    static void callWhenAltitudeChanged(Mission* mission, Drone& drone);
-    static void callWhenBearingChanged(Mission* mission, Drone& drone);
+    static void callWhenPositionChanged(Mission* pMission, Drone& drone);
+    static void callWhenAltitudeChanged(Mission* pMission, Drone& drone);
+    static void callWhenBearingChanged(Mission* pMission, Drone& drone);
 
 public:
-    DroneInALine();
+    KeepCrossMoving();
 
     std::vector<FlyToTargetAltitude*> pMission_vector;
-
-    bool perform(std::vector<Drone*>& pDrone_vector);
-
-
     void setTargetAltitude(double targetAltitude);  // FlyToTargetAltitude 받아온 정보를 저장한다.
 
-
+    bool perform(std::vector<Drone*>& pDrone_vector);
+    bool is_left_higher;
     void debugDescription();
 
     // get callback function

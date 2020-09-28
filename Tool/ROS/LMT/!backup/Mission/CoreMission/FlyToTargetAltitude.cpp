@@ -1,8 +1,11 @@
+#include <stdio.h>    // printf()
 #include <vector>
 
-#include "../Drone.h"
+#include <Drone.h>
 
 #include "FlyToTargetAltitude.h"
+
+#define SPEED 0.5
 
 using std::vector;
 
@@ -27,31 +30,27 @@ void FlyToTargetAltitude::callWhenBearingChanged(Mission* pMission, Drone& drone
 
 
 
+// public
 FlyToTargetAltitude::FlyToTargetAltitude()
-: CoreMission(){
+: CoreMission() {
     // initializing code goes here...
 }
 
-
-// public
 // return value:
 //  true: end this mission
 //  false: on going
-int cnt;
 bool FlyToTargetAltitude::perform(Drone* pDrone) {
-    // perform code goes here...
-    currentAltitude = pDrone->getAltitude();
+    double currentAltitude = pDrone->getAltitude();
 
-    if(currentAltitude < (targetAltitude *0.95)) {
-        pDrone->flyUpward(0.5);
-    }
-    else if(currentAltitude > (targetAltitude *1.05)){
-        pDrone->flyDownward(0.5);
-    }
-    else {
-        printf("Complete The Mission1");
+    if (targetAltitude - currentAltitude > 0.3) {
+        pDrone->flyUpward(SPEED);
+    } else if (currentAltitude - targetAltitude > 0.3) {
+        pDrone->flyDownward(SPEED);
+    } else {
+        printf("Fly to target altitude mission end. \n");
         return true;
     }
+
     return false;
 }
 
@@ -59,3 +58,6 @@ void FlyToTargetAltitude::debugDescription() {
     // code goes here...
 }
 
+void FlyToTargetAltitude::setTargetAltitude(double targetAltitude) {
+    this->targetAltitude = targetAltitude;
+}

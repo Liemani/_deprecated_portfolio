@@ -137,6 +137,7 @@ include_directories(
 
 file(GLOB SRCPathFiles
   src/*.cpp
+  src/Mission/*.cpp
 )
 
 file(GLOB LMTPathFiles

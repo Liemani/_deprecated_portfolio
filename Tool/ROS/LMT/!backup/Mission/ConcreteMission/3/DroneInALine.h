@@ -1,11 +1,11 @@
-#ifndef CUSTOMMISSION_H
-#define CUSTOMMISSION_H
+#ifndef DRONEINALINE_H
+#define DRONEINALINE_H
 
 #include <vector>
 
 #include <ConcreteMission.h>
-
 #include <CoreMission/FlyToTargetAltitude.h>
+
 
 
 
@@ -21,17 +21,15 @@ class DroneInALine: public ConcreteMission {
     static void callWhenBearingChanged(Mission* mission, Drone& drone);
 
 public:
-    DroneInALine();
+    DroneInALine(std::vector<Drone*>& pDrone_vector);
 
     std::vector<FlyToTargetAltitude*> pMission_vector;
 
     bool perform(std::vector<Drone*>& pDrone_vector);
 
-
-    void setTargetAltitude(double targetAltitude);  // FlyToTargetAltitude 받아온 정보를 저장한다.
-
-
     void debugDescription();
+
+    void setTargetAltitude(double targetAltitude);
 
     // get callback function
     CallWhenDroneChanged getCallWhenPositionChanged() { return callWhenPositionChanged; }

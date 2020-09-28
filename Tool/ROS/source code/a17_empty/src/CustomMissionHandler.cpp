@@ -3,8 +3,8 @@
 #include <Drone.h>
 
 #include "CustomMissionHandler.h"
-#include "Mission/CustomCoreMission.h"
-#include "Mission/CustomConcreteMission.h"
+// #include <CoreMission/CustomCoreMission.h>
+// #include <ConcreteMission/3/CustomConcreteMission.h>
 
 using std::string;
 

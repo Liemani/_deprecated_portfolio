@@ -77,10 +77,12 @@ void ArrangeStair::debugDescription() {
     }
 }
 
-void ArrangeStair::setTargetGlobalPosition(std::vector<Drone*> pDrone_vector) {
+void ArrangeStair::setTargetGlobalPosition(std::vector<Drone*>& pDrone_vector) {
+    const double baseAltitude = pDrone_vector[0]->getAltitude();
+
     for (int i = 0; i < DRONE_COUNT; ++i) {
         GlobalPosition position = pDrone_vector[i]->getGlobalPosition();
-        position.altitude += 0.5 * i;
+        position.altitude = baseAltitude + 0.5 * i;
         pMission_vector[i]->setTargetGlobalPosition(position);
     }
 }

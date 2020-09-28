@@ -1,8 +1,12 @@
+#include <stdio.h>
 #include <vector>
-#include <CoreMission/FlyToTargetAltitude.h>
+
 #include <Drone.h>
+#include <CoreMission/FlyToTargetAltitude.h>
+
 #include "DroneInALine.h"
 
+#define DRONE_COUNT 3
 
 using std::vector;
 
@@ -28,27 +32,27 @@ void DroneInALine::callWhenBearingChanged(Mission* pMission, Drone& drone) {
 
 
 // public
-DroneInALine::DroneInALine()
+DroneInALine::DroneInALine(std::vector<Drone*>& pDrone_vector)
 : ConcreteMission() {
-    // initializing code goes here...
-    pMission_vector.push_back(new FlyToTargetAltitude);
-    pMission_vector.push_back(new FlyToTargetAltitude);
-    pMission_vector.push_back(new FlyToTargetAltitude);
+    for (int i = 0; i < DRONE_COUNT; ++i)
+        pMission_vector.push_back(new FlyToTargetAltitude);
 }
 
 // return value:
 //  true: end this mission
 //  false: on going
 bool DroneInALine::perform(vector<Drone*>& pDrone_vector) {
-    // perform code goes here...
-    bool mission1 = pMission_vector[0]->perform(pDrone_vector[0]);
-    bool mission2 = pMission_vector[1]->perform(pDrone_vector[1]);
-    bool mission3 = pMission_vector[2]->perform(pDrone_vector[2]);
+    bool shouldStop = true;
 
-    if(mission1 == true && mission2 == true && mission3 == true )
+    for (int i = 0; i < DRONE_COUNT; ++i)
+        shouldStop &= pMission_vector[i]->perform(pDrone_vector[i]);
+
+    if (shouldStop) {
+        printf("Mission End \n");
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
 void DroneInALine::debugDescription() {
@@ -56,7 +60,6 @@ void DroneInALine::debugDescription() {
 }
 
 void DroneInALine::setTargetAltitude(double targetAltitude) {
-    pMission_vector[0]->targetAltitude = targetAltitude;
-    pMission_vector[1]->targetAltitude = targetAltitude;
-    pMission_vector[2]->targetAltitude = targetAltitude;
+    for (int i = 0; i < DRONE_COUNT; ++i)
+        pMission_vector[i]->targetAltitude = targetAltitude;
 }

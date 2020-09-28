@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/ros/catkin_ws/devel_isolated/turtlebot3_example/include/**",
+        "/home/ros/catkin_ws/devel_isolated/turtlebot3_msgs/include/**",
+        "/home/ros/catkin_ws/devel_isolated/realsense2_camera/include/**",
+        "/home/ros/catkin_ws/devel_isolated/fkie_multimaster_msgs/include/**",
+        "/home/ros/catkin_ws/devel/include/**",
+        "/opt/ros/kinetic/include/**",
+        "/home/ros/catkin_ws/src/a14_drone_controller/include/**",
+        "/home/ros/catkin_ws/src/a16_missionhandler_test/include/**",
+        "/home/ros/catkin_ws/src/a20_drone_in_a_line/include/**",
+        "/home/ros/catkin_ws/src/a21_mission_tester/include/**",
+        "/home/ros/catkin_ws/src/a22_arrange_altitude/include/**",
+        "/home/ros/catkin_ws/src/bebop_autonomy/bebop_driver/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}

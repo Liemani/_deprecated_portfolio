@@ -608,6 +608,25 @@ stdio.h로 입출력을 다른 쓰레드로 처리할 경우 입력받는 커맨
 
 
 
+2020-09-27
+isOnMission is too absract, that value don't need to abstract for user.
+isPerforming is seems best name for that value, because user mainly use perform() function so whether that function are using or not is most considerable point.
+
+
+
+2020-09-28
+교양 설명(뷰, 트리 구조)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(a17_empty)
+project(a22_arrange_altitude)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -142,6 +142,7 @@ file(GLOB SRCPathFiles
 file(GLOB LMTPathFiles
   ${LMTPath}/*.cpp
   ${LMTPath}/CoreMission/*.cpp
+  ${LMTPath}/ConcreteMission/3/*.cpp
 )
 
 ## Declare a C++ executable

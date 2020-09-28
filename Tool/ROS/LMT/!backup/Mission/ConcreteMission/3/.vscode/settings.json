@@ -1,0 +1,15 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/ros/catkin_ws/devel_isolated/turtlebot3_teleop/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/turtlebot3_example/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/turtlebot3_msgs/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/realsense2_camera/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/fkie_node_manager/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/fkie_node_manager_daemon/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/fkie_master_sync/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/fkie_master_discovery/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel_isolated/fkie_multimaster_msgs/lib/python2.7/dist-packages",
+        "/home/ros/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+    ]
+}
