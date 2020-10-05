@@ -1,0 +1,5 @@
+this is test text!
+second line
+this     is    test     line     !
+special character	\ 1234567890
+last line

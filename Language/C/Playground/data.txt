@@ -1,0 +1,5 @@
+this is test text!
+second line
+this     is    test     line     !
+special character	\
+last line
