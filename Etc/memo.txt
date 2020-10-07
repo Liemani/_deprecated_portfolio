@@ -628,7 +628,7 @@ isPerforming is seems best name for that value, because user mainly use perform(
 
 
 2020-10-05
-
+컴퓨터 이더넷 칩 하나가 ap 역할을 할 수 있다.
 
 
 

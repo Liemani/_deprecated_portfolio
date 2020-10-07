@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAX_LENGTH 100
+#define MAX_LINE_LENGTH 100
 
 int getLine(char* line) {
     int currentCharacter;
@@ -34,10 +34,10 @@ void copyString(char* destination, char* source) {
 }
 
 int main() {
-    char currentLine[MAX_LENGTH];
+    char currentLine[MAX_LINE_LENGTH];
     int currentLineLength;
 
-    char longestLine[MAX_LENGTH];
+    char longestLine[MAX_LINE_LENGTH];
     int longestLineLength = 0;
 
     while ((currentLineLength = getLine(currentLine)) != EOF) {
