@@ -28,6 +28,7 @@ int main() {
     return 0;
 }
 
+/* myGetline: read a line into line, return length */
 int myGetline(char line[], int arrayLength) {
     int character, i;
 
@@ -45,6 +46,7 @@ int myGetline(char line[], int arrayLength) {
     return i;
 }
 
+/* myCopy: copy 'source' into 'source'; assume destination is big enough */
 void myCopy(char destination[], char source[]) {
     for (int i = 0; (destination[i] = source[i]) != '\0'; ++i);
 }

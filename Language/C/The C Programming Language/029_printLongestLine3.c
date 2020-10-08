@@ -29,6 +29,7 @@ int readLine(char* line, int lineArrayLength) {
     return length;
 }
 
+// assum destination is big enough
 void copyString(char* destination, char* source) {
     for (int i = 0; (destination[i] = source[i]) != '\0'; ++i);
 }
