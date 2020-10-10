@@ -1,4 +1,4 @@
-2020/08/21
+﻿2020/08/21
 -ubuntu-
 sudo passwd root
 sudo apt-get update
@@ -633,13 +633,28 @@ isPerforming is seems best name for that value, because user mainly use perform(
 
 
 
+2020-10-10
+compare these four c code as assembly code
+1. while (currentCharacter = getchar(), currentCharacter != EOF);
+2. while ((currentCharacter = getchar()) != EOF);
+3. while (TRUE) {
+	currentCharacter = getchar();
+	if (currentCharacter == EOF) break;
+   }
+4. while (TRUE) {
+	if ((currentCharacter = getchar()) == EOF) break;
+   }
 
+이후에 공부 콜라보 깃 하나 만들어서 거대한 탑을 지어보자!!
 
-
-
-
-
-
+compare these two c code as assembly code
+1. while () {
+	bool isTrue = true;
+   }
+2. bool isTrue;
+   while () {
+	isTrue = true;
+   }
 
 
 

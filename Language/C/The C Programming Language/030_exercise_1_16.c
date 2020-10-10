@@ -16,9 +16,10 @@ int readALine(char* line, int lineArrayLength) {
 
 
     for (length = 0;
+        currentCharacter = getchar(),
         length < lineArrayLength - 1
-        && (currentCharacter = getchar()) != EOF
-        && currentCharacter != '\n';
+        && currentCharacter != '\n'
+        && currentCharacter != EOF;
         ++length) {
 
         line[length] = currentCharacter;

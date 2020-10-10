@@ -34,4 +34,4 @@ if (!isInWord) {
 }
 ```
 
-05_ifAssembly.s and 07_ifAssembly3.s are exactly same. And 06_ifAssembly2.s is longer than others. 06 and 07 are not common. So i would choose 05.
+`05_ifAssembly.s` and `07_ifAssembly3.s` are exactly same. And `06_ifAssembly2.s` is longer than others. `06` and `07` are not common. So i would choose `05`.
